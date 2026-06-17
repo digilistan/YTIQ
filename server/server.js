@@ -18,6 +18,8 @@ import calendarRouter from './routes/calendar.js';
 import competitorsRouter from './routes/competitors.js';
 import nichesRouter from './routes/niches.js';
 import thumbnailsRouter from './routes/thumbnails.js';
+import chatRouter from './routes/chat.js';
+import researchRouter from './routes/research.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -161,6 +163,8 @@ app.use('/api/calendar', calendarRouter);
 app.use('/api/competitors', competitorsRouter);
 app.use('/api/niches', nichesRouter);
 app.use('/api/thumbnails', thumbnailsRouter);
+app.use('/api/chat', chatRouter);
+app.use('/api/research', researchRouter);
 
 // Basic routing placeholder for other modules
 app.get('/api', (req, res) => {

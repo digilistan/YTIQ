@@ -95,7 +95,16 @@ export function VideoIdeas({ setActiveTab, setActiveIdeaForScript, toast }) {
   };
 
   const IdeaCard = ({ idea, index, isSavedList = false }) => (
-    <div data-testid="idea-card" className="card p-4 flex flex-col gap-3">
+    <div
+      data-testid="idea-card"
+      className="card p-4 flex flex-col gap-3"
+      draggable
+      onDragStart={e => {
+        e.dataTransfer.setData('text/plain', JSON.stringify(idea));
+        e.dataTransfer.effectAllowed = 'copy';
+      }}
+      style={{ cursor: 'grab' }}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-sm leading-snug" style={{ color: 'var(--text-base)' }}>{idea.title}</h3>

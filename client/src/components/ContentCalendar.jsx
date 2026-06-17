@@ -60,12 +60,18 @@ export function ContentCalendar({ toast }) {
     e.preventDefault();
     const raw = e.dataTransfer.getData('text/plain');
     if (!raw) return;
+    let idea;
+    try { idea = JSON.parse(raw); } catch { toast('Failed to schedule event.', 'error'); return; }
     try {
-      const idea = JSON.parse(raw);
-      const res  = await fetch('/api/calendar/events', {
+      const res = await fetch('/api/calendar/events', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idea_id: idea.id, scheduled_date: ds, channel_id: activeChannel?.id, status: 'planned' }),
+        body: JSON.stringify({ idea_id: idea.id || null, title: idea.title, scheduled_date: ds, channel_id: activeChannel?.id, status: 'planned' }),
       });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        toast(err.error || 'Failed to schedule event.', 'error');
+        return;
+      }
       const newEv = await res.json();
       setEvents(prev => [...prev, { ...newEv, title: idea.title, scheduled_date: ds }]);
       toast(`"${idea.title}" scheduled for ${ds}`, 'success');

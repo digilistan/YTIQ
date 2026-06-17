@@ -104,12 +104,18 @@ export function runMigrations() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         idea_id INTEGER REFERENCES ideas(id) ON DELETE CASCADE,
         channel_id INTEGER REFERENCES channels(id) ON DELETE CASCADE,
+        title TEXT,
         scheduled_date DATE,
         status TEXT DEFAULT 'planned',
         notes TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `).run();
+
+    // Add title column to calendar_events if it doesn't exist (migration for existing DBs)
+    try {
+      db.prepare('ALTER TABLE calendar_events ADD COLUMN title TEXT').run();
+    } catch (_) {}
 
     // 9. Competitors
     db.prepare(`

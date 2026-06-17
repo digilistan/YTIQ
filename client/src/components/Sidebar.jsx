@@ -3,12 +3,15 @@ import {
   LayoutDashboard, Search, Lightbulb, FileText, Sparkles,
   ImageIcon, CalendarDays, TrendingUp, Settings, Scissors,
   Sun, Moon, ChevronDown, PanelLeftClose, PanelLeftOpen,
+  MessageSquare, FlaskConical,
 } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { useTheme } from '../context/ThemeContext';
 
 const NAV = [
   { id: 'dashboard',   label: 'Dashboard',      icon: LayoutDashboard },
+  { id: 'chat',        label: 'AI Chat',         icon: MessageSquare },
+  { id: 'research',    label: 'Research',        icon: FlaskConical },
   { id: 'niche',       label: 'Niche Explorer',  icon: Search },
   { id: 'ideas',       label: 'Video Ideas',     icon: Lightbulb },
   { id: 'scripts',     label: 'Script Writer',   icon: FileText },

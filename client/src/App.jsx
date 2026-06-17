@@ -14,6 +14,8 @@ import { ContentCalendar } from './components/ContentCalendar';
 import { CompetitorTracker } from './components/CompetitorTracker';
 import { SettingsModal } from './components/SettingsModal';
 import { SetupWizard } from './components/SetupWizard';
+import { Chat } from './components/Chat';
+import { Research } from './components/Research';
 
 function useMediaQuery(query) {
   const [matches, setMatches] = useState(() => {
@@ -65,6 +67,8 @@ function Shell() {
   const renderTab = () => {
     switch (activeTab) {
       case 'dashboard':   return <Dashboard setActiveTab={setActiveTab} toast={toast} />;
+      case 'chat':        return <Chat toast={toast} />;
+      case 'research':    return <Research toast={toast} />;
       case 'niche':       return <NicheExplorer toast={toast} />;
       case 'ideas':       return <VideoIdeas setActiveTab={setActiveTab} setActiveIdeaForScript={setActiveIdeaForScript} toast={toast} />;
       case 'scripts':     return <ScriptWriter activeIdeaForScript={activeIdeaForScript} toast={toast} />;
