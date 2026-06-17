@@ -1,0 +1,67 @@
+{
+  "channels": {
+    "kind": "youtube#channelListResponse",
+    "etag": "etag_channels",
+    "items": [
+      {
+        "kind": "youtube#channel",
+        "id": "UC1234567890",
+        "snippet": {
+          "title": "Tech & Dev Chronicles",
+          "description": "Programming, tech reviews, and tutorials.",
+          "publishedAt": "2020-01-01T00:00:00Z",
+          "thumbnails": {
+            "default": { "url": "https://example.com/channel-thumb.jpg" }
+          }
+        },
+        "statistics": {
+          "viewCount": "1250000",
+          "subscriberCount": "50000",
+          "hiddenSubscriberCount": false,
+          "videoCount": "120"
+        }
+      }
+    ]
+  },
+  "videos": {
+    "kind": "youtube#videoListResponse",
+    "etag": "etag_videos",
+    "items": [
+      {
+        "kind": "youtube#video",
+        "id": "vid123",
+        "snippet": {
+          "publishedAt": "2026-06-01T12:00:00Z",
+          "title": "How to Build a Full-Stack App in 2026",
+          "description": "Step by step guide.",
+          "thumbnails": {
+            "default": { "url": "https://example.com/video-thumb.jpg" }
+          }
+        },
+        "statistics": {
+          "viewCount": "45000",
+          "likeCount": "2200",
+          "commentCount": "340"
+        }
+      }
+    ]
+  },
+  "search": {
+    "kind": "youtube#searchListResponse",
+    "etag": "etag_search",
+    "items": [
+      {
+        "kind": "youtube#searchResult",
+        "id": {
+          "kind": "youtube#video",
+          "videoId": "vid123"
+        },
+        "snippet": {
+          "publishedAt": "2026-06-01T12:00:00Z",
+          "title": "How to Build a Full-Stack App in 2026",
+          "description": "Step by step guide."
+        }
+      }
+    ]
+  }
+}
