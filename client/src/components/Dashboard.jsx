@@ -197,9 +197,9 @@ export function Dashboard({ setActiveTab, toast }) {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className={`grid grid-cols-1 gap-5 ${history.length >= 2 && insights.length > 0 ? 'lg:grid-cols-3' : ''}`}>
         {/* Subscriber Growth — takes 2 cols */}
-        <div className="card p-5 lg:col-span-2">
+        <div className={`card p-5 ${history.length >= 2 && insights.length > 0 ? 'lg:col-span-2' : ''}`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <TrendingUp size={15} style={{ color: 'var(--accent)' }} />
@@ -238,36 +238,32 @@ export function Dashboard({ setActiveTab, toast }) {
           )}
         </div>
 
-        {/* AI Insights — 1 col */}
-        <div className="card p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles size={15} style={{ color: 'var(--amber)' }} />
-            <h2 className="font-semibold text-sm" style={{ color: 'var(--text-base)' }}>AI Insights</h2>
-          </div>
-          {!activeChannel ? (
-            <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>Add a channel to see insights.</p>
-          ) : history.length === 0 ? (
-            <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>Sync stats first to unlock AI-powered growth tips.</p>
-          ) : insightsLoading ? (
-            <div className="space-y-2.5">
-              {[1,2,3].map(i => <div key={i} className="skeleton h-12 rounded-lg" />)}
+        {/* AI Insights — only shown when there is history data */}
+        {(insightsLoading || insights.length > 0) && history.length >= 2 && (
+          <div className="card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles size={15} style={{ color: 'var(--amber)' }} />
+              <h2 className="font-semibold text-sm" style={{ color: 'var(--text-base)' }}>AI Insights</h2>
             </div>
-          ) : insights.length === 0 ? (
-            <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>No insights generated yet.</p>
-          ) : (
-            <div className="space-y-2.5">
-              {insights.map((tip, i) => (
-                <div key={i} className="flex gap-2.5 p-3 rounded-lg" style={{ background: 'var(--bg-elevated)' }}>
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold mt-0.5"
-                    style={{ background: 'var(--accent-soft)', color: 'var(--accent-2)' }}>
-                    {i + 1}
+            {insightsLoading ? (
+              <div className="space-y-2.5">
+                {[1,2,3].map(i => <div key={i} className="skeleton h-12 rounded-lg" />)}
+              </div>
+            ) : (
+              <div className="space-y-2.5">
+                {insights.map((tip, i) => (
+                  <div key={i} className="flex gap-2.5 p-3 rounded-lg" style={{ background: 'var(--bg-elevated)' }}>
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold mt-0.5"
+                      style={{ background: 'var(--accent-soft)', color: 'var(--accent-2)' }}>
+                      {i + 1}
+                    </div>
+                    <p className="text-xs leading-relaxed" style={{ color: 'var(--text-2)' }}>{tip}</p>
                   </div>
-                  <p className="text-xs leading-relaxed" style={{ color: 'var(--text-2)' }}>{tip}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Views Chart */}

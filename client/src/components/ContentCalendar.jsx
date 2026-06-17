@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -21,10 +21,12 @@ export function ContentCalendar({ toast }) {
   const [eventStatus, setEventStatus] = useState('planned');
   const [eventNotes, setEventNotes]   = useState('');
   const [saving, setSaving]           = useState(false);
+  const [viewMode, setViewMode]       = useState('monthly');
 
   const now = new Date();
   const [viewYear, setViewYear]   = useState(now.getFullYear());
   const [viewMonth, setViewMonth] = useState(now.getMonth());
+  const [weekOffset, setWeekOffset] = useState(0);
 
   useEffect(() => {
     if (!activeChannel) return;
@@ -34,19 +36,32 @@ export function ContentCalendar({ toast }) {
       .catch(() => {});
   }, [activeChannel]);
 
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const dateStr  = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`;
+
+  /* ---- Monthly grid ---- */
   const firstDay    = new Date(viewYear, viewMonth, 1).getDay();
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-  const cells       = [...Array(firstDay).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
-  const dateStr     = (d) => `${viewYear}-${pad(viewMonth + 1)}-${pad(d)}`;
-  const todayStr    = new Date().toISOString().slice(0, 10);
+  const monthCells  = [...Array(firstDay).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
 
-  const handleDrop = async (e, d) => {
+  /* ---- Weekly grid ---- */
+  const getWeekDays = (offset = 0) => {
+    const base = new Date();
+    base.setDate(base.getDate() - base.getDay() + offset * 7);
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(base);
+      d.setDate(base.getDate() + i);
+      return { y: d.getFullYear(), m: d.getMonth(), d: d.getDate(), str: d.toISOString().slice(0, 10) };
+    });
+  };
+  const weekDays = getWeekDays(weekOffset);
+
+  const handleDrop = async (e, ds) => {
     e.preventDefault();
     const raw = e.dataTransfer.getData('text/plain');
     if (!raw) return;
     try {
       const idea = JSON.parse(raw);
-      const ds   = dateStr(d);
       const res  = await fetch('/api/calendar/events', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idea_id: idea.id, scheduled_date: ds, channel_id: activeChannel?.id, status: 'planned' }),
@@ -72,14 +87,73 @@ export function ContentCalendar({ toast }) {
     finally { setSaving(false); }
   };
 
-  const prevMonth = () => {
-    if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
-    else setViewMonth(m => m - 1);
+  const DayCell = ({ ds, dayNum, label, compact = false }) => {
+    const dayEvents = events.filter(ev => ev.scheduled_date === ds);
+    const isToday   = ds === todayStr;
+    const MAX_SHOW  = compact ? 1 : 2;
+    const extra     = dayEvents.length - MAX_SHOW;
+
+    return (
+      <div onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, ds)}
+        className="rounded-lg border transition"
+        style={{
+          minHeight: compact ? '5rem' : '6.5rem',
+          padding: '6px',
+          border: `1px solid ${isToday ? 'var(--accent-border)' : 'var(--border)'}`,
+          background: isToday ? 'var(--accent-soft)' : 'var(--bg-elevated)',
+        }}>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs font-semibold" style={{ color: isToday ? 'var(--accent-2)' : 'var(--text-muted)' }}>
+            {compact ? `${dayNum}` : dayNum}
+          </span>
+          {label && <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{label}</span>}
+        </div>
+        <div className="space-y-0.5">
+          {dayEvents.slice(0, MAX_SHOW).map(ev => {
+            const s = STATUS_STYLES[ev.status] || STATUS_STYLES.planned;
+            return (
+              <div key={ev.id} data-testid="calendar-event-card"
+                onDoubleClick={() => { setSelected(ev); setEventStatus(ev.status || 'planned'); setEventNotes(ev.notes || ''); }}
+                className="text-xs text-white px-1.5 py-0.5 rounded truncate cursor-pointer"
+                style={{ background: s.bg }} title={ev.title}>
+                {ev.title || 'Untitled'}
+              </div>
+            );
+          })}
+          {extra > 0 && (
+            <div className="text-xs px-1.5 py-0.5 rounded text-center cursor-pointer"
+              style={{ background: 'var(--bg-card)', color: 'var(--text-muted)' }}>
+              +{extra} more
+            </div>
+          )}
+          {dayEvents.length === 0 && (
+            <div className="text-xs italic" style={{ color: 'var(--text-muted)', opacity: 0.5 }}></div>
+          )}
+        </div>
+      </div>
+    );
   };
-  const nextMonth = () => {
-    if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
-    else setViewMonth(m => m + 1);
+
+  const prevNav = () => {
+    if (viewMode === 'monthly') {
+      if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
+      else setViewMonth(m => m - 1);
+    } else {
+      setWeekOffset(o => o - 1);
+    }
   };
+  const nextNav = () => {
+    if (viewMode === 'monthly') {
+      if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
+      else setViewMonth(m => m + 1);
+    } else {
+      setWeekOffset(o => o + 1);
+    }
+  };
+
+  const navLabel = viewMode === 'monthly'
+    ? `${MONTHS[viewMonth]} ${viewYear}`
+    : `Week of ${new Date(weekDays[0].str).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
 
   return (
     <div className="space-y-5 fade-in">
@@ -91,13 +165,15 @@ export function ContentCalendar({ toast }) {
       </div>
 
       <div className="card p-5 space-y-4">
-        {/* Nav */}
-        <div className="flex items-center justify-between">
-          <button onClick={prevMonth} className="btn btn-ghost btn-sm"><ChevronLeft size={16} /></button>
-          <h2 className="font-semibold text-base" style={{ color: 'var(--text-base)' }}>
-            {MONTHS[viewMonth]} {viewYear}
-          </h2>
-          <button onClick={nextMonth} className="btn btn-ghost btn-sm"><ChevronRight size={16} /></button>
+        {/* Controls */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button onClick={prevNav} className="btn btn-ghost btn-sm"><ChevronLeft size={16} /></button>
+          <h2 className="font-semibold text-sm flex-1 text-center" style={{ color: 'var(--text-base)' }}>{navLabel}</h2>
+          <button onClick={nextNav} className="btn btn-ghost btn-sm"><ChevronRight size={16} /></button>
+          <div className="tab-bar">
+            <button className={`tab-item ${viewMode === 'monthly' ? 'active' : ''}`} onClick={() => setViewMode('monthly')}>Monthly</button>
+            <button className={`tab-item ${viewMode === 'weekly' ? 'active' : ''}`} onClick={() => setViewMode('weekly')}>Weekly</button>
+          </div>
         </div>
 
         {/* Day headers */}
@@ -107,42 +183,26 @@ export function ContentCalendar({ toast }) {
           ))}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-7 gap-1">
-          {cells.map((d, i) => {
-            if (!d) return <div key={`e-${i}`} />;
-            const ds         = dateStr(d);
-            const dayEvents  = events.filter(ev => ev.scheduled_date === ds);
-            const isToday    = ds === todayStr;
+        {/* Monthly grid */}
+        {viewMode === 'monthly' && (
+          <div className="grid grid-cols-7 gap-1">
+            {monthCells.map((d, i) => {
+              if (!d) return <div key={`e-${i}`} />;
+              const ds = dateStr(viewYear, viewMonth, d);
+              return <DayCell key={ds} ds={ds} dayNum={d} compact />;
+            })}
+          </div>
+        )}
 
-            return (
-              <div key={ds} data-date={ds}
-                onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, d)}
-                className="min-h-[5rem] p-1.5 rounded-lg border transition"
-                style={{
-                  border: isToday ? '1px solid var(--accent-border)' : '1px solid var(--border)',
-                  background: isToday ? 'var(--accent-soft)' : 'var(--bg-elevated)',
-                }}>
-                <span className="text-xs font-semibold block mb-1"
-                  style={{ color: isToday ? 'var(--accent-2)' : 'var(--text-muted)' }}>{d}</span>
-                <div className="space-y-0.5">
-                  {dayEvents.map(ev => {
-                    const style = STATUS_STYLES[ev.status] || STATUS_STYLES.planned;
-                    return (
-                      <div key={ev.id} data-testid="calendar-event-card"
-                        onDoubleClick={() => { setSelected(ev); setEventStatus(ev.status || 'planned'); setEventNotes(ev.notes || ''); }}
-                        className="text-xs text-white px-1.5 py-0.5 rounded truncate cursor-pointer"
-                        style={{ background: style.bg, opacity: 0.9 }}
-                        title={ev.title}>
-                        {ev.title || 'Untitled'}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {/* Weekly grid */}
+        {viewMode === 'weekly' && (
+          <div className="grid grid-cols-7 gap-2">
+            {weekDays.map(day => (
+              <DayCell key={day.str} ds={day.str} dayNum={day.d}
+                label={DAYS[new Date(day.str + 'T12:00:00').getDay()]} />
+            ))}
+          </div>
+        )}
 
         {/* Legend */}
         <div className="flex items-center gap-4 flex-wrap pt-1">
@@ -168,7 +228,6 @@ export function ContentCalendar({ toast }) {
               </div>
               <button onClick={() => setSelected(null)} className="btn btn-ghost btn-sm"><X size={15} /></button>
             </div>
-
             <div className="space-y-1.5">
               <label className="section-label">Status</label>
               <select data-testid="event-status-select" className="app-input"
@@ -179,13 +238,11 @@ export function ContentCalendar({ toast }) {
                 <option value="done">Done</option>
               </select>
             </div>
-
             <div className="space-y-1.5">
               <label className="section-label">Notes</label>
               <textarea id="event-notes-input" className="app-input h-24 resize-none"
                 value={eventNotes} onChange={e => setEventNotes(e.target.value)} placeholder="Add notes…" />
             </div>
-
             <div className="flex gap-2">
               <button onClick={handleSaveEvent} disabled={saving} className="btn btn-primary flex-1 justify-center">
                 {saving ? <span className="spinner" /> : null}{saving ? 'Saving…' : 'Save Event'}

@@ -1,0 +1,1973 @@
+WEBVTT
+
+1
+00:00:00.345 --> 00:00:03.765
+Module number two, understanding how YouTube thinks.
+
+2
+00:00:03.955 --> 00:00:06.405
+This is the business logic behind the algorithm.
+
+3
+00:00:07.385 --> 00:00:09.245
+I'm sure you've heard the word algorithm a lot.
+
+4
+00:00:09.345 --> 00:00:11.605
+If you haven't, that's fine. But more than likely,
+
+5
+00:00:11.825 --> 00:00:13.725
+if you watch any YouTube videos on this stuff,
+
+6
+00:00:14.025 --> 00:00:15.045
+you know what the algorithm is.
+
+7
+00:00:15.225 --> 00:00:18.165
+You know exactly how complex people make it seem,
+
+8
+00:00:18.625 --> 00:00:20.725
+but there are a few truths about it.
+
+9
+00:00:20.725 --> 00:00:23.765
+So here's YouTube's core truth, the business reality,
+
+10
+00:00:23.765 --> 00:00:26.125
+because first of all, YouTube is a business.
+
+11
+00:00:26.335 --> 00:00:27.605
+Their goal, at the end of the day,
+
+12
+00:00:27.635 --> 00:00:29.005
+they don't care about the creators.
+
+13
+00:00:29.075 --> 00:00:30.925
+They don't care about, you know, oh,
+
+14
+00:00:30.935 --> 00:00:33.085
+let's make sure this creators get in their views and stuff.
+
+15
+00:00:33.085 --> 00:00:34.685
+They don't care. They care about making money.
+
+16
+00:00:35.025 --> 00:00:38.805
+And if that helps creators in a way, so be it.
+
+17
+00:00:38.805 --> 00:00:40.485
+But that's not why they do things right?
+
+18
+00:00:41.195 --> 00:00:43.885
+YouTube makes money primarily through ad revenue.
+
+19
+00:00:44.215 --> 00:00:48.005
+Their goal is simple. Have as many ads watched as possible
+
+20
+00:00:48.005 --> 00:00:49.005
+to maximize revenue.
+
+21
+00:00:49.545 --> 00:00:52.485
+So if this is their goal, which this is true, right?
+
+22
+00:00:52.625 --> 00:00:54.245
+We we narrowed it down their business,
+
+23
+00:00:54.335 --> 00:00:56.005
+their number one goal is to make money.
+
+24
+00:00:56.625 --> 00:00:58.205
+If they make money through ad revenue,
+
+25
+00:00:58.515 --> 00:01:01.205
+then their number one goal translates to YouTube's.
+
+26
+00:01:01.205 --> 00:01:04.045
+Number one goal is to have viewers on YouTube watch
+
+27
+00:01:04.225 --> 00:01:05.885
+as many ads as possible.
+
+28
+00:01:06.505 --> 00:01:09.005
+So in order for them to maximize this,
+
+29
+00:01:09.155 --> 00:01:12.205
+keep in mind YouTube's been around for like 17 or 18 years,
+
+30
+00:01:12.345 --> 00:01:13.365
+or I think like nine.
+
+31
+00:01:13.435 --> 00:01:16.045
+Wait, no, YouTube's been around for like 20 years.
+
+32
+00:01:16.115 --> 00:01:18.085
+Geez, it's been quite, quite some time.
+
+33
+00:01:18.745 --> 00:01:20.525
+And in that time you think YouTube
+
+34
+00:01:20.545 --> 00:01:21.645
+hasn't changed their algorithm?
+
+35
+00:01:21.745 --> 00:01:24.365
+Of course they have. And there's reason you all hear about
+
+36
+00:01:24.365 --> 00:01:25.845
+algorithm updates, things like that.
+
+37
+00:01:26.145 --> 00:01:27.965
+Um, if the algorithm was random, like a lot
+
+38
+00:01:27.965 --> 00:01:29.485
+of people think, uh, then guess what?
+
+39
+00:01:29.485 --> 00:01:32.165
+There wouldn't be updates. There wouldn't be hundreds
+
+40
+00:01:32.165 --> 00:01:34.885
+of employees working on YouTube's algorithm if they were
+
+41
+00:01:34.885 --> 00:01:36.005
+just making it random, right?
+
+42
+00:01:36.025 --> 00:01:37.365
+It would just be one random person
+
+43
+00:01:37.465 --> 00:01:40.845
+who set it back up back in 2006 and uh, pressed a button
+
+44
+00:01:40.845 --> 00:01:43.365
+and, and that's that based on that, the algorithm,
+
+45
+00:01:43.465 --> 00:01:44.605
+it just cannot be random.
+
+46
+00:01:44.865 --> 00:01:47.885
+I'm talking a 0% chance, 0% chance.
+
+47
+00:01:48.145 --> 00:01:50.085
+It is a carefully designed system.
+
+48
+00:01:50.545 --> 00:01:53.405
+It has been refined over literally two decades
+
+49
+00:01:53.995 --> 00:01:55.285
+with probably thousands
+
+50
+00:01:55.285 --> 00:01:56.845
+and thousands of different employees working
+
+51
+00:01:56.905 --> 00:01:58.085
+on it, perfecting it.
+
+52
+00:01:58.665 --> 00:02:00.485
+So now two things we've learned that already.
+
+53
+00:02:00.485 --> 00:02:03.045
+Super important. Number one, YouTube's goal is to show
+
+54
+00:02:03.065 --> 00:02:04.365
+as many ads as possible.
+
+55
+00:02:04.865 --> 00:02:07.285
+And number two, we know that if they wanna achieve
+
+56
+00:02:07.285 --> 00:02:09.205
+that goal, the algorithm can't be random,
+
+57
+00:02:09.435 --> 00:02:10.525
+otherwise they're leaving.
+
+58
+00:02:11.105 --> 00:02:13.645
+How many ads are being watched to a random number?
+
+59
+00:02:14.265 --> 00:02:16.645
+So those are two facts, algorithms, not random.
+
+60
+00:02:16.645 --> 00:02:18.725
+YouTube wants as many ads watch as possible.
+
+61
+00:02:19.115 --> 00:02:23.005
+Next thing, next truth, core truth. Oversaturation is real.
+
+62
+00:02:23.585 --> 00:02:26.005
+If YouTube already knows, viewers will watch lots
+
+63
+00:02:26.005 --> 00:02:27.605
+of ads on established creators videos.
+
+64
+00:02:28.305 --> 00:02:31.445
+Why would they risk testing your content in the same niche?
+
+65
+00:02:31.865 --> 00:02:33.085
+So a lot of people will go
+
+66
+00:02:33.305 --> 00:02:36.645
+and they'll see a huge niche like boring history for sleep
+
+67
+00:02:36.665 --> 00:02:38.845
+or something like that, which boring history for sleep.
+
+68
+00:02:38.845 --> 00:02:41.725
+They're just like two, three hour long videos where, uh,
+
+69
+00:02:41.725 --> 00:02:44.285
+it's just an AI narration talking about history
+
+70
+00:02:44.285 --> 00:02:46.485
+as if it's like reading from a history textbook almost.
+
+71
+00:02:46.665 --> 00:02:47.845
+And people will sleep to it.
+
+72
+00:02:48.025 --> 00:02:49.805
+And those channels make a lot of money.
+
+73
+00:02:50.525 --> 00:02:51.805
+A lot of inexperienced people
+
+74
+00:02:51.825 --> 00:02:54.685
+and a lot of people who maybe don't have any sort
+
+75
+00:02:54.685 --> 00:02:57.445
+of mentorship program, they will end up going
+
+76
+00:02:57.625 --> 00:02:58.725
+and just going into this
+
+77
+00:02:58.725 --> 00:02:59.725
+Boring history niche. 'cause
+
+78
+00:02:59.725 --> 00:03:01.325
+they see, look how many channels there are
+
+79
+00:03:01.325 --> 00:03:02.405
+that are doing well in this niche.
+
+80
+00:03:02.405 --> 00:03:04.525
+They find five different channels that are making 10
+
+81
+00:03:04.525 --> 00:03:05.565
+to a hundred thousand a month.
+
+82
+00:03:05.565 --> 00:03:07.725
+Look how many channels are doing good in this niche.
+
+83
+00:03:07.945 --> 00:03:09.925
+And they think that means that they can jump into
+
+84
+00:03:09.925 --> 00:03:12.565
+that niche, which makes, uh, just about zero sense.
+
+85
+00:03:12.565 --> 00:03:14.045
+And the reason that is, is
+
+86
+00:03:14.045 --> 00:03:16.605
+because if YouTube already knows, okay,
+
+87
+00:03:16.955 --> 00:03:19.365
+here are five creators in this niche,
+
+88
+00:03:19.775 --> 00:03:20.965
+we're just gonna give all,
+
+89
+00:03:20.965 --> 00:03:22.885
+let's say there's a hundred thousand viewers,
+
+90
+00:03:23.145 --> 00:03:24.405
+unique viewers in this niche
+
+91
+00:03:24.405 --> 00:03:25.445
+that watch this type of content.
+
+92
+00:03:25.675 --> 00:03:27.685
+They're just gonna distribute the a hundred thousand
+
+93
+00:03:27.685 --> 00:03:29.005
+viewers in whatever.
+
+94
+00:03:29.005 --> 00:03:30.125
+It doesn't have to be equal, of course,
+
+95
+00:03:30.145 --> 00:03:32.445
+but they'll just distribute it to just those five channels
+
+96
+00:03:32.445 --> 00:03:35.245
+because YouTube has enough data on these channels.
+
+97
+00:03:35.445 --> 00:03:38.805
+'cause they've been run running for 6, 7, 8, 9 months.
+
+98
+00:03:39.265 --> 00:03:40.965
+Um, and they'll be running for so long
+
+99
+00:03:40.965 --> 00:03:43.205
+that YouTube has enough data stack piled
+
+100
+00:03:43.785 --> 00:03:48.365
+and they can just know based on the data viewers that like
+
+101
+00:03:48.365 --> 00:03:50.645
+that type of content will watch the most amount
+
+102
+00:03:50.645 --> 00:03:52.605
+of ads from these channels.
+
+103
+00:03:53.075 --> 00:03:55.885
+Boom. Just like that YouTube closes off the niche.
+
+104
+00:03:56.105 --> 00:03:57.165
+You cannot get into it.
+
+105
+00:03:57.345 --> 00:04:00.205
+That's why a lot of people, this is something that a lot
+
+106
+00:04:00.205 --> 00:04:02.285
+of people that, uh, well, if you go
+
+107
+00:04:02.285 --> 00:04:04.005
+through this entire prerecorded,
+
+108
+00:04:04.725 --> 00:04:06.565
+I guess course you could call it, uh,
+
+109
+00:04:06.565 --> 00:04:09.205
+you'll learn exactly all the little details.
+
+110
+00:04:09.345 --> 00:04:10.445
+But it's just important to know
+
+111
+00:04:10.445 --> 00:04:11.725
+that you can't just jump into a niche
+
+112
+00:04:11.725 --> 00:04:14.005
+because somebody's having success, right?
+
+113
+00:04:14.005 --> 00:04:15.645
+YouTube will eventually close it off
+
+114
+00:04:15.645 --> 00:04:17.845
+because they know in this specific niche,
+
+115
+00:04:18.065 --> 00:04:20.565
+the audience already has a few channels
+
+116
+00:04:20.565 --> 00:04:23.125
+that we can send the audience to, um, where
+
+117
+00:04:23.635 --> 00:04:25.965
+certain viewer will watch as many ads as possible.
+
+118
+00:04:26.265 --> 00:04:28.085
+That's why Oversaturation is real.
+
+119
+00:04:28.395 --> 00:04:30.525
+Once there are too many channels in a niche,
+
+120
+00:04:30.525 --> 00:04:32.605
+YouTube has enough data to kind
+
+121
+00:04:32.605 --> 00:04:34.285
+of close off the niche from being entered.
+
+122
+00:04:34.285 --> 00:04:36.765
+Because if you make a boarding history channel right now,
+
+123
+00:04:36.995 --> 00:04:38.965
+YouTube just won't even send you any views.
+
+124
+00:04:38.965 --> 00:04:40.805
+Like, you'll literally get like less than 20 views
+
+125
+00:04:40.805 --> 00:04:41.965
+per video almost guaranteed.
+
+126
+00:04:42.025 --> 00:04:44.205
+Uh, unless of course a niche can repark up.
+
+127
+00:04:44.465 --> 00:04:46.525
+I'm not gonna say this one will probably won't,
+
+128
+00:04:46.585 --> 00:04:48.685
+but, um, I don't want somebody to quote me outta context.
+
+129
+00:04:49.345 --> 00:04:50.725
+So it it, it's possible,
+
+130
+00:04:50.785 --> 00:04:53.085
+but that's very low chance for most niches.
+
+131
+00:04:53.705 --> 00:04:56.845
+Um, next thing, since we know the algorithm exists
+
+132
+00:04:57.265 --> 00:04:59.365
+and it isn't random, what does this mean?
+
+133
+00:04:59.745 --> 00:05:01.205
+We can learn it. Because if it's not
+
+134
+00:05:01.205 --> 00:05:03.085
+random, we know two things, right?
+
+135
+00:05:03.085 --> 00:05:04.285
+We know it exists, obviously.
+
+136
+00:05:04.785 --> 00:05:07.405
+And number two, we've already determined it wasn't random
+
+137
+00:05:07.555 --> 00:05:09.325
+from the last few things I just said.
+
+138
+00:05:09.875 --> 00:05:11.325
+That means we can learn it, right?
+
+139
+00:05:11.865 --> 00:05:14.165
+Pretty simple equation exists isn't random.
+
+140
+00:05:14.585 --> 00:05:15.965
+We can learn it, right?
+
+141
+00:05:15.965 --> 00:05:18.205
+It doesn't mean it's easy, it just means that
+
+142
+00:05:18.825 --> 00:05:22.005
+if you do a lot of research like I have, you can learn it
+
+143
+00:05:22.025 --> 00:05:23.405
+and I'm going to teach you everything.
+
+144
+00:05:23.405 --> 00:05:26.165
+I've learned something that I have kind of, uh,
+
+145
+00:05:27.405 --> 00:05:31.245
+I feel like I kind of created this type of concept, um,
+
+146
+00:05:31.825 --> 00:05:34.285
+or at least this version of explain explaining
+
+147
+00:05:34.405 --> 00:05:36.005
+'cause a Adobe and I have learned a lot together
+
+148
+00:05:36.545 --> 00:05:40.405
+and almost everything I've learned except from the basics,
+
+149
+00:05:40.405 --> 00:05:42.325
+the basics I've learned from other creators when I first
+
+150
+00:05:42.325 --> 00:05:44.125
+started, of course at my level
+
+151
+00:05:44.275 --> 00:05:47.205
+with YouTube typically doesn't just learn on their own.
+
+152
+00:05:47.205 --> 00:05:48.805
+I'll be, I'll be honest, my first channel
+
+153
+00:05:48.925 --> 00:05:49.965
+I had some guidance with.
+
+154
+00:05:50.345 --> 00:05:51.565
+Um, but past that,
+
+155
+00:05:51.565 --> 00:05:54.765
+everything I learned in the past like three years has been
+
+156
+00:05:54.765 --> 00:05:56.765
+through trial and error. So a lot of the stuff
+
+157
+00:05:56.765 --> 00:05:59.045
+We teach here isn't just pulled from somebody else's
+
+158
+00:05:59.235 --> 00:06:00.605
+modules or pulled from YouTube.
+
+159
+00:06:00.915 --> 00:06:01.965
+This is stuff Avi
+
+160
+00:06:01.965 --> 00:06:03.885
+and I have tested on our own channels
+
+161
+00:06:03.885 --> 00:06:05.285
+to determine if they're true or not.
+
+162
+00:06:05.905 --> 00:06:08.245
+And I dunno, I just felt like, like saying that.
+
+163
+00:06:08.245 --> 00:06:10.525
+But anyways, the YouTube push order, this is
+
+164
+00:06:10.525 --> 00:06:12.525
+how YouTube pushes out contact, uh, content.
+
+165
+00:06:12.665 --> 00:06:13.765
+So once a creator
+
+166
+00:06:13.825 --> 00:06:16.045
+or you presses upload on a video,
+
+167
+00:06:16.825 --> 00:06:18.325
+how does it go to the viewer?
+
+168
+00:06:18.425 --> 00:06:20.285
+And this is gonna explain exactly how that happened.
+
+169
+00:06:20.285 --> 00:06:22.725
+Now sounds like simple process, uh, maybe to some,
+
+170
+00:06:22.905 --> 00:06:25.085
+but it's definitely not number one,
+
+171
+00:06:25.085 --> 00:06:27.485
+YouTube's gonna analyze the title of your video
+
+172
+00:06:27.745 --> 00:06:29.325
+to determine if they can kind
+
+173
+00:06:29.325 --> 00:06:31.405
+of guess which audience would best be suitable
+
+174
+00:06:31.535 --> 00:06:32.605
+based on your title, right?
+
+175
+00:06:33.225 --> 00:06:35.765
+Um, which is why the title is very important.
+
+176
+00:06:36.145 --> 00:06:38.085
+Now, people might be always talking about the thumbnail,
+
+177
+00:06:38.085 --> 00:06:41.605
+the A VD, but in reality, the way this push order works
+
+178
+00:06:42.225 --> 00:06:44.045
+is the things on the furthest
+
+179
+00:06:44.045 --> 00:06:45.365
+to the left are the most important.
+
+180
+00:06:45.475 --> 00:06:47.925
+Because if you title a video poorly
+
+181
+00:06:48.025 --> 00:06:50.125
+and YouTube doesn't understand which audience to push that
+
+182
+00:06:50.125 --> 00:06:53.205
+to, even if your thumbnail's great, no one will click on it.
+
+183
+00:06:53.505 --> 00:06:54.725
+And if no one clicks on it,
+
+184
+00:06:54.725 --> 00:06:57.605
+then obviously the the average watch time,
+
+185
+00:06:57.975 --> 00:07:00.245
+which if your video's 10 minutes long, uh,
+
+186
+00:07:00.245 --> 00:07:01.565
+and people watch it for average two minutes,
+
+187
+00:07:01.565 --> 00:07:02.645
+you have a two minute A VD,
+
+188
+00:07:02.795 --> 00:07:04.045
+then nobody's gonna even get the
+
+189
+00:07:04.045 --> 00:07:05.085
+chance to watch your video, right?
+
+190
+00:07:05.085 --> 00:07:08.125
+So this makes sense. Nobody will click on your thumbnail if
+
+191
+00:07:08.125 --> 00:07:10.165
+YouTube sends your video
+
+192
+00:07:10.165 --> 00:07:11.685
+to the wrong audience due your title.
+
+193
+00:07:12.065 --> 00:07:13.525
+And then nobody will even watch your
+
+194
+00:07:13.525 --> 00:07:14.725
+video if they don't click on it.
+
+195
+00:07:14.805 --> 00:07:17.445
+I think that one's a more obvious concept to grasp.
+
+196
+00:07:17.945 --> 00:07:20.245
+So that's why the title is actually the most important
+
+197
+00:07:20.245 --> 00:07:21.645
+thing, which is literally just text.
+
+198
+00:07:21.905 --> 00:07:23.885
+Uh, and in some niches the title is always the same.
+
+199
+00:07:24.185 --> 00:07:26.325
+So don't misunderstand what I'm saying.
+
+200
+00:07:26.525 --> 00:07:28.445
+A title can be easy to come up with for sure.
+
+201
+00:07:29.105 --> 00:07:30.925
+Um, and if you're in a niche where the title's easy
+
+202
+00:07:30.925 --> 00:07:32.925
+to come up with, great, uh,
+
+203
+00:07:32.985 --> 00:07:34.245
+and I might say niche a lot,
+
+204
+00:07:34.245 --> 00:07:36.205
+that's just gonna be the the category, uh,
+
+205
+00:07:36.205 --> 00:07:37.605
+in which you create your videos in.
+
+206
+00:07:37.605 --> 00:07:38.845
+We're gonna go over that more later.
+
+207
+00:07:39.425 --> 00:07:41.205
+And once again, I'm gonna cycle back to it's,
+
+208
+00:07:41.205 --> 00:07:42.845
+it's why it's good to watch this whole thing,
+
+209
+00:07:42.975 --> 00:07:44.685
+watch all the modules, and then watch all of them again,
+
+210
+00:07:44.685 --> 00:07:46.005
+because anything you didn't understand,
+
+211
+00:07:46.545 --> 00:07:47.685
+uh, you'll learn later.
+
+212
+00:07:48.145 --> 00:07:50.085
+But anyways, that's why the title's the most important.
+
+213
+00:07:50.155 --> 00:07:51.605
+Then the thumbnail, then the a VD.
+
+214
+00:07:51.605 --> 00:07:53.565
+So this doesn't mean the title is gonna be necessarily hard
+
+215
+00:07:53.565 --> 00:07:55.205
+to make, and in some niches the
+
+216
+00:07:55.205 --> 00:07:56.405
+thumbnail isn't hard to make.
+
+217
+00:07:56.555 --> 00:07:58.045
+This is just the importance order.
+
+218
+00:07:58.105 --> 00:08:00.325
+So even if the title is easy, you just need
+
+219
+00:08:00.325 --> 00:08:02.165
+to make sure you get it right, is what I'm trying to say.
+
+220
+00:08:02.585 --> 00:08:05.525
+So critical point, even if you have the best video ever
+
+221
+00:08:05.525 --> 00:08:09.045
+created, like let's say you created an Avengers level movie
+
+222
+00:08:09.185 --> 00:08:10.525
+as your YouTube video, right?
+
+223
+00:08:11.025 --> 00:08:12.845
+And you had the best thumbnail, right?
+
+224
+00:08:13.305 --> 00:08:15.605
+All the top 10 thumbnail artists in the world came
+
+225
+00:08:15.605 --> 00:08:17.285
+and spent a million years on your
+
+226
+00:08:17.285 --> 00:08:18.405
+project, on your thumbnail.
+
+227
+00:08:18.915 --> 00:08:21.045
+Even if your title's bad, no one's gonna see
+
+228
+00:08:21.045 --> 00:08:23.245
+that amazing thumbnail and then nobody's gonna click on the
+
+229
+00:08:23.245 --> 00:08:24.765
+video and then zero views.
+
+230
+00:08:24.905 --> 00:08:26.925
+So that's why the title is checked first
+
+231
+00:08:26.925 --> 00:08:28.125
+and that's why it's the most important thing.
+
+232
+00:08:28.385 --> 00:08:30.565
+So your title consists of two things.
+
+233
+00:08:31.025 --> 00:08:35.005
+Number one, your video topic and how you word that topic.
+
+234
+00:08:35.005 --> 00:08:36.845
+This is how the title is pretty much put together
+
+235
+00:08:36.875 --> 00:08:39.725
+because you know, can't create words at a thin air.
+
+236
+00:08:39.755 --> 00:08:41.525
+Your video has a topic that it's about,
+
+237
+00:08:42.185 --> 00:08:45.045
+and then the title itself is just how you word that topic.
+
+238
+00:08:45.545 --> 00:08:47.045
+If we were to go back here really
+
+239
+00:08:47.045 --> 00:08:49.325
+before the title is your topic.
+
+240
+00:08:49.385 --> 00:08:51.485
+So it'd really be number one's topic, number two, title,
+
+241
+00:08:51.485 --> 00:08:53.525
+number three, thumbnail number four, a VD.
+
+242
+00:08:53.525 --> 00:08:54.805
+Now, the reason I didn't write it like
+
+243
+00:08:54.805 --> 00:08:56.445
+That is done for a reason is
+
+244
+00:08:56.445 --> 00:08:57.805
+because really the most
+
+245
+00:08:57.805 --> 00:08:59.125
+important thing is actually the topic.
+
+246
+00:08:59.705 --> 00:09:01.925
+Uh, and this is why you might be like, well,
+
+247
+00:09:01.925 --> 00:09:03.325
+if the title can be easy in some
+
+248
+00:09:03.325 --> 00:09:04.445
+niches, then why does this matter?
+
+249
+00:09:04.445 --> 00:09:07.125
+And it's because, uh, in just about any niche,
+
+250
+00:09:07.145 --> 00:09:08.485
+the topic isn't necessarily gonna
+
+251
+00:09:08.485 --> 00:09:09.565
+be the easiest thing to come up with.
+
+252
+00:09:09.865 --> 00:09:11.805
+Uh, but wording the topic might be really easy.
+
+253
+00:09:11.805 --> 00:09:14.445
+Like let's say, um, you have, you're in a niche
+
+254
+00:09:14.445 --> 00:09:17.845
+where every single video on your channel is every blank
+
+255
+00:09:17.845 --> 00:09:20.005
+explained in 10 minutes, for example, right?
+
+256
+00:09:20.105 --> 00:09:21.925
+The title is super easy to come up with
+
+257
+00:09:22.085 --> 00:09:23.205
+'cause it's the same for every video.
+
+258
+00:09:23.985 --> 00:09:25.485
+Uh, but what makes it hard is
+
+259
+00:09:25.485 --> 00:09:27.245
+that you gotta find the right topic for your video, which
+
+260
+00:09:27.245 --> 00:09:29.045
+of course, anything you don't understand,
+
+261
+00:09:29.245 --> 00:09:30.885
+anything you don't know will be gone over.
+
+262
+00:09:30.915 --> 00:09:32.845
+Like I made sure that all
+
+263
+00:09:32.905 --> 00:09:35.525
+of this entire thing covers everything.
+
+264
+00:09:35.945 --> 00:09:38.125
+So most important for views is the video
+
+265
+00:09:38.295 --> 00:09:40.045
+topic and the video topic.
+
+266
+00:09:40.115 --> 00:09:42.605
+Well, there's, you can even split the video topic
+
+267
+00:09:43.105 --> 00:09:45.725
+to your ding, ding, ding channel niche, right?
+
+268
+00:09:46.075 --> 00:09:47.365
+Your channel niche,
+
+269
+00:09:47.435 --> 00:09:50.005
+because how can you come up with a topic without a niche?
+
+270
+00:09:50.025 --> 00:09:51.045
+If you don't have a niche,
+
+271
+00:09:51.315 --> 00:09:53.845
+then your topic could literally be anything.
+
+272
+00:09:54.545 --> 00:09:56.125
+So just an example, right?
+
+273
+00:09:56.225 --> 00:09:59.285
+If you're making, uh, a channel about how
+
+274
+00:09:59.285 --> 00:10:00.845
+to bake desserts, right?
+
+275
+00:10:00.845 --> 00:10:01.965
+That's not a faceless niche.
+
+276
+00:10:02.025 --> 00:10:05.045
+But either way, uh, to anybody watching this point,
+
+277
+00:10:05.045 --> 00:10:07.565
+I think it's also important to know that we don't just teach
+
+278
+00:10:07.565 --> 00:10:10.205
+faceless a Ada has a very large personal brand.
+
+279
+00:10:10.285 --> 00:10:11.965
+I have a personal brand, I have like
+
+280
+00:10:11.965 --> 00:10:13.365
+300,000 followers on Snapchat.
+
+281
+00:10:13.545 --> 00:10:16.725
+Ave has 500,000 on Snapchat. He has 300,000 on ig.
+
+282
+00:10:17.025 --> 00:10:19.605
+We each have had, um, personal brand YouTube channels.
+
+283
+00:10:19.635 --> 00:10:21.645
+Aada had one with like over a hundred thousand subs.
+
+284
+00:10:21.655 --> 00:10:23.085
+Mines at like 20,000 right now.
+
+285
+00:10:23.145 --> 00:10:25.285
+So, and realistically if you're even watching this,
+
+286
+00:10:25.305 --> 00:10:26.565
+you either came from Aada
+
+287
+00:10:26.625 --> 00:10:29.485
+or my personal brand, uh, talking about this community.
+
+288
+00:10:29.625 --> 00:10:31.765
+So this isn't really any teaching,
+
+289
+00:10:31.765 --> 00:10:33.325
+but it, it is important to know as well
+
+290
+00:10:33.325 --> 00:10:35.085
+that if you're interested in personal branding,
+
+291
+00:10:35.585 --> 00:10:36.885
+that's gonna be taught as well.
+
+292
+00:10:37.265 --> 00:10:39.005
+So if you wanna know about that stuff,
+
+293
+00:10:39.005 --> 00:10:40.045
+we know about that stuff too.
+
+294
+00:10:40.395 --> 00:10:41.845
+Anyways, lemme go back to my example.
+
+295
+00:10:41.855 --> 00:10:45.845
+Let's say your niche is a channel where you teach people how
+
+296
+00:10:46.045 --> 00:10:47.965
+to bake, uh, your video topic
+
+297
+00:10:48.505 --> 00:10:50.245
+pretty restricted as to what it could be.
+
+298
+00:10:50.305 --> 00:10:53.085
+You know how to bake an apple pie, how
+
+299
+00:10:53.085 --> 00:10:54.885
+to bake a cookie cake, right?
+
+300
+00:10:55.025 --> 00:10:56.885
+That's how you come up with your video topic.
+
+301
+00:10:56.985 --> 00:10:58.645
+But if your channel niche, for example,
+
+302
+00:10:58.905 --> 00:11:01.525
+is NBA basketball game highlights, right?
+
+303
+00:11:01.875 --> 00:11:05.845
+Then your video topic will never be how to bake an apple pie
+
+304
+00:11:05.845 --> 00:11:07.245
+or how to bake a cookie cake, right?
+
+305
+00:11:07.465 --> 00:11:09.805
+So this is why the channel niche, it kind of restricts
+
+306
+00:11:09.955 --> 00:11:11.405
+what your video topics can be.
+
+307
+00:11:11.405 --> 00:11:12.725
+It restricts the possibilities.
+
+308
+00:11:13.265 --> 00:11:16.085
+So now if we go back here, there's actually five things.
+
+309
+00:11:16.105 --> 00:11:17.525
+Number one on the far left
+
+310
+00:11:17.665 --> 00:11:18.845
+and there's a reason I, I want it
+
+311
+00:11:18.845 --> 00:11:20.085
+to be written like this on purpose
+
+312
+00:11:20.085 --> 00:11:22.645
+because the title is just broken down.
+
+313
+00:11:22.945 --> 00:11:25.685
+But it would be the channel niche is number one.
+
+314
+00:11:26.105 --> 00:11:28.045
+The topic of your video is number two,
+
+315
+00:11:28.225 --> 00:11:31.485
+the title is number three, uh, then thumbnails four
+
+316
+00:11:31.485 --> 00:11:32.925
+and then A VD is five.
+
+317
+00:11:33.505 --> 00:11:35.645
+But even though that's the importance order,
+
+318
+00:11:36.325 --> 00:11:38.045
+I think this, it's a very great thing.
+
+319
+00:11:38.045 --> 00:11:40.565
+I wrote this here because this is super important,
+
+320
+00:11:41.235 --> 00:11:42.765
+like drill this into your brain.
+
+321
+00:11:43.205 --> 00:11:44.405
+'cause this is one of those things
+
+322
+00:11:44.405 --> 00:11:45.685
+where if you don't understand this,
+
+323
+00:11:46.065 --> 00:11:50.325
+you'll never ever get monetized your title domino
+
+324
+00:11:50.385 --> 00:11:52.565
+and a VD or I could even expand this.
+
+325
+00:11:52.715 --> 00:11:55.485
+Your channel niche, your video topic, your title,
+
+326
+00:11:55.485 --> 00:11:56.485
+your thumbnail, and a VD,
+
+327
+00:11:56.485 --> 00:11:59.245
+all the five things I just mentioned should all be good.
+
+328
+00:11:59.305 --> 00:12:02.205
+You shouldn't be like, oh because of the order, I just,
+
+329
+00:12:02.475 --> 00:12:03.885
+just, my niche needs to be good
+
+330
+00:12:03.885 --> 00:12:05.645
+or just my niche in the topic needs to be good.
+
+331
+00:12:05.935 --> 00:12:07.605
+Everything, all the five things I just
+
+332
+00:12:07.605 --> 00:12:09.285
+mentioned should be good.
+
+333
+00:12:10.405 --> 00:12:11.725
+A good title gets impressions,
+
+334
+00:12:11.945 --> 00:12:14.005
+but a bad thumbnail halts them, right?
+
+335
+00:12:14.025 --> 00:12:16.125
+And impressions, just to put it simply,
+
+336
+00:12:16.125 --> 00:12:18.325
+impressions are going to be um,
+
+337
+00:12:18.515 --> 00:12:20.765
+when people see your thumbnail on their feed.
+
+338
+00:12:20.785 --> 00:12:22.485
+So if you're on the homepage of YouTube
+
+339
+00:12:22.825 --> 00:12:24.765
+or somebody's on an existing video
+
+340
+00:12:24.765 --> 00:12:27.005
+and you have the sidebar, um, those are
+
+341
+00:12:27.015 --> 00:12:28.285
+where impressions come up.
+
+342
+00:12:28.465 --> 00:12:31.525
+So if your thumbnail just pops up on someone's feed,
+
+343
+00:12:31.525 --> 00:12:32.725
+you actually get an impression.
+
+344
+00:12:33.585 --> 00:12:35.525
+Um, and that might be a little confusing
+
+345
+00:12:35.525 --> 00:12:37.085
+because well you might scroll past
+
+346
+00:12:37.205 --> 00:12:38.245
+a bunch of thumbnails all the time.
+
+347
+00:12:38.245 --> 00:12:39.285
+Like let's say you're on YouTube and
+
+348
+00:12:39.285 --> 00:12:40.365
+you're just scrolling the homepage.
+
+349
+00:12:40.675 --> 00:12:42.365
+Even if you're scrolling past a video,
+
+350
+00:12:42.505 --> 00:12:43.845
+you actually gave it an impression.
+
+351
+00:12:44.305 --> 00:12:48.645
+Um, and then you get views when people click on the video.
+
+352
+00:12:48.785 --> 00:12:52.645
+So let's see, say a hundred people got your thumbnail on
+
+353
+00:12:52.645 --> 00:12:53.845
+their homepage of YouTube.
+
+354
+00:12:54.505 --> 00:12:58.045
+Um, and then let's say even if they just scrolled by by it
+
+355
+00:12:58.045 --> 00:13:00.605
+for a second, you got a hundred people that scrolled by
+
+356
+00:13:00.605 --> 00:13:01.725
+or it was just on their screen.
+
+357
+00:13:01.745 --> 00:13:03.365
+At any point you got a hundred impressions.
+
+358
+00:13:03.545 --> 00:13:05.445
+If 10 people clicked on your video,
+
+359
+00:13:06.115 --> 00:13:08.565
+then you have a click-through rate of 10%, right?
+
+360
+00:13:08.565 --> 00:13:10.685
+You're just gonna do how many views you got
+
+361
+00:13:10.685 --> 00:13:12.205
+divided by the impressions.
+
+362
+00:13:12.205 --> 00:13:14.165
+Now YouTube automatically calculates that for you.
+
+363
+00:13:14.415 --> 00:13:16.245
+We're gonna talk about the click-through rate later,
+
+364
+00:13:16.245 --> 00:13:18.005
+otherwise known as CTR.
+
+365
+00:13:18.425 --> 00:13:20.165
+Um, like I said, you should have a notebook out,
+
+366
+00:13:20.345 --> 00:13:21.485
+so you should be writing this down.
+
+367
+00:13:22.125 --> 00:13:23.885
+I needed to explain that to really explain this.
+
+368
+00:13:24.925 --> 00:13:28.765
+A good title is going to give you impressions, right?
+
+369
+00:13:29.155 --> 00:13:30.845
+Realistically, if you have a good title,
+
+370
+00:13:31.305 --> 00:13:32.645
+you should get some like
+
+371
+00:13:32.755 --> 00:13:34.685
+what I call like test impressions, right?
+
+372
+00:13:34.685 --> 00:13:37.445
+YouTube's gonna initially, if your title is good
+
+373
+00:13:37.985 --> 00:13:39.125
+and they identify the topic
+
+374
+00:13:39.145 --> 00:13:42.085
+and niche to be good, YouTube will push out either a few
+
+375
+00:13:42.085 --> 00:13:44.885
+hundred or a few thousand impressions to your video
+
+376
+00:13:45.495 --> 00:13:47.085
+based on the CTR based on
+
+377
+00:13:47.085 --> 00:13:48.525
+how many people click on the video.
+
+378
+00:13:49.195 --> 00:13:51.925
+They're going to then determine should we push even more.
+
+379
+00:13:52.025 --> 00:13:54.085
+So if you have a good title, you get a few hundred
+
+380
+00:13:54.145 --> 00:13:55.325
+to a few thousand impressions,
+
+381
+00:13:55.545 --> 00:13:58.645
+but if your click through rate is really low, like two 3%
+
+382
+00:13:58.645 --> 00:14:02.245
+for example, then what's gonna end up happening is YouTube's
+
+383
+00:14:02.245 --> 00:14:04.165
+gonna stop giving out impressions.
+
+384
+00:14:04.165 --> 00:14:05.405
+So it's gonna give you like few hundred
+
+385
+00:14:05.425 --> 00:14:06.605
+or a few thousand impressions.
+
+386
+00:14:07.105 --> 00:14:10.165
+Um, and if the CTR is bad, boom your impressions halt
+
+387
+00:14:10.585 --> 00:14:11.805
+and that's that for that video.
+
+388
+00:14:11.805 --> 00:14:14.085
+That video's not gonna get more views in a lot of cases.
+
+389
+00:14:14.745 --> 00:14:17.325
+Um, you could just change your thumbnail to fix that.
+
+390
+00:14:17.345 --> 00:14:20.405
+Or let's say a video's getting no impressions, uh, at all.
+
+391
+00:14:20.405 --> 00:14:22.085
+That means that they thought the title was bad.
+
+392
+00:14:22.245 --> 00:14:23.525
+'cause that's the first step, right?
+
+393
+00:14:23.525 --> 00:14:24.965
+So if your video's getting no impressions,
+
+394
+00:14:24.965 --> 00:14:26.925
+you could always potentially change the title
+
+395
+00:14:27.625 --> 00:14:28.685
+to get more impressions.
+
+396
+00:14:28.945 --> 00:14:31.525
+Of course, if your niche is just bad, then no matter
+
+397
+00:14:31.525 --> 00:14:32.765
+how you change the title, it doesn't matter.
+
+398
+00:14:32.885 --> 00:14:35.045
+'cause the niche is the first step. The title is gonna push
+
+399
+00:14:35.045 --> 00:14:37.485
+out the first few hundred or few thousand impressions.
+
+400
+00:14:37.985 --> 00:14:40.565
+And if the thumbnail's bad impressions stop,
+
+401
+00:14:40.865 --> 00:14:44.045
+if thumbnail is good, they'll push you out to somewhere
+
+402
+00:14:44.045 --> 00:14:46.845
+between five to six figures of impressions.
+
+403
+00:14:46.905 --> 00:14:49.245
+So tens of thousands to even maybe hundreds
+
+404
+00:14:49.245 --> 00:14:50.405
+of thousands of impressions.
+
+405
+00:14:51.305 --> 00:14:53.685
+Um, typically somewhere between 10
+
+406
+00:14:53.685 --> 00:14:55.725
+and a hundred thousand impressions is what they'll give you.
+
+407
+00:14:55.905 --> 00:14:58.125
+If you have a good thumbnail, the better your thumbnail is,
+
+408
+00:14:58.125 --> 00:15:01.805
+of course the more impressions and if the thumbnail is good.
+
+409
+00:15:02.105 --> 00:15:04.885
+And then if the A VD, which is average viewer duration,
+
+410
+00:15:05.075 --> 00:15:07.005
+like I said before, if your video is 10 minutes long
+
+411
+00:15:07.585 --> 00:15:10.085
+and the average person's watching it for three minutes,
+
+412
+00:15:10.235 --> 00:15:12.325
+then your a VD is three minutes, right?
+
+413
+00:15:12.325 --> 00:15:14.005
+So some people could be watching for 10 seconds,
+
+414
+00:15:14.075 --> 00:15:15.725
+some people could watch the full 10 minutes,
+
+415
+00:15:15.755 --> 00:15:17.085
+some people are watching four minutes
+
+416
+00:15:17.345 --> 00:15:18.765
+and that averages out to three minutes.
+
+417
+00:15:19.545 --> 00:15:22.005
+Um, then that's what your A VD is pretty much.
+
+418
+00:15:22.385 --> 00:15:25.285
+So if your A VD is good and we'll talk about what good A VD
+
+419
+00:15:25.285 --> 00:15:26.605
+and what good CTR is later.
+
+420
+00:15:26.665 --> 00:15:28.125
+So don't worry about that. You might be like,
+
+421
+00:15:28.125 --> 00:15:29.245
+oh, what's a good CTR?
+
+422
+00:15:29.245 --> 00:15:31.165
+What's a bad CTR? What's a good bad A VD?
+
+423
+00:15:31.165 --> 00:15:32.165
+Don't worry about that. I
+
+424
+00:15:32.165 --> 00:15:33.405
+guarantee you everything will be covered.
+
+425
+00:15:33.425 --> 00:15:35.125
+You might have questions. Um,
+
+426
+00:15:35.345 --> 00:15:37.285
+and if you do, you can always write them down, uh,
+
+427
+00:15:37.525 --> 00:15:38.725
+wherever you're taking notes because of course
+
+428
+00:15:38.725 --> 00:15:40.005
+we're hosting calls every week.
+
+429
+00:15:40.705 --> 00:15:42.525
+Uh, and if you're in this inner circle, then you also have
+
+430
+00:15:42.525 --> 00:15:43.765
+that one call a week plus an
+
+431
+00:15:43.765 --> 00:15:44.845
+additional call every single day.
+
+432
+00:15:45.505 --> 00:15:47.125
+But at the end of the day, good title,
+
+433
+00:15:47.275 --> 00:15:49.645
+once you have a good title, you get your test impressions,
+
+434
+00:15:49.675 --> 00:15:52.405
+good thumbnail continues more test impressions,
+
+435
+00:15:52.405 --> 00:15:53.405
+but at a larger scale.
+
+436
+00:15:53.945 --> 00:15:57.285
+And then if you have a good A VD, then you'll get even more.
+
+437
+00:15:57.285 --> 00:15:58.965
+And at this point, this is when YouTube like
+
+438
+00:15:58.965 --> 00:16:00.045
+fully pushes out your video.
+
+439
+00:16:00.045 --> 00:16:02.805
+When you see videos that have like a hundred, like tens
+
+440
+00:16:02.805 --> 00:16:05.885
+of thousands of views or hundreds of thousands,
+
+441
+00:16:05.935 --> 00:16:09.165
+especially like if it's hundreds of thousands for sure, um,
+
+442
+00:16:09.185 --> 00:16:10.085
+you probably have a good A
+
+443
+00:16:10.085 --> 00:16:11.165
+VD, otherwise you're not getting that.
+
+444
+00:16:11.265 --> 00:16:13.605
+But if you're in millions, like you have a really good A VD.
+
+445
+00:16:13.625 --> 00:16:15.885
+So pretty much the A VD is kind of what gives you
+
+446
+00:16:15.885 --> 00:16:17.245
+that infinite view cap.
+
+447
+00:16:17.245 --> 00:16:18.805
+And this is how like someone like, uh, Mr.
+
+448
+00:16:18.805 --> 00:16:21.205
+Beast will get like 300 million views on a single video.
+
+449
+00:16:21.475 --> 00:16:24.605
+It's 'cause his a VD is probably absurdly high.
+
+450
+00:16:24.985 --> 00:16:27.845
+Really what's gonna happen is, like I said,
+
+451
+00:16:27.845 --> 00:16:29.965
+the order's gonna be, if the title's good,
+
+452
+00:16:29.965 --> 00:16:31.845
+you get your first test impressions, uh,
+
+453
+00:16:31.845 --> 00:16:33.125
+thumbnail CT R is good,
+
+454
+00:16:33.265 --> 00:16:35.485
+you get a larger scale of test impressions.
+
+455
+00:16:35.745 --> 00:16:37.085
+And then if the A VD is good,
+
+456
+00:16:37.185 --> 00:16:38.685
+you'll continue getting impressions
+
+457
+00:16:39.305 --> 00:16:41.325
+and the way that you'll stop getting views.
+
+458
+00:16:41.485 --> 00:16:42.325
+'cause you might be like, oh, why
+
+459
+00:16:42.325 --> 00:16:43.285
+don't I just get infinite views?
+
+460
+00:16:43.285 --> 00:16:44.885
+And if I have a good A VD, it's
+
+461
+00:16:44.885 --> 00:16:47.525
+because you two will push out impressions to an audience.
+
+462
+00:16:47.545 --> 00:16:49.525
+And once they fill out this audience of people
+
+463
+00:16:49.595 --> 00:16:53.165
+that are similar to each other, if the a VD is still good,
+
+464
+00:16:53.275 --> 00:16:54.965
+then they'll push it out to a new audience.
+
+465
+00:16:55.305 --> 00:16:56.965
+Uh, and if that new audience over time,
+
+466
+00:16:56.965 --> 00:17:00.045
+that new audience will actually become worse and worse
+
+467
+00:17:00.045 --> 00:17:01.325
+because they're like, okay,
+
+468
+00:17:01.325 --> 00:17:02.805
+well everybody in this audience liked it.
+
+469
+00:17:02.975 --> 00:17:04.205
+We're gonna try this audience.
+
+470
+00:17:04.205 --> 00:17:06.005
+That's kind of similar but not exactly the same.
+
+471
+00:17:06.265 --> 00:17:09.165
+And eventually, of course, most videos will end up,
+
+472
+00:17:09.185 --> 00:17:12.885
+or every video technically ends up finally hitting the
+
+473
+00:17:12.955 --> 00:17:15.245
+maximum audience that would watch that type of video,
+
+474
+00:17:15.415 --> 00:17:16.485
+which is why Mr.
+
+475
+00:17:16.555 --> 00:17:20.005
+Bees views are like 200, 300 million on a single video.
+
+476
+00:17:20.305 --> 00:17:22.005
+But they're not infinite, right?
+
+477
+00:17:22.065 --> 00:17:23.845
+It doesn't, they're not infinite use.
+
+478
+00:17:23.985 --> 00:17:26.805
+And that's gonna be it for module number two
+
+479
+00:17:27.305 --> 00:17:28.885
+and keep mind, it's okay to take breaks
+
+480
+00:17:28.885 --> 00:17:30.645
+because realistically you don't need
+
+481
+00:17:30.645 --> 00:17:32.325
+to watch this whole thing in one day
+
+482
+00:17:32.325 --> 00:17:33.725
+because if you do that, you might get burnt out.
+
+483
+00:17:33.725 --> 00:17:36.165
+So I'm gonna take a stop, little stop here
+
+484
+00:17:36.185 --> 00:17:39.125
+and say, you know, if you're actually taking notes
+
+485
+00:17:39.125 --> 00:17:41.605
+and planning on watching this whole thing two, three times,
+
+486
+00:17:41.825 --> 00:17:44.125
+for example, all the way through, then you know it's fine
+
+487
+00:17:44.185 --> 00:17:47.325
+to split up, you know, kind of the work or watching this.
+
+488
+00:17:47.825 --> 00:17:49.285
+But if you wanna do this all in one
+
+489
+00:17:49.285 --> 00:17:50.325
+day, that's totally fine too.
+
+490
+00:17:50.335 --> 00:17:53.005
+Don't get me wrong, this isn't a suggestion to split it up.
+
+491
+00:17:53.005 --> 00:17:54.885
+It's more so just don't feel like you
+
+492
+00:17:54.885 --> 00:17:56.565
+gotta speed through this.
+
+493
+00:17:56.635 --> 00:17:58.405
+Anyways, I'll see you in module three. Thanks.

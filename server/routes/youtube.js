@@ -44,11 +44,6 @@ router.get('/sync', async (req, res) => {
     const { channelId } = req.query;
     if (!channelId) return res.status(400).json({ error: 'channelId is required' });
 
-    const isMock = getSetting('use_mock_api', 'false');
-    if (isMock === 'true' || isMock === '1') {
-      return res.json({ subscribers: 1000, total_views: 5000, video_count: 10, watch_time: 0, source: 'mock' });
-    }
-
     const apiKey = getSetting('youtube_api_key', '');
     if (!apiKey) {
       return res.status(400).json({

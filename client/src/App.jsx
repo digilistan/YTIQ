@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { useToast } from './hooks/useToast';
@@ -15,19 +15,40 @@ import { CompetitorTracker } from './components/CompetitorTracker';
 import { SettingsModal } from './components/SettingsModal';
 import { SetupWizard } from './components/SetupWizard';
 
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia(query).matches;
+  });
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const handler = e => setMatches(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [query]);
+  return matches;
+}
+
 function Shell() {
   const { settings, loading } = useSettings();
   const { toasts, toast, dismiss } = useToast();
+  const isLg = useMediaQuery('(min-width: 1024px)');
 
   const [activeTab, setActiveTab] = useState('dashboard');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [activeIdeaForScript, setActiveIdeaForScript] = useState(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (!isLg) setSidebarCollapsed(true);
+    else setSidebarCollapsed(false);
+  }, [isLg]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center gap-3 text-sm" style={{ background: 'var(--bg-base)', color: 'var(--text-2)' }}>
-        <span className="spinner" />
-        Loading YTIq…
+      <div className="min-h-screen flex items-center justify-center gap-3 text-sm"
+        style={{ background: 'var(--bg-base)', color: 'var(--text-2)' }}>
+        <span className="spinner" />Loading YTIq…
       </div>
     );
   }
@@ -57,7 +78,13 @@ function Shell() {
 
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--bg-base)' }}>
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onSettingsOpen={() => setSettingsOpen(true)} />
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onSettingsOpen={() => setSettingsOpen(true)}
+        collapsed={sidebarCollapsed}
+        onCollapse={() => setSidebarCollapsed(v => !v)}
+      />
       <main className="flex-1 overflow-y-auto p-6 min-w-0">
         <div className="max-w-6xl mx-auto">
           {renderTab()}

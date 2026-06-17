@@ -33,6 +33,8 @@ router.post('/', async (req, res) => {
     let resolvedId = youtube_channel_id.trim();
     let resolvedName = name?.trim() || null;
 
+    const isUcId = /^UC[A-Za-z0-9_-]{22}$/.test(resolvedId);
+
     if (apiKey) {
       try {
         const resolved = await resolveChannelId(resolvedId, apiKey);
@@ -41,6 +43,10 @@ router.post('/', async (req, res) => {
       } catch (err) {
         return res.status(400).json({ error: err.message });
       }
+    } else if (!isUcId) {
+      return res.status(400).json({
+        error: 'A YouTube API key is required to resolve @handles and URLs. Add one in Settings, or enter a raw UC… channel ID.',
+      });
     }
 
     const existing = db.prepare('SELECT * FROM channels WHERE youtube_channel_id = ?').get(resolvedId);
