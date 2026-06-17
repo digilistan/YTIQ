@@ -65,10 +65,16 @@ router.post('/events/:id', (req, res) => {
   }
 });
 
-// GET /api/calendar/events — list all events
+// GET /api/calendar/events — list events (optionally filtered by channel_id)
 router.get('/events', (req, res) => {
   try {
-    const events = db.prepare('SELECT * FROM calendar_events ORDER BY scheduled_date ASC').all();
+    const { channel_id } = req.query;
+    let events;
+    if (channel_id) {
+      events = db.prepare('SELECT * FROM calendar_events WHERE channel_id = ? ORDER BY scheduled_date ASC').all(channel_id);
+    } else {
+      events = db.prepare('SELECT * FROM calendar_events ORDER BY scheduled_date ASC').all();
+    }
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: error.message });

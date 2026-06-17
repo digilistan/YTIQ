@@ -80,6 +80,31 @@ router.put('/:idOrKey', (req, res) => {
   }
 });
 
+// POST /api/channels/:id/stats — save synced stats
+router.post('/:id/stats', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { subscribers, total_views, video_count } = req.body;
+
+    const channel = db.prepare('SELECT * FROM channels WHERE id = ?').get(id);
+    if (!channel) return res.status(404).json({ error: 'Channel not found' });
+
+    const today = new Date().toISOString().slice(0, 10);
+    db.prepare(`
+      INSERT INTO channel_stats (channel_id, date, subscribers, total_views, video_count)
+      VALUES (?, ?, ?, ?, ?)
+      ON CONFLICT(channel_id, date) DO UPDATE SET
+        subscribers = excluded.subscribers,
+        total_views = excluded.total_views,
+        video_count = excluded.video_count
+    `).run(channel.id, today, subscribers ?? 0, total_views ?? 0, video_count ?? 0);
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // DELETE /api/channels/:idOrKey
 router.delete('/:idOrKey', (req, res) => {
   try {
