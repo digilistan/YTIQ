@@ -58,3 +58,7 @@ externalPort = 80
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "node server/server.js & npm run --workspace=client preview -- --port 5000 --host 0.0.0.0"]
 build = ["bash", "-c", "npm install --workspace=client && node -e \"const db = new (require('better-sqlite3'))(':memory:'); db.close();\" && npm run build --workspace=client"]
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 120000
