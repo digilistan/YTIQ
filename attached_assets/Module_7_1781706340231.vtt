@@ -1,0 +1,2213 @@
+WEBVTT
+
+1
+00:00:00.265 --> 00:00:02.925
+Module nine is here and we're going over analytics
+
+2
+00:00:03.145 --> 00:00:04.725
+and just the basics of analytics.
+
+3
+00:00:04.735 --> 00:00:07.325
+Everything to do with the actual analytics and YouTube
+
+4
+00:00:07.325 --> 00:00:10.005
+because they are super, super useful to improve your videos.
+
+5
+00:00:10.065 --> 00:00:11.565
+If your videos are not performing
+
+6
+00:00:11.565 --> 00:00:13.605
+or underperforming, you can completely fix
+
+7
+00:00:13.605 --> 00:00:14.845
+that just because of the analytics.
+
+8
+00:00:15.185 --> 00:00:17.285
+Um, and a lot of stuff you would've never been able
+
+9
+00:00:17.285 --> 00:00:19.125
+to fix if you didn't watch this module.
+
+10
+00:00:19.465 --> 00:00:22.605
+So we're gonna go over the understand, just understanding
+
+11
+00:00:22.635 --> 00:00:24.645
+what the numbers actually mean on your screen.
+
+12
+00:00:24.645 --> 00:00:25.845
+When you go on your analytics, there
+
+13
+00:00:26.145 --> 00:00:27.605
+are so many little buttons.
+
+14
+00:00:27.605 --> 00:00:29.845
+You can click like literally thousands in the YouTube
+
+15
+00:00:29.845 --> 00:00:32.005
+analytics and a lot of them are useless pointless.
+
+16
+00:00:32.065 --> 00:00:33.845
+So we're gonna go over exactly what you need to do,
+
+17
+00:00:33.845 --> 00:00:35.085
+what you need to look at, and how
+
+18
+00:00:35.085 --> 00:00:37.445
+to improve your future videos based on your old
+
+19
+00:00:37.685 --> 00:00:38.765
+videos performance.
+
+20
+00:00:38.825 --> 00:00:41.405
+So we're gonna go over YouTube's default analytics
+
+21
+00:00:41.745 --> 00:00:43.725
+and talk about why they are misleading.
+
+22
+00:00:43.725 --> 00:00:45.445
+So the same here is just YouTube's default.
+
+23
+00:00:45.445 --> 00:00:48.325
+Analytics that they show on the screen are misleading just
+
+24
+00:00:48.325 --> 00:00:49.925
+about everything you see on the screen
+
+25
+00:00:49.925 --> 00:00:51.645
+or a lot of it when you go on your analytics.
+
+26
+00:00:51.785 --> 00:00:54.245
+The stuff that looks important is actually not important.
+
+27
+00:00:54.625 --> 00:00:57.645
+And uh, misleading is a key word here that I want you to,
+
+28
+00:00:57.745 --> 00:00:58.965
+to uh, write down.
+
+29
+00:00:59.065 --> 00:01:01.045
+So a critical understanding that you need
+
+30
+00:01:01.045 --> 00:01:03.125
+to know when looking at your an analytics is
+
+31
+00:01:03.125 --> 00:01:05.245
+that the default CTR, which means click the rate
+
+32
+00:01:05.385 --> 00:01:07.845
+and the default A, B, D, which is average viewer duration.
+
+33
+00:01:08.385 --> 00:01:11.885
+The numbers that YouTube shows are wrong for what matters.
+
+34
+00:01:12.515 --> 00:01:15.325
+They average data from all of your traffic sources.
+
+35
+00:01:15.325 --> 00:01:17.845
+And by traffic sources, I mean browse features, right?
+
+36
+00:01:17.845 --> 00:01:19.325
+That's the YouTube homepage. When somebody goes
+
+37
+00:01:19.325 --> 00:01:22.805
+to youtube.com, the homepage, when they just open YouTube,
+
+38
+00:01:23.075 --> 00:01:24.285
+that is browse features.
+
+39
+00:01:24.505 --> 00:01:26.285
+If somebody's already watching a YouTube video
+
+40
+00:01:26.285 --> 00:01:28.805
+and they have the sidebar of recommended videos to watch
+
+41
+00:01:28.935 --> 00:01:30.525
+after the current video they're watching,
+
+42
+00:01:30.865 --> 00:01:32.805
+that's suggested videos.
+
+43
+00:01:33.035 --> 00:01:35.205
+Okay? And then you have YouTube search.
+
+44
+00:01:35.205 --> 00:01:37.205
+That's when somebody goes and searches something on YouTube.
+
+45
+00:01:37.205 --> 00:01:38.245
+You have external sources.
+
+46
+00:01:38.305 --> 00:01:41.445
+That's if somebody sends you a YouTube video on text message
+
+47
+00:01:41.465 --> 00:01:42.925
+or discord and you open it through there.
+
+48
+00:01:43.465 --> 00:01:45.685
+You have channel pages, that's if somebody searches up your
+
+49
+00:01:45.685 --> 00:01:47.765
+channel name or they, you know, click on a link
+
+50
+00:01:47.765 --> 00:01:50.085
+to your channel and they press on a video by going
+
+51
+00:01:50.355 --> 00:01:51.605
+through your channel pages
+
+52
+00:01:51.985 --> 00:01:53.965
+or through your channel page, like they sort go
+
+53
+00:01:53.965 --> 00:01:56.765
+to your videos tab on your channel, you have end screens.
+
+54
+00:01:56.765 --> 00:01:57.805
+That's at the end of the video.
+
+55
+00:01:57.905 --> 00:01:59.565
+At the end of your video, you can send an end screen
+
+56
+00:01:59.565 --> 00:02:00.685
+that's just like a little button
+
+57
+00:02:00.755 --> 00:02:03.085
+that you can set like the last five to 15 seconds
+
+58
+00:02:03.105 --> 00:02:06.725
+of your video, um, to press on either a video, like one
+
+59
+00:02:06.725 --> 00:02:09.205
+of your previous videos, your latest videos, uh,
+
+60
+00:02:09.485 --> 00:02:10.565
+specific video could go
+
+61
+00:02:10.565 --> 00:02:12.285
+to even a a different channels videos.
+
+62
+00:02:12.745 --> 00:02:16.205
+Uh, and that's a traffic source that's gonna say end screen.
+
+63
+00:02:16.205 --> 00:02:18.165
+So there, there's a bunch of different traffic sources.
+
+64
+00:02:18.905 --> 00:02:20.525
+If you just go back and listen to what I just said,
+
+65
+00:02:20.525 --> 00:02:22.725
+these traffic sources, not all of them have to do
+
+66
+00:02:22.725 --> 00:02:24.405
+with the YouTube algorithm, right?
+
+67
+00:02:24.625 --> 00:02:27.445
+The only thing that's gonna influence getting more views in
+
+68
+00:02:27.445 --> 00:02:28.445
+the algorithm is
+
+69
+00:02:28.445 --> 00:02:30.725
+how your video is performing in the algorithm.
+
+70
+00:02:30.945 --> 00:02:33.085
+If your video's getting a bunch of views from channel pages
+
+71
+00:02:33.305 --> 00:02:36.005
+or from external sources or from end screens
+
+72
+00:02:36.065 --> 00:02:39.365
+or from anything that's simply just not browse features
+
+73
+00:02:39.365 --> 00:02:42.365
+or suggested, because those are the two recommendation
+
+74
+00:02:42.645 --> 00:02:44.485
+features that YouTube uses to recommend to viewers.
+
+75
+00:02:44.945 --> 00:02:46.365
+Um, if it's anything else,
+
+76
+00:02:46.475 --> 00:02:50.085
+it's not gonna impact your videos performing.
+
+77
+00:02:50.085 --> 00:02:52.125
+So if you make like a tutorial video, a bunch
+
+78
+00:02:52.125 --> 00:02:53.965
+of people might be like searching how
+
+79
+00:02:53.965 --> 00:02:55.525
+to fix my graphics card
+
+80
+00:02:55.525 --> 00:02:56.645
+on my computer or something like that.
+
+81
+00:02:56.825 --> 00:02:58.725
+And if 90% of your views are from
+
+82
+00:02:59.585 --> 00:03:01.605
+Uh, YouTube search, then guess what?
+
+83
+00:03:01.605 --> 00:03:05.005
+That's not gonna help you in the, uh, in the algorithm.
+
+84
+00:03:05.145 --> 00:03:08.405
+So if your click-through rate is 30% on YouTube search
+
+85
+00:03:08.785 --> 00:03:12.405
+and for example if your A VD is 80% on YouTube search, you,
+
+86
+00:03:12.465 --> 00:03:15.165
+you might get a really high average A VD
+
+87
+00:03:15.165 --> 00:03:18.445
+and a high average CTR and that's what YouTube displays.
+
+88
+00:03:19.025 --> 00:03:20.805
+But that number that is
+
+89
+00:03:20.805 --> 00:03:22.285
+displayed just doesn't mean anything.
+
+90
+00:03:22.305 --> 00:03:23.325
+In some cases, the number
+
+91
+00:03:23.325 --> 00:03:25.645
+that is displayed can match the numbers
+
+92
+00:03:25.675 --> 00:03:27.885
+that actually matter, but in a lot
+
+93
+00:03:27.885 --> 00:03:29.365
+of cases it's completely wrong.
+
+94
+00:03:29.365 --> 00:03:31.445
+And we're gonna go over and I'm actually gonna pull up some
+
+95
+00:03:31.445 --> 00:03:34.165
+YouTube analytics and show you exactly what I mean.
+
+96
+00:03:34.345 --> 00:03:36.685
+So these audiences weren't served
+
+97
+00:03:36.685 --> 00:03:38.005
+by YouTube's algorithm, like I said.
+
+98
+00:03:38.145 --> 00:03:40.405
+So they don't affect your algorithmic performance.
+
+99
+00:03:40.405 --> 00:03:42.045
+So the only numbers that matter
+
+100
+00:03:42.385 --> 00:03:44.805
+and to see your real stats, number one, go
+
+101
+00:03:44.805 --> 00:03:46.405
+to your analytics open YouTube studio
+
+102
+00:03:46.625 --> 00:03:47.965
+and go to the analytics on a video.
+
+103
+00:03:48.345 --> 00:03:49.845
+So here's an older channel I had.
+
+104
+00:03:49.935 --> 00:03:52.245
+We're gonna go to my most popular video on this channel,
+
+105
+00:03:52.245 --> 00:03:53.765
+which has 1.9 million views
+
+106
+00:03:54.305 --> 00:03:56.245
+and my uh, cat has joined me here.
+
+107
+00:03:56.245 --> 00:03:58.845
+This is oyster. Anyways, so this video,
+
+108
+00:03:59.025 --> 00:04:00.085
+you can see all the stats.
+
+109
+00:04:00.085 --> 00:04:03.085
+So to actually go, you go into your content tab
+
+110
+00:04:03.085 --> 00:04:04.925
+and then you have this analytics button, right?
+
+111
+00:04:05.105 --> 00:04:06.765
+You can press on the analytics here
+
+112
+00:04:06.985 --> 00:04:08.085
+and your individual video
+
+113
+00:04:08.085 --> 00:04:09.365
+analytics is what matters the most.
+
+114
+00:04:09.365 --> 00:04:12.925
+And this video is like uh, very old. I mean how old is this?
+
+115
+00:04:13.115 --> 00:04:17.485
+July of 2024. So this is like around a year and a half old.
+
+116
+00:04:17.985 --> 00:04:21.485
+If I do like the last 90 days, this single video by the way,
+
+117
+00:04:22.235 --> 00:04:23.565
+like single video
+
+118
+00:04:24.065 --> 00:04:27.805
+and the last three months has made $800, not the channel.
+
+119
+00:04:27.835 --> 00:04:30.125
+This last single video has made $800.
+
+120
+00:04:30.285 --> 00:04:32.845
+I just wanted to highlight that this stuff is long term like
+
+121
+00:04:32.845 --> 00:04:34.525
+this one video, not the whole channel.
+
+122
+00:04:34.525 --> 00:04:36.365
+This one video was uploaded a year
+
+123
+00:04:36.365 --> 00:04:37.765
+and a half ago, like 18 months ago
+
+124
+00:04:38.025 --> 00:04:41.725
+and in the last three months, such a small percentage of
+
+125
+00:04:41.725 --> 00:04:42.885
+how long this video has been out
+
+126
+00:04:42.885 --> 00:04:46.325
+and just the last three months, this video has made $839.
+
+127
+00:04:46.555 --> 00:04:50.365
+Anyways, let's go um, to lifetime stats again.
+
+128
+00:04:50.825 --> 00:04:52.285
+And you can even actually see here
+
+129
+00:04:52.355 --> 00:04:53.765
+that this video is doing pretty well.
+
+130
+00:04:53.785 --> 00:04:55.925
+It completely flatlined then outta nowhere, boom.
+
+131
+00:04:56.225 --> 00:05:00.365
+Uh, so for like what March all the way to July of 2025.
+
+132
+00:05:00.895 --> 00:05:02.325
+There was just no views on this
+
+133
+00:05:02.385 --> 00:05:03.445
+and then it just boom started
+
+134
+00:05:03.445 --> 00:05:04.605
+outta nowhere and it's kind of dying.
+
+135
+00:05:04.625 --> 00:05:07.285
+Now again. But let's look at where the analytics,
+
+136
+00:05:07.475 --> 00:05:09.485
+it's gonna be the reach tab and the engagement.
+
+137
+00:05:09.485 --> 00:05:11.445
+So I already showed you how to get to this video analytics.
+
+138
+00:05:11.445 --> 00:05:12.525
+You go to your content tab, press
+
+139
+00:05:12.525 --> 00:05:13.605
+on specific video analytics.
+
+140
+00:05:13.665 --> 00:05:16.765
+Now you have these two spots, reach, engagement,
+
+141
+00:05:17.045 --> 00:05:19.205
+audience revenue, all of these things kind of matter.
+
+142
+00:05:19.425 --> 00:05:21.325
+The overview doesn't really matter at all.
+
+143
+00:05:21.325 --> 00:05:22.485
+So let's go to the reach tab
+
+144
+00:05:22.705 --> 00:05:24.365
+and it's gonna tell you your impressions.
+
+145
+00:05:24.365 --> 00:05:26.485
+It's gonna tell you your click through it, your views,
+
+146
+00:05:26.585 --> 00:05:29.365
+all this stuff and you think, oh this is so important
+
+147
+00:05:29.365 --> 00:05:30.445
+because this is what YouTube is showing.
+
+148
+00:05:30.445 --> 00:05:32.525
+Like all of this stuff is totally useless.
+
+149
+00:05:32.945 --> 00:05:35.645
+Um, what we're gonna go is we're gonna scroll down
+
+150
+00:05:36.105 --> 00:05:38.845
+and you're gonna see how like stupid this kind of is.
+
+151
+00:05:39.105 --> 00:05:41.685
+But we're gonna scroll down, we're gonna see
+
+152
+00:05:41.825 --> 00:05:44.885
+how viewers found this video, this area right here.
+
+153
+00:05:44.945 --> 00:05:47.765
+So it's one down and on the left side
+
+154
+00:05:47.945 --> 00:05:49.325
+and we're gonna press see more.
+
+155
+00:05:49.715 --> 00:05:52.205
+Okay, this is where we want to go immediately.
+
+156
+00:05:52.205 --> 00:05:54.165
+What you can do just to make things easy is just press
+
+157
+00:05:54.275 --> 00:05:56.205
+suggested and browse features, okay?
+
+158
+00:05:56.205 --> 00:05:58.845
+You have these highlighted. Um, this is all that matters.
+
+159
+00:05:59.025 --> 00:06:00.485
+So let's take a look.
+
+160
+00:06:00.865 --> 00:06:03.685
+We have 11 million impressions from browse features
+
+161
+00:06:03.685 --> 00:06:04.885
+and 6 million from suggested.
+
+162
+00:06:05.045 --> 00:06:08.205
+I just wanna clarify right now some videos will have 100%
+
+163
+00:06:08.205 --> 00:06:09.445
+of their impressions from browse.
+
+164
+00:06:09.445 --> 00:06:11.005
+Some will have a hundred percent from suggested,
+
+165
+00:06:11.005 --> 00:06:15.005
+some will be 70 30 or 70 30 this way or some will be 90 10
+
+166
+00:06:15.585 --> 00:06:16.805
+or some will be 50 50.
+
+167
+00:06:16.985 --> 00:06:19.925
+It doesn't matter. These are just both algorithmic features
+
+168
+00:06:19.925 --> 00:06:22.565
+that YouTube's using to push out videos to new viewers
+
+169
+00:06:22.785 --> 00:06:24.205
+or to I guess any viewers.
+
+170
+00:06:24.545 --> 00:06:27.605
+Um, so it doesn't matter which one it comes from,
+
+171
+00:06:27.945 --> 00:06:29.765
+but we need to weigh them differently just based on
+
+172
+00:06:29.765 --> 00:06:30.885
+the amount of impressions it got.
+
+173
+00:06:31.065 --> 00:06:33.005
+So although yes from suggest,
+
+174
+00:06:33.005 --> 00:06:34.685
+so we have 6.3 million impressions
+
+175
+00:06:34.785 --> 00:06:37.125
+and the clickthrough rate is 10.3%.
+
+176
+00:06:37.625 --> 00:06:39.445
+The more valuable clickthrough rate to look at
+
+177
+00:06:39.465 --> 00:06:41.525
+of course is this one browse features
+
+178
+00:06:41.645 --> 00:06:44.485
+'cause it has almost double the impressions and that's 7%.
+
+179
+00:06:44.945 --> 00:06:46.045
+Now look at these other things.
+
+180
+00:06:46.105 --> 00:06:49.005
+We have 13,000 impressions from channel pages
+
+181
+00:06:49.005 --> 00:06:52.885
+that's giving us 12.7% CTR, which is useless.
+
+182
+00:06:53.225 --> 00:06:54.925
+But this is when we go back here,
+
+183
+00:06:55.235 --> 00:06:56.925
+this is factored into this clickthrough rate.
+
+184
+00:06:56.925 --> 00:06:59.645
+Of course in this video specifically it's like 99%
+
+185
+00:06:59.645 --> 00:07:00.805
+of the impressions came from these two.
+
+186
+00:07:00.905 --> 00:07:02.325
+So this is what I'm talking about. In some cases
+
+187
+00:07:02.435 --> 00:07:04.405
+that average number can be somewhat accurate,
+
+188
+00:07:04.625 --> 00:07:07.525
+but then once again playlist 5.9% CTR.
+
+189
+00:07:07.525 --> 00:07:10.205
+But this isn't helping us YouTube search 8.5% CTR.
+
+190
+00:07:10.315 --> 00:07:11.445
+This isn't helping us
+
+191
+00:07:11.445 --> 00:07:12.485
+but it just happens to be
+
+192
+00:07:12.485 --> 00:07:13.645
+around the same click-through rate.
+
+193
+00:07:13.865 --> 00:07:15.685
+But what really matters is these two.
+
+194
+00:07:15.705 --> 00:07:19.085
+So we know around 17 million impressions,
+
+195
+00:07:19.125 --> 00:07:20.725
+I mean almost all the impressions are from these two.
+
+196
+00:07:20.745 --> 00:07:22.285
+So this number is pretty accurate.
+
+197
+00:07:23.025 --> 00:07:25.645
+But of course we're gonna average this based on seven
+
+198
+00:07:25.825 --> 00:07:28.005
+and 10.3 and we know that seven ways more,
+
+199
+00:07:28.005 --> 00:07:30.165
+which is why averages out to around 8.2.
+
+200
+00:07:30.165 --> 00:07:32.805
+So in this case, this video is actually uh, pretty accurate.
+
+201
+00:07:33.305 --> 00:07:35.165
+But another thing you need to look at is
+
+202
+00:07:35.165 --> 00:07:36.325
+the average viewer duration.
+
+203
+00:07:36.325 --> 00:07:39.805
+Right here we have a six minutes 50 on end screen.
+
+204
+00:07:39.825 --> 00:07:41.405
+We have 6,000 views from end screen
+
+205
+00:07:41.405 --> 00:07:45.125
+and six minute 50 A VD down here we have six minute 15 from
+
+206
+00:07:45.405 --> 00:07:46.725
+playlist and then we have two minutes 22,
+
+207
+00:07:47.075 --> 00:07:50.765
+your A VD right is on engagement and this is 4 29.
+
+208
+00:07:50.785 --> 00:07:53.165
+But we wanna go to reach actually and go to see more.
+
+209
+00:07:53.625 --> 00:07:55.125
+And this is where we look at our A VD,
+
+210
+00:07:55.125 --> 00:07:56.685
+just the A VD of these two.
+
+211
+00:07:56.685 --> 00:07:58.965
+These are what matters and you
+
+212
+00:07:58.965 --> 00:08:00.045
+need to weigh them differently.
+
+213
+00:08:00.045 --> 00:08:01.325
+Like you could technically do the math
+
+214
+00:08:01.325 --> 00:08:03.085
+and find out the exact average just using
+
+215
+00:08:03.085 --> 00:08:04.125
+these and filter these out.
+
+216
+00:08:04.665 --> 00:08:05.725
+But this is what matters.
+
+217
+00:08:05.725 --> 00:08:08.485
+Pretty much this is where you need to be looking at your CTR
+
+218
+00:08:08.485 --> 00:08:11.645
+and your A VD and your impressions and even your views.
+
+219
+00:08:12.345 --> 00:08:14.045
+Now let's go to this old AI channel.
+
+220
+00:08:14.205 --> 00:08:16.205
+I had not running this one currently.
+
+221
+00:08:16.205 --> 00:08:17.565
+Like even these channels, like these are,
+
+222
+00:08:17.625 --> 00:08:19.005
+I'm completely not running them anymore
+
+223
+00:08:19.005 --> 00:08:20.685
+and they're still making like a few dollars a day,
+
+224
+00:08:20.685 --> 00:08:22.365
+like 160 in the last month.
+
+225
+00:08:22.675 --> 00:08:24.885
+Like I don't even notice this in my ad sense of course
+
+226
+00:08:25.045 --> 00:08:26.405
+'cause the numbers is a lot bigger than
+
+227
+00:08:26.405 --> 00:08:27.565
+one 60 that I'm getting monthly.
+
+228
+00:08:27.985 --> 00:08:31.645
+But I have like maybe five to 10 channels that um,
+
+229
+00:08:31.965 --> 00:08:33.725
+I just don't run that bring in like somewhere.
+
+230
+00:08:33.725 --> 00:08:35.205
+Some of them bring in, I have like five channels
+
+231
+00:08:35.205 --> 00:08:36.485
+that bring in like 50 bucks a month.
+
+232
+00:08:36.645 --> 00:08:37.805
+I have a few that bring in a few hundred
+
+233
+00:08:37.945 --> 00:08:39.325
+and I have a few that bring in like 500
+
+234
+00:08:39.325 --> 00:08:40.725
+that are just completely inactive.
+
+235
+00:08:40.765 --> 00:08:41.525
+I don't run them anymore.
+
+236
+00:08:41.705 --> 00:08:42.925
+You might be like, oh, why don't you run them?
+
+237
+00:08:43.155 --> 00:08:44.405
+It's because the newer videos
+
+238
+00:08:44.585 --> 00:08:46.205
+for whatever reason just don't get views anymore
+
+239
+00:08:46.545 --> 00:08:48.165
+or they, it just costs too much
+
+240
+00:08:48.185 --> 00:08:50.725
+to run And obviously it's a hundred percent profit if I'm
+
+241
+00:08:50.725 --> 00:08:51.885
+not paying for new videos anymore.
+
+242
+00:08:51.905 --> 00:08:54.485
+And this channel, the last upload was, uh,
+
+243
+00:08:54.485 --> 00:08:55.725
+almost four months ago now
+
+244
+00:08:55.865 --> 00:08:57.805
+and it's still making $160 a month.
+
+245
+00:08:57.805 --> 00:08:59.805
+So it's just free money, um, to me at this point.
+
+246
+00:09:00.025 --> 00:09:01.285
+But let's go to like a video
+
+247
+00:09:01.315 --> 00:09:03.205
+that performed like let's do one
+
+248
+00:09:03.205 --> 00:09:04.365
+that performed like somewhat decent.
+
+249
+00:09:04.905 --> 00:09:06.245
+So 112, let's go
+
+250
+00:09:06.245 --> 00:09:08.765
+to like this 20,000 view video, which actually does pretty well.
+
+251
+00:09:08.765 --> 00:09:10.845
+You'll see the revenue here is at 110.
+
+252
+00:09:11.555 --> 00:09:14.285
+This was actually, the revenue stats here aren't super
+
+253
+00:09:14.885 --> 00:09:16.725
+accurate because this video was, uh,
+
+254
+00:09:16.725 --> 00:09:18.445
+that video was before I was monetized.
+
+255
+00:09:18.445 --> 00:09:21.285
+So let's look at like this one. So this one you can see has
+
+256
+00:09:21.285 --> 00:09:23.925
+33,000 views but made $580 and that's
+
+257
+00:09:23.925 --> 00:09:27.005
+because we're getting $17 and 60 cents per thousand views
+
+258
+00:09:27.165 --> 00:09:28.325
+'cause it's a two hour long video.
+
+259
+00:09:28.585 --> 00:09:30.805
+So that's before anybody asks us why that is the case,
+
+260
+00:09:31.215 --> 00:09:32.805
+let's go over to our reach.
+
+261
+00:09:32.825 --> 00:09:34.365
+We see 5.4%.
+
+262
+00:09:34.745 --> 00:09:37.205
+Uh, and I kind of talked a little bit on this before,
+
+263
+00:09:37.665 --> 00:09:40.125
+but you know, you're gonna have a lower CTR.
+
+264
+00:09:40.485 --> 00:09:41.885
+Actually, I'm not even sure if I mentioned this before.
+
+265
+00:09:41.995 --> 00:09:43.965
+Just in general, your stats are gonna go down.
+
+266
+00:09:44.165 --> 00:09:46.205
+I think I did mention it, but your stats are gonna go down
+
+267
+00:09:46.425 --> 00:09:48.245
+the more YouTube pushes your video out, okay?
+
+268
+00:09:48.245 --> 00:09:50.965
+It finds the audio like it, it pushes out in the order
+
+269
+00:09:50.965 --> 00:09:52.205
+of your, your ti uh,
+
+270
+00:09:52.205 --> 00:09:53.485
+your title gives you a few hundred views.
+
+271
+00:09:53.595 --> 00:09:55.445
+Then if the CT R is get, uh, uh, good,
+
+272
+00:09:55.445 --> 00:09:56.485
+you'll get a few thousand views.
+
+273
+00:09:56.625 --> 00:09:57.645
+If your AVD is good,
+
+274
+00:09:57.675 --> 00:09:59.965
+then it'll push out a few more thousand
+
+275
+00:09:59.965 --> 00:10:01.565
+views, uh, to a new audience.
+
+276
+00:10:01.585 --> 00:10:03.685
+If the new audience likes it, then they'll push out
+
+277
+00:10:03.685 --> 00:10:05.205
+to a new audience then to a new audience.
+
+278
+00:10:05.205 --> 00:10:06.765
+And essentially the cycle will just be new audience,
+
+279
+00:10:06.765 --> 00:10:08.245
+new audience, new audience, new audience.
+
+280
+00:10:08.505 --> 00:10:10.165
+And uh, over time the CTR
+
+281
+00:10:10.165 --> 00:10:11.725
+and A VD will go down because of that.
+
+282
+00:10:12.265 --> 00:10:14.165
+Any who, let's go to see more here
+
+283
+00:10:14.785 --> 00:10:18.285
+and we'll see that our CTR is 5.6% here
+
+284
+00:10:18.865 --> 00:10:21.645
+and most of our impressions came from here, right?
+
+285
+00:10:21.705 --> 00:10:23.125
+So we want browse features
+
+286
+00:10:23.125 --> 00:10:25.005
+and suggested we only got 18,000
+
+287
+00:10:25.035 --> 00:10:26.645
+impressions from browse features.
+
+288
+00:10:26.645 --> 00:10:28.605
+So even though I had impressions here, uh,
+
+289
+00:10:28.625 --> 00:10:30.605
+I'm not even gonna be too concerned with this
+
+290
+00:10:30.605 --> 00:10:33.885
+because out of like 420,000 impressions out
+
+291
+00:10:33.885 --> 00:10:35.485
+of these two total, I'm not counting this.
+
+292
+00:10:35.485 --> 00:10:36.565
+Like if I just add these two,
+
+293
+00:10:36.565 --> 00:10:39.845
+this is 4 24 0 2 is from browse features,
+
+294
+00:10:39.985 --> 00:10:42.325
+but of course we have 20,000 impressions from channel pages.
+
+295
+00:10:42.425 --> 00:10:45.085
+2.3% playlisting is 3.3%.
+
+296
+00:10:45.425 --> 00:10:47.005
+And once again, the a VDS are
+
+297
+00:10:47.005 --> 00:10:48.445
+scattered all over the place here.
+
+298
+00:10:48.665 --> 00:10:50.965
+So notice actually the impression clickthrough rate
+
+299
+00:10:50.965 --> 00:10:52.045
+says 5.4%.
+
+300
+00:10:52.305 --> 00:10:54.365
+My A VD is 36 51,
+
+301
+00:10:54.465 --> 00:10:57.005
+but I would actually say on this video my clickthrough rate
+
+302
+00:10:57.005 --> 00:11:00.205
+is 5.6% and my A VD is 30 some uh, in 10.
+
+303
+00:11:00.385 --> 00:11:01.605
+Now in, in this case as well.
+
+304
+00:11:02.065 --> 00:11:03.525
+Um, it's not much of a difference.
+
+305
+00:11:03.525 --> 00:11:05.165
+Like I'm telling you though, it's very common
+
+306
+00:11:05.225 --> 00:11:06.685
+to see some pretty big differences.
+
+307
+00:11:07.195 --> 00:11:08.965
+Like I'll try and go through a few of these,
+
+308
+00:11:09.105 --> 00:11:11.405
+see if we can find one that has like bigger difference.
+
+309
+00:11:11.715 --> 00:11:13.765
+Like let's take a look at this video. For example.
+
+310
+00:11:13.875 --> 00:11:17.885
+This is a, a good one. We have 72,000 impressions from uh,
+
+311
+00:11:17.885 --> 00:11:22.845
+search, which is 7.4% and then we have 23 minute A, B, D.
+
+312
+00:11:22.845 --> 00:11:24.485
+So the A VD on the video is 42
+
+313
+00:11:24.665 --> 00:11:28.085
+and the search A VD is 23, the clickthrough rate is 5.9%,
+
+314
+00:11:28.105 --> 00:11:31.045
+but the search a VD or uh, clickthrough rate is 7.4.
+
+315
+00:11:31.225 --> 00:11:34.205
+So what's actually happening is YouTube search is bumping up
+
+316
+00:11:34.345 --> 00:11:36.125
+the clickthrough rate higher than it should be.
+
+317
+00:11:36.505 --> 00:11:38.365
+And then at the same time the YouTube search is
+
+318
+00:11:38.645 --> 00:11:39.725
+bringing down the A VD.
+
+319
+00:11:39.905 --> 00:11:42.685
+So let's say, uh, like actually pressing on this,
+
+320
+00:11:42.685 --> 00:11:43.805
+you don't have to check mark them
+
+321
+00:11:43.805 --> 00:11:45.925
+because uh, that just changes what you see in the chart.
+
+322
+00:11:45.985 --> 00:11:47.205
+I'm just doing that. So you guys know
+
+323
+00:11:47.205 --> 00:11:48.325
+what I'm looking at at the moment.
+
+324
+00:11:48.505 --> 00:11:51.325
+So I'm looking at these 2 53 minute A VD
+
+325
+00:11:51.505 --> 00:11:54.245
+and this is, I mean it's 77,000 impressions.
+
+326
+00:11:54.245 --> 00:11:55.885
+We had most impressions from browse features,
+
+327
+00:11:55.885 --> 00:11:57.765
+so it weighs more, but we still had a good
+
+328
+00:11:57.765 --> 00:11:58.805
+amount from suggested.
+
+329
+00:11:59.025 --> 00:12:01.645
+Uh, so 53, we have 45 here.
+
+330
+00:12:01.905 --> 00:12:03.485
+So I would say just like off the top of my head,
+
+331
+00:12:03.545 --> 00:12:06.925
+I'd probably say my A VD is like between 47 and 48 minutes.
+
+332
+00:12:07.075 --> 00:12:10.365
+Yeah, my average reiteration here is actually 42 minutes.
+
+333
+00:12:10.385 --> 00:12:12.605
+So I'd say the A VD is actually higher than what it's saying
+
+334
+00:12:12.605 --> 00:12:14.405
+and in some cases it can be vice versa.
+
+335
+00:12:14.595 --> 00:12:17.445
+It's uh, um, the A VD is lower than what it says.
+
+336
+00:12:17.465 --> 00:12:20.125
+And that's, uh, what the biggest problem is is when you're
+
+337
+00:12:20.125 --> 00:12:21.245
+misleaded thinking your CTR
+
+338
+00:12:21.245 --> 00:12:22.885
+and A VD is good when it's not right.
+
+339
+00:12:22.945 --> 00:12:25.325
+And same, uh, and I think it's the opposite here, right?
+
+340
+00:12:25.455 --> 00:12:28.405
+Where in this case the CTR is higher than it should be.
+
+341
+00:12:28.405 --> 00:12:31.965
+Like yes, browse features is 6.0, but this is 4.1.
+
+342
+00:12:31.965 --> 00:12:35.125
+So I'd say this is probably closer to like 5.4, 5.5.
+
+343
+00:12:35.385 --> 00:12:37.125
+So this is lower than we're saying,
+
+344
+00:12:37.125 --> 00:12:38.805
+but in some cases this could be like 5.9,
+
+345
+00:12:38.805 --> 00:12:40.405
+but the real CTR is like 4%.
+
+346
+00:12:40.405 --> 00:12:42.005
+I've seen that before. I've seen the opposite
+
+347
+00:12:42.005 --> 00:12:44.085
+where it says 5.9 here and it should be like 8%
+
+348
+00:12:44.305 --> 00:12:45.965
+and same thing's gonna occur with the A VD.
+
+349
+00:12:46.105 --> 00:12:48.085
+So it's just really important to understand that this is
+
+350
+00:12:48.085 --> 00:12:50.245
+where you should be looking for your clickthrough rate
+
+351
+00:12:50.245 --> 00:12:51.725
+and your A VD and how to calculate it.
+
+352
+00:12:51.725 --> 00:12:54.605
+You should just only look at these two value them based on
+
+353
+00:12:54.605 --> 00:12:56.565
+how many impressions you actually got from them
+
+354
+00:12:56.745 --> 00:12:58.085
+and then kind of ignore the rest
+
+355
+00:12:58.155 --> 00:13:00.525
+because you know, you might think you don't need
+
+356
+00:13:00.525 --> 00:13:02.125
+to fix your, your thumbnail when you do.
+
+357
+00:13:02.345 --> 00:13:03.645
+And then all of this stuff here I kind
+
+358
+00:13:03.645 --> 00:13:04.965
+of already just went through.
+
+359
+00:13:05.305 --> 00:13:08.045
+Um, but yeah, just click show more press the advanced
+
+360
+00:13:08.045 --> 00:13:10.605
+analytics only browse feature suggested matter.
+
+361
+00:13:11.365 --> 00:13:12.965
+I already explained what browse features is, right?
+
+362
+00:13:12.965 --> 00:13:14.285
+The YouTube homepage suggested
+
+363
+00:13:14.285 --> 00:13:16.245
+as a sidebar recommendations when you're on a video.
+
+364
+00:13:16.585 --> 00:13:18.485
+And these are the only things that actually matter.
+
+365
+00:13:19.105 --> 00:13:20.925
+And uh, I also talked about the ratio.
+
+366
+00:13:20.925 --> 00:13:23.365
+Like it doesn't matter if it comes from mostly suggested
+
+367
+00:13:23.365 --> 00:13:24.685
+or mostly browse features are half
+
+368
+00:13:24.685 --> 00:13:25.725
+and half, it doesn't matter.
+
+369
+00:13:26.225 --> 00:13:28.245
+Um, when you should, uh, check your analytics,
+
+370
+00:13:28.245 --> 00:13:29.365
+realistically you should check,
+
+371
+00:13:29.625 --> 00:13:31.205
+I'd say normally like 24 hours later
+
+372
+00:13:31.205 --> 00:13:33.685
+because the first 24 hours don't really matter.
+
+373
+00:13:33.685 --> 00:13:37.125
+People think, oh, it's best to post at 8:37 PM or this,
+
+374
+00:13:37.125 --> 00:13:39.445
+and it shows in your like YouTube studio, the audience,
+
+375
+00:13:39.445 --> 00:13:40.725
+what time they're active, stuff like that.
+
+376
+00:13:40.985 --> 00:13:42.725
+But on YouTube, this isn't the case
+
+377
+00:13:42.725 --> 00:13:44.005
+for all platforms, by the way.
+
+378
+00:13:44.175 --> 00:13:46.845
+We're talking about YouTube specifically here on YouTube.
+
+379
+00:13:47.075 --> 00:13:49.165
+YouTube doesn't care what time you upload.
+
+380
+00:13:49.925 --> 00:13:51.685
+I know plenty of YouTubers. There are two YouTubers.
+
+381
+00:13:51.685 --> 00:13:53.005
+They had like personal brand channels
+
+382
+00:13:53.105 --> 00:13:54.245
+and they did videos together.
+
+383
+00:13:54.385 --> 00:13:56.845
+So both of them were on channel number one
+
+384
+00:13:56.845 --> 00:13:57.845
+and both of them were on channel two.
+
+385
+00:13:57.845 --> 00:13:59.645
+They made videos together, they were duos
+
+386
+00:13:59.745 --> 00:14:02.525
+and one of them would post at 2:00 PM every single day.
+
+387
+00:14:02.525 --> 00:14:04.645
+I think it was Eastern time, so like, uh,
+
+388
+00:14:04.715 --> 00:14:06.085
+east Coast United States time.
+
+389
+00:14:06.385 --> 00:14:09.165
+So one of them would post on their channel at 2:00 PM they
+
+390
+00:14:09.165 --> 00:14:11.085
+would both daily upload one of their channels.
+
+391
+00:14:11.085 --> 00:14:12.125
+They would post at 2:00 PM
+
+392
+00:14:12.265 --> 00:14:14.365
+and on the other channel they'd post at 2:00 AM
+
+393
+00:14:14.465 --> 00:14:15.685
+and the views were the same.
+
+394
+00:14:15.825 --> 00:14:17.845
+But what you would notice is that the first, like
+
+395
+00:14:17.845 --> 00:14:19.965
+for example, the channel number one,
+
+396
+00:14:20.035 --> 00:14:23.165
+they would get a lot more views in the first like 6, 8, 9
+
+397
+00:14:23.165 --> 00:14:25.165
+hours, uh, than the second channel.
+
+398
+00:14:25.465 --> 00:14:27.805
+But then after 24 hours it would kind
+
+399
+00:14:27.805 --> 00:14:29.445
+of a level out to the same amount.
+
+400
+00:14:29.445 --> 00:14:30.685
+And the reason this happens is
+
+401
+00:14:30.685 --> 00:14:32.525
+because YouTube isn't like, oh,
+
+402
+00:14:32.525 --> 00:14:34.445
+because your viewers are aren't online right now.
+
+403
+00:14:34.445 --> 00:14:35.565
+We're not gonna push this video to them.
+
+404
+00:14:35.675 --> 00:14:39.045
+YouTube, once your videos uploaded it kind, YouTube kind
+
+405
+00:14:39.045 --> 00:14:42.245
+of acts as if your video's uploaded when your viewers open
+
+406
+00:14:42.265 --> 00:14:43.485
+the app, if that makes sense.
+
+407
+00:14:43.625 --> 00:14:46.005
+So if your viewer opens the app two days later
+
+408
+00:14:46.005 --> 00:14:47.885
+and that's like a person they would've recommended it to,
+
+409
+00:14:48.105 --> 00:14:49.565
+that's when you'll get the view from them.
+
+410
+00:14:49.865 --> 00:14:51.525
+So this is, uh, and most people are,
+
+411
+00:14:51.555 --> 00:14:54.565
+that are active YouTube users are watching every day.
+
+412
+00:14:54.745 --> 00:14:56.605
+So in the full 24 hours, you're going
+
+413
+00:14:56.605 --> 00:14:58.245
+through every time zone on the planet, right?
+
+414
+00:14:58.425 --> 00:14:59.725
+So after the full 24 hours,
+
+415
+00:14:59.725 --> 00:15:01.325
+that's when you can kind of really gauge.
+
+416
+00:15:01.705 --> 00:15:04.725
+Um, so first zero to 24, I would like kind of, I would,
+
+417
+00:15:04.925 --> 00:15:06.085
+I wouldn't say ignore completely
+
+418
+00:15:06.285 --> 00:15:07.565
+'cause you can get some decent insights,
+
+419
+00:15:07.705 --> 00:15:08.765
+but it's not gonna be accurate.
+
+420
+00:15:08.765 --> 00:15:11.725
+It's totally like 99% of the time it's gonna change a lot.
+
+421
+00:15:11.825 --> 00:15:13.165
+24 to 48 hours.
+
+422
+00:15:13.535 --> 00:15:16.325
+First look at your browse and suggested stats.
+
+423
+00:15:16.505 --> 00:15:19.285
+Uh, after seven days, you're getting a clear picture
+
+424
+00:15:19.285 --> 00:15:20.285
+of like the performance.
+
+425
+00:15:20.545 --> 00:15:22.685
+And then after 30 days, you're, you're getting like,
+
+426
+00:15:22.685 --> 00:15:23.685
+it really isn't gonna change
+
+427
+00:15:23.685 --> 00:15:24.805
+much from there, more than likely.
+
+428
+00:15:25.385 --> 00:15:27.165
+Uh, and I kind of touch on this a little bit as well,
+
+429
+00:15:27.185 --> 00:15:29.685
+but why stats get worse as views increase,
+
+430
+00:15:29.685 --> 00:15:30.925
+your stats will typically decline.
+
+431
+00:15:30.925 --> 00:15:33.605
+This is normal Every time YouTube pushes to a new audience,
+
+432
+00:15:33.605 --> 00:15:35.565
+and I'm talking about once you're getting like hundreds
+
+433
+00:15:35.565 --> 00:15:37.845
+of thousands, millions of views, not like, uh, you know,
+
+434
+00:15:37.845 --> 00:15:39.565
+you go from a few hundred to a thousand views
+
+435
+00:15:39.565 --> 00:15:41.085
+and you're like, oh, that's why my stats are going down.
+
+436
+00:15:41.085 --> 00:15:42.005
+Like if your stats are going down at
+
+437
+00:15:42.005 --> 00:15:42.765
+that level, that's not good.
+
+438
+00:15:43.305 --> 00:15:45.205
+Um, anyways, this is normal.
+
+439
+00:15:45.215 --> 00:15:47.445
+Every time YouTube pushes to a new audience, they have
+
+440
+00:15:47.445 --> 00:15:50.125
+to retest New audiences don't always respond as well
+
+441
+00:15:50.185 --> 00:15:51.325
+as your initial audience.
+
+442
+00:15:51.615 --> 00:15:53.525
+Don't celebrate good stats with low views.
+
+443
+00:15:53.525 --> 00:15:56.565
+YouTube hasn't really tested yet, and if it's a bad topic
+
+444
+00:15:56.565 --> 00:15:58.165
+or niche, no push will ever even happen.
+
+445
+00:15:58.225 --> 00:16:00.445
+So you'll have good stats, but nobody will see it.
+
+446
+00:16:00.445 --> 00:16:02.165
+So you'll be like, oh, I have a really high CTR,
+
+447
+00:16:02.165 --> 00:16:03.605
+really high A, B, D, but why do I have no views?
+
+448
+00:16:03.865 --> 00:16:05.445
+And that goes back to the push order.
+
+449
+00:16:05.445 --> 00:16:09.205
+Your title was just bad. Um, and how often should you check?
+
+450
+00:16:09.205 --> 00:16:11.125
+Well, you should check your analytics every single day.
+
+451
+00:16:11.435 --> 00:16:13.085
+Skip videos in their first 24 hours.
+
+452
+00:16:13.405 --> 00:16:15.685
+Normally check if old videos are still getting views,
+
+453
+00:16:15.835 --> 00:16:16.965
+sign of evergreen content.
+
+454
+00:16:17.065 --> 00:16:18.445
+You wanna make more evergreen content.
+
+455
+00:16:18.445 --> 00:16:20.885
+Like if a video doesn't get like crazy views immediately,
+
+456
+00:16:20.885 --> 00:16:22.525
+but then the videos always getting views,
+
+457
+00:16:22.525 --> 00:16:24.365
+you should probably make more videos like that.
+
+458
+00:16:24.545 --> 00:16:26.285
+So you can have channels like I just showed you where you,
+
+459
+00:16:26.285 --> 00:16:27.405
+like, even if you stop posting,
+
+460
+00:16:27.505 --> 00:16:29.845
+you still just have free money when you have 10 channels.
+
+461
+00:16:29.865 --> 00:16:33.285
+I'm getting paid a few thousand dollars a month solely from
+
+462
+00:16:33.285 --> 00:16:34.485
+inactive channels, right?
+
+463
+00:16:34.725 --> 00:16:36.005
+A few thousand dollars a month from
+
+464
+00:16:36.005 --> 00:16:37.045
+solely inactive channels.
+
+465
+00:16:37.105 --> 00:16:38.565
+I'm just, I mean that's kind of crazy.
+
+466
+00:16:39.075 --> 00:16:41.165
+Real time analytics are cool, which is like the,
+
+467
+00:16:41.225 --> 00:16:44.085
+it shows you 48 hours, like a little blue bars.
+
+468
+00:16:44.085 --> 00:16:45.565
+They're cool, but they don't really help you improve
+
+469
+00:16:45.725 --> 00:16:46.925
+anything, but they're definitely cool to look at.
+
+470
+00:16:47.705 --> 00:16:50.645
+So when you see a real time, it's not much you can do
+
+471
+00:16:50.645 --> 00:16:51.925
+to help with, like improve.
+
+472
+00:16:51.925 --> 00:16:53.125
+It's not much data in the first place.
+
+473
+00:16:53.125 --> 00:16:54.725
+It just tells you how many views you've got in the last
+
+474
+00:16:54.725 --> 00:16:58.365
+48, 48 hours you should be comparing to your competitors.
+
+475
+00:16:58.385 --> 00:17:00.565
+The ultimate benchmark is a 70% rule,
+
+476
+00:17:00.725 --> 00:17:02.845
+which is you should expect to do 70%
+
+477
+00:17:02.845 --> 00:17:04.725
+of your competitors view counts, right?
+
+478
+00:17:04.865 --> 00:17:07.005
+The channel you find you should start your channel within,
+
+479
+00:17:07.265 --> 00:17:10.765
+uh, like 48 to 72 hours and like eventually
+
+480
+00:17:10.765 --> 00:17:13.845
+after you're posting and consistent, you should aim for 70%
+
+481
+00:17:13.845 --> 00:17:14.965
+of your competitors' view count.
+
+482
+00:17:15.305 --> 00:17:16.965
+Um, and same thing. If you can calculate
+
+483
+00:17:16.965 --> 00:17:18.205
+how much money the channel's making,
+
+484
+00:17:18.415 --> 00:17:20.805
+let's say they're making a thousand dollars a month,
+
+485
+00:17:20.815 --> 00:17:22.405
+their channel might look like it's doing decent,
+
+486
+00:17:22.465 --> 00:17:23.685
+but if it's only making a thousand
+
+487
+00:17:23.685 --> 00:17:24.885
+dollars a month, of course that's something.
+
+488
+00:17:24.885 --> 00:17:26.325
+So the views might catch your eyes,
+
+489
+00:17:26.345 --> 00:17:28.445
+but it, the channel might not be making a lot,
+
+490
+00:17:28.615 --> 00:17:31.125
+which is why you should ask ave my opinion on this stuff.
+
+491
+00:17:31.345 --> 00:17:32.965
+Um, and find out how much a channel is making
+
+492
+00:17:32.965 --> 00:17:35.525
+because then 70% would be 700 a month.
+
+493
+00:17:35.525 --> 00:17:38.285
+Is 700 a month worth your time? Maybe it is.
+
+494
+00:17:38.665 --> 00:17:39.765
+Um, but that's 700.
+
+495
+00:17:39.835 --> 00:17:40.885
+Like let's, well, uh,
+
+496
+00:17:41.545 --> 00:17:43.885
+you gotta realize like there's probably exp like cost
+
+497
+00:17:43.905 --> 00:17:46.485
+for running the videos, but let's say it's 70%, uh,
+
+498
+00:17:46.505 --> 00:17:48.445
+or a thousand dollars profit is how much they're making.
+
+499
+00:17:48.445 --> 00:17:49.570
+We're not even talking, talking about revenue.
+
+500
+00:17:49.625 --> 00:17:51.245
+That's like their profit after paying
+
+501
+00:17:51.245 --> 00:17:52.365
+for whatever they need to pay for.
+
+502
+00:17:52.665 --> 00:17:55.845
+So 70% of that is $700 a month profit.
+
+503
+00:17:56.315 --> 00:17:58.765
+That could be, um, you know, useful to some people.
+
+504
+00:17:58.785 --> 00:18:00.685
+And I'm not gonna say that that's bad for sure,
+
+505
+00:18:00.685 --> 00:18:01.805
+like $700 a month.
+
+506
+00:18:01.805 --> 00:18:02.805
+Anybody would take it, I would take it.
+
+507
+00:18:03.025 --> 00:18:05.965
+Um, but at the same time, the reason I'd say maybe avoid
+
+508
+00:18:05.965 --> 00:18:07.165
+something like that is simply
+
+509
+00:18:07.165 --> 00:18:09.285
+because you could use that time to find a channel
+
+510
+00:18:09.285 --> 00:18:11.085
+that's making 5,000 a month profit
+
+511
+00:18:11.145 --> 00:18:14.205
+and then 70% of that is gonna be a lot more than $700.
+
+512
+00:18:14.825 --> 00:18:17.165
+Um, so simply compare your video views to your competitors.
+
+513
+00:18:17.165 --> 00:18:19.365
+Similar videos. If you're hitting at least 70%
+
+514
+00:18:19.365 --> 00:18:21.765
+of their numbers, you're on track below that you need
+
+515
+00:18:21.765 --> 00:18:23.845
+to fix your quality of your videos
+
+516
+00:18:24.105 --> 00:18:25.605
+or your thumbnails or your titles.
+
+517
+00:18:25.985 --> 00:18:30.405
+Um, CTR is niche dependent. CTR is also niche dependent.
+
+518
+00:18:30.405 --> 00:18:32.365
+So 5% CTR is actually really good.
+
+519
+00:18:32.545 --> 00:18:34.605
+If everyone in your niche is at 4%,
+
+520
+00:18:34.875 --> 00:18:37.205
+it's terrible if your competitors are at 8% though.
+
+521
+00:18:37.205 --> 00:18:39.685
+So always benchmark against your specific niche,
+
+522
+00:18:39.785 --> 00:18:43.205
+not general YouTube averages, especially for the CTRI mean,
+
+523
+00:18:43.205 --> 00:18:45.525
+in general, like it's hard to kind
+
+524
+00:18:45.525 --> 00:18:48.245
+of give generalized numbers, like, like it is for,
+
+525
+00:18:48.905 --> 00:18:51.965
+for the A VD just in, in general, like when you have,
+
+526
+00:18:51.965 --> 00:18:54.605
+kinda like, it depends on your audience age.
+
+527
+00:18:54.885 --> 00:18:58.445
+Normally I would say for kids niches like ROBLOX videos
+
+528
+00:18:58.465 --> 00:19:01.805
+or Minecraft videos, like you really need 10, 11, 12% even,
+
+529
+00:19:02.265 --> 00:19:04.125
+um, or even higher in some cases
+
+530
+00:19:04.265 --> 00:19:06.245
+to do well on like compilation videos.
+
+531
+00:19:06.405 --> 00:19:08.085
+I, I know I needed at least 8%
+
+532
+00:19:08.665 --> 00:19:10.485
+for documentary style channels.
+
+533
+00:19:10.565 --> 00:19:13.725
+I know it's typically around 7% ish.
+
+534
+00:19:13.865 --> 00:19:15.965
+So it really just depends on the niche, it's hard to say.
+
+535
+00:19:16.145 --> 00:19:17.885
+And you can kind of tell just based on your video,
+
+536
+00:19:17.885 --> 00:19:19.885
+how your video's performing and your stats.
+
+537
+00:19:19.885 --> 00:19:20.885
+Like, it's really easy to tell
+
+538
+00:19:20.885 --> 00:19:22.685
+what your competitors are without being in their
+
+539
+00:19:22.685 --> 00:19:24.005
+analytics based on you.
+
+540
+00:19:24.065 --> 00:19:26.325
+You post a video, it's getting a few hundred views,
+
+541
+00:19:26.325 --> 00:19:27.325
+that means your title's good,
+
+542
+00:19:27.425 --> 00:19:30.165
+but then it's getting stopped at the CTR and your CTR 6%.
+
+543
+00:19:30.435 --> 00:19:32.965
+Well your competitor's CTR is probably like seven, eight
+
+544
+00:19:32.965 --> 00:19:34.125
+or 9% and you need
+
+545
+00:19:34.125 --> 00:19:36.605
+to fix your thumbnails then to get pushed out.
+
+546
+00:19:36.605 --> 00:19:38.685
+So you can kind of use your own numbers to figure out
+
+547
+00:19:38.685 --> 00:19:40.085
+what your competitor's numbers are.
+
+548
+00:19:40.445 --> 00:19:41.725
+'cause if YouTube is pushing out your videos,
+
+549
+00:19:41.835 --> 00:19:43.965
+then you're doing at least the same as your competitors.
+
+550
+00:19:43.965 --> 00:19:45.565
+Otherwise they'd be giving your competitors' views.
+
+551
+00:19:46.025 --> 00:19:47.805
+But if your videos are just not getting pushed out,
+
+552
+00:19:47.805 --> 00:19:50.085
+then clearly your stats are worse than your competitors.
+
+553
+00:19:50.465 --> 00:19:53.405
+And that's gonna be it for, uh, number nine.

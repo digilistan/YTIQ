@@ -1,46 +1,56 @@
-import React, { useState } from 'react';
-import { Search, Bookmark, TrendingUp, BarChart2, AlertCircle, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Bookmark, CheckCircle, AlertTriangle, Trash2, BarChart2, TrendingUp } from 'lucide-react';
+import { RadialBarChart, RadialBar, ResponsiveContainer } from 'recharts';
 import { useSettings } from '../context/SettingsContext';
 
-function ScoreBar({ value }) {
-  const color = value >= 70 ? 'bg-emerald-500' : value >= 45 ? 'bg-amber-500' : 'bg-rose-500';
+function ScoreRing({ score }) {
+  const fill = score >= 70 ? 'var(--green)' : score >= 45 ? 'var(--amber)' : 'var(--red)';
+  const data = [{ value: score, fill }];
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${color} transition-all duration-500`} style={{ width: `${value}%` }} />
+    <div className="relative" style={{ width: 112, height: 112 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <RadialBarChart cx="50%" cy="50%" innerRadius="62%" outerRadius="88%"
+          data={data} startAngle={90} endAngle={90 - (score / 100) * 360} barSize={10}>
+          <RadialBar dataKey="value" cornerRadius={5} background={{ fill: 'var(--bg-elevated)' }} />
+        </RadialBarChart>
+      </ResponsiveContainer>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-2xl font-black" style={{ color: 'var(--text-base)' }}>{score}</span>
+        <span className="text-xs" style={{ color: 'var(--text-muted)' }}>/ 100</span>
       </div>
-      <span className="text-xs font-semibold text-slate-300 w-7 text-right">{value}</span>
     </div>
   );
 }
 
-const COMP_COLOR = { Low: 'text-emerald-400', Medium: 'text-amber-400', High: 'text-rose-400' };
+const COMP_BADGE = { Low: 'badge-green', Medium: 'badge-amber', High: 'badge-red' };
+const VOL_BADGE  = { Low: 'badge-sky',   Medium: 'badge-accent', High: 'badge-violet' };
 
 export function NicheExplorer({ toast }) {
   const { activeChannel } = useSettings();
-  const [topic, setTopic] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [topic, setTopic]       = useState('');
+  const [loading, setLoading]   = useState(false);
   const [analysis, setAnalysis] = useState(null);
-  const [error, setError] = useState(null);
-  const [savedNiches, setSavedNiches] = useState([]);
-  const [saving, setSaving] = useState(false);
+  const [error, setError]       = useState(null);
+  const [saved, setSaved]       = useState([]);
+  const [saving, setSaving]     = useState(false);
+
+  useEffect(() => {
+    fetch('/api/niches')
+      .then(r => r.ok ? r.json() : [])
+      .then(d => setSaved(Array.isArray(d) ? d : []))
+      .catch(() => {});
+  }, []);
 
   const handleAnalyze = async () => {
     if (!topic.trim()) return;
-    setLoading(true);
-    setError(null);
-    setAnalysis(null);
+    setLoading(true); setError(null); setAnalysis(null);
     try {
-      const res = await fetch(`/api/ai/niche-explorer?topic=${encodeURIComponent(topic.trim())}`);
+      const res  = await fetch(`/api/ai/niche-explorer?topic=${encodeURIComponent(topic.trim())}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Analysis failed');
       setAnalysis(data);
-    } catch (err) {
-      setError(err.message);
-      toast(err.message, 'error');
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { setError(err.message); toast(err.message, 'error'); }
+    finally { setLoading(false); }
   };
 
   const handleSave = async () => {
@@ -48,137 +58,137 @@ export function NicheExplorer({ toast }) {
     setSaving(true);
     try {
       await fetch('/api/niches', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: analysis.topic, channel_id: activeChannel?.id })
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic: analysis.topic, analysis: JSON.stringify(analysis), channel_id: activeChannel?.id }),
       });
-      setSavedNiches(prev => [analysis.topic, ...prev.filter(n => n !== analysis.topic)]);
-      toast('Niche saved successfully!', 'success');
-    } catch {
-      toast('Failed to save niche.', 'error');
-    } finally {
-      setSaving(false);
-    }
+      const r2 = await fetch('/api/niches');
+      if (r2.ok) setSaved(await r2.json());
+      toast('Niche saved!', 'success');
+    } catch { toast('Failed to save.', 'error'); }
+    finally { setSaving(false); }
   };
 
-  const isSaved = analysis && savedNiches.includes(analysis.topic);
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`/api/niches/${id}`, { method: 'DELETE' });
+      setSaved(prev => prev.filter(n => n.id !== id));
+      toast('Removed.', 'success');
+    } catch { toast('Failed to remove.', 'error'); }
+  };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-100">Niche Explorer</h1>
-        <p className="text-sm text-slate-500 mt-0.5">Discover YouTube niche potential with AI analysis.</p>
+    <div className="space-y-6 fade-in">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Niche Explorer</h1>
+          <p className="page-subtitle">Analyze YouTube niches with AI-powered opportunity scoring.</p>
+        </div>
       </div>
 
-      {/* Input */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-        <div className="flex gap-3">
+      <div className="card p-5">
+        <div className="flex gap-2">
           <div className="relative flex-1">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
-            <input
-              data-testid="niche-topic-input"
-              id="niche-topic-input"
-              type="text"
-              className="glass-input pl-9 text-sm"
-              placeholder="e.g. Vite 6, AI productivity, budgeting for students…"
-              value={topic}
-              onChange={e => setTopic(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleAnalyze()}
-            />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
+            <input data-testid="niche-topic-input" className="app-input pl-9"
+              placeholder="e.g. personal finance, AI tools, fitness for beginners…"
+              value={topic} onChange={e => setTopic(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleAnalyze()} />
           </div>
-          <button
-            data-testid="niche-analyze-btn"
-            onClick={handleAnalyze}
-            disabled={loading || !topic.trim()}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shrink-0"
-          >
-            {loading ? <span className="spinner" /> : <Search size={14} />}
-            {loading ? 'Analyzing…' : 'Analyze'}
+          <button data-testid="niche-analyze-btn" onClick={handleAnalyze}
+            disabled={loading || !topic.trim()} className="btn btn-primary">
+            {loading ? <><span className="spinner" />Analyzing…</> : <><Search size={14} />Analyze</>}
           </button>
         </div>
       </div>
 
-      {/* Error */}
-      {error && (
-        <div className="flex items-center gap-2 bg-rose-500/8 border border-rose-500/20 rounded-xl px-4 py-3 text-sm text-rose-300">
-          <AlertCircle size={14} className="shrink-0" />
-          {error}
-        </div>
-      )}
+      {error && <div className="notice notice-red"><AlertTriangle size={13} />{error}</div>}
 
-      {/* Results */}
       {analysis && (
-        <div data-testid="niche-results-container" className="space-y-4">
-          {/* Header card */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-            <div className="flex items-start justify-between gap-4">
+        <div data-testid="niche-results-container" className="card p-6 space-y-6">
+          <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+            <div className="flex flex-col items-center gap-1.5 shrink-0">
+              <ScoreRing score={analysis.score ?? 0} />
+              <span className="section-label">Opportunity</span>
+            </div>
+            <div className="flex-1 space-y-3">
               <div>
-                <h2 className="text-lg font-bold text-slate-100">{analysis.topic}</h2>
-                <p className="text-sm text-slate-400 mt-1 leading-relaxed max-w-2xl">{analysis.summary}</p>
+                <h2 className="font-bold text-lg capitalize" style={{ color: 'var(--text-base)' }}>{analysis.topic}</h2>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {analysis.competition && <span className={`badge ${COMP_BADGE[analysis.competition] || 'badge-amber'}`}>{analysis.competition} Competition</span>}
+                  {analysis.searchVolume && <span className={`badge ${VOL_BADGE[analysis.searchVolume]  || 'badge-accent'}`}>{analysis.searchVolume} Volume</span>}
+                  {analysis.trending     && <span className="badge badge-green">🔥 Trending</span>}
+                </div>
               </div>
-              <button
-                data-testid="save-niche-btn"
-                onClick={handleSave}
-                disabled={saving || isSaved}
-                className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition ${
-                  isSaved
-                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-default'
-                    : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
-                }`}
-              >
-                {isSaved ? <CheckCircle size={13} /> : <Bookmark size={13} />}
-                {isSaved ? 'Saved' : 'Save Niche'}
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)' }}>{analysis.summary}</p>
+              <button data-testid="save-niche-btn" onClick={handleSave} disabled={saving} className="btn btn-secondary btn-sm">
+                <Bookmark size={13} />{saving ? 'Saving…' : 'Save Niche'}
               </button>
             </div>
           </div>
 
-          {/* Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide flex items-center gap-1.5">
-                <BarChart2 size={13} /> Opportunity Score
-              </p>
-              <ScoreBar value={analysis.score ?? 0} />
-            </div>
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-1">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Competition</p>
-              <p className={`text-xl font-bold ${COMP_COLOR[analysis.competition] ?? 'text-slate-300'}`}>{analysis.competition ?? '—'}</p>
-            </div>
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-1">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Search Volume</p>
-              <div className="flex items-center gap-2">
-                <TrendingUp size={16} className={analysis.trending ? 'text-emerald-400' : 'text-slate-600'} />
-                <p className="text-xl font-bold text-slate-200">{analysis.searchVolume ?? '—'}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="rounded-xl p-4 space-y-2"
+              style={{ background: 'var(--green-soft)', border: '1px solid var(--green-border)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle size={13} style={{ color: 'var(--green)' }} />
+                <span className="font-semibold text-sm" style={{ color: 'var(--green)' }}>Opportunities</span>
               </div>
+              {(analysis.opportunities || []).map((o, i) => (
+                <p key={i} className="text-xs leading-relaxed" style={{ color: 'var(--text-2)' }}>
+                  <span style={{ color: 'var(--green)', marginRight: 6, fontWeight: 700 }}>✓</span>{o}
+                </p>
+              ))}
+            </div>
+            <div className="rounded-xl p-4 space-y-2"
+              style={{ background: 'var(--red-soft)', border: '1px solid var(--red-border)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle size={13} style={{ color: 'var(--red)' }} />
+                <span className="font-semibold text-sm" style={{ color: 'var(--red)' }}>Risks</span>
+              </div>
+              {(analysis.risks || []).map((r, i) => (
+                <p key={i} className="text-xs leading-relaxed" style={{ color: 'var(--text-2)' }}>
+                  <span style={{ color: 'var(--red)', marginRight: 6, fontWeight: 700 }}>⚠</span>{r}
+                </p>
+              ))}
             </div>
           </div>
+        </div>
+      )}
 
-          {/* Opportunities / Risks */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {analysis.opportunities?.length > 0 && (
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
-                <p className="text-xs font-semibold text-emerald-500 uppercase tracking-wide">Opportunities</p>
-                <ul className="space-y-1.5">
-                  {analysis.opportunities.map((o, i) => (
-                    <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
-                      <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>{o}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {analysis.risks?.length > 0 && (
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
-                <p className="text-xs font-semibold text-rose-500 uppercase tracking-wide">Risks</p>
-                <ul className="space-y-1.5">
-                  {analysis.risks.map((r, i) => (
-                    <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
-                      <span className="text-rose-500 mt-0.5 shrink-0">⚠</span>{r}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+      {!loading && !analysis && !error && (
+        <div className="empty-state">
+          <BarChart2 size={36} className="empty-state-icon" />
+          <p className="font-medium text-sm" style={{ color: 'var(--text-base)' }}>Enter a niche topic above</p>
+          <p className="text-xs">Get an AI-powered score, competition level, opportunities and risks.</p>
+        </div>
+      )}
+
+      {saved.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp size={13} style={{ color: 'var(--accent)' }} />
+            <h2 className="font-semibold text-sm" style={{ color: 'var(--text-base)' }}>Saved Niches</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {saved.map(n => {
+              let parsed = null;
+              try { parsed = n.analysis ? JSON.parse(n.analysis) : null; } catch {}
+              return (
+                <div key={n.id} className="card p-4 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-sm capitalize" style={{ color: 'var(--text-base)' }}>{n.topic}</p>
+                    {parsed?.score != null && (
+                      <span className={`badge mt-1 ${parsed.score >= 70 ? 'badge-green' : parsed.score >= 45 ? 'badge-amber' : 'badge-red'}`}>
+                        Score {parsed.score}
+                      </span>
+                    )}
+                  </div>
+                  <button onClick={() => handleDelete(n.id)} className="btn btn-ghost btn-sm">
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

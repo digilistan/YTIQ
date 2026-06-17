@@ -1,5 +1,6 @@
 import express from 'express';
 import db from '../db/database.js';
+import { resolveChannelId } from '../utils/resolveChannel.js';
 
 const router = express.Router();
 
@@ -7,20 +8,18 @@ function getSetting(key, fallback = '') {
   try {
     const row = db.prepare('SELECT value FROM settings WHERE key = ?').get(key);
     return row ? row.value : fallback;
-  } catch {
-    return fallback;
-  }
+  } catch { return fallback; }
 }
 
-// GET /api/youtube/stats — load cached stats from DB
+// GET /api/youtube/stats — load cached (most recent) stats from DB
 router.get('/stats', (req, res) => {
   try {
     const { channelId } = req.query;
     if (!channelId) return res.status(400).json({ error: 'channelId is required' });
 
     const channel = db.prepare(
-      'SELECT * FROM channels WHERE id = ? OR youtube_channel_id = ? OR REPLACE(name, \' \', \'\') = ?'
-    ).get(channelId, channelId, channelId);
+      'SELECT * FROM channels WHERE id = ? OR youtube_channel_id = ?'
+    ).get(channelId, channelId);
 
     if (!channel) return res.json({ subscribers: 0, total_views: 0, video_count: 0, watch_time: 0 });
 
@@ -32,7 +31,7 @@ router.get('/stats', (req, res) => {
       subscribers: stats?.subscribers ?? 0,
       total_views: stats?.total_views ?? 0,
       video_count: stats?.video_count ?? 0,
-      watch_time: stats?.watch_time ?? 0
+      watch_time: 0,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,13 +46,7 @@ router.get('/sync', async (req, res) => {
 
     const isMock = getSetting('use_mock_api', 'false');
     if (isMock === 'true' || isMock === '1') {
-      return res.json({
-        subscribers: 1000,
-        total_views: 5000,
-        video_count: 10,
-        watch_time: 0,
-        source: 'mock'
-      });
+      return res.json({ subscribers: 1000, total_views: 5000, video_count: 10, watch_time: 0, source: 'mock' });
     }
 
     const apiKey = getSetting('youtube_api_key', '');
@@ -63,19 +56,26 @@ router.get('/sync', async (req, res) => {
       });
     }
 
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${encodeURIComponent(channelId)}&key=${encodeURIComponent(apiKey)}`;
+    // Resolve any format (UC ID, @handle, URL) to a real UC channel ID
+    let resolvedId = channelId;
+    if (!channelId.startsWith('UC')) {
+      try {
+        const resolved = await resolveChannelId(channelId, apiKey);
+        resolvedId = resolved.channelId;
+      } catch (err) {
+        return res.status(400).json({ error: err.message });
+      }
+    }
+
+    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${encodeURIComponent(resolvedId)}&key=${encodeURIComponent(apiKey)}`;
     const ytRes = await fetch(url);
     const ytBody = await ytRes.json();
 
     if (!ytRes.ok) {
-      const msg = ytBody?.error?.message || `YouTube API error (${ytRes.status})`;
-      return res.status(400).json({ error: msg });
+      return res.status(400).json({ error: ytBody?.error?.message || `YouTube API error (${ytRes.status})` });
     }
-
     if (!ytBody.items || ytBody.items.length === 0) {
-      return res.status(404).json({
-        error: `Channel "${channelId}" not found. Verify the channel ID (it should start with "UC").`
-      });
+      return res.status(404).json({ error: `Channel not found. Verify the channel ID or @handle.` });
     }
 
     const stats = ytBody.items[0].statistics;
@@ -84,7 +84,7 @@ router.get('/sync', async (req, res) => {
       total_views: parseInt(stats.viewCount || '0', 10),
       video_count: parseInt(stats.videoCount || '0', 10),
       watch_time: 0,
-      source: 'youtube'
+      source: 'youtube',
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -92,8 +92,6 @@ router.get('/sync', async (req, res) => {
 });
 
 // GET /api/youtube/top-videos
-router.get('/top-videos', (req, res) => {
-  res.json([]);
-});
+router.get('/top-videos', (req, res) => res.json([]));
 
 export default router;

@@ -1,11 +1,13 @@
 import express from 'express';
+import db from '../db/database.js';
 import {
   generateNicheAnalysis,
   generateVideoIdeas,
   generateScript,
   generateSEO,
   generateThumbnailConcepts,
-  generateAngleAnalysis
+  generateAngleAnalysis,
+  generateChannelInsights,
 } from '../services/aiService.js';
 
 const router = express.Router();
@@ -14,9 +16,7 @@ const router = express.Router();
 router.get('/niche-explorer', async (req, res) => {
   try {
     const { topic } = req.query;
-    if (!topic) {
-      return res.status(400).json({ error: 'topic query parameter is required' });
-    }
+    if (!topic) return res.status(400).json({ error: 'topic query parameter is required' });
     const analysis = await generateNicheAnalysis(topic);
     res.json(analysis);
   } catch (error) {
@@ -28,9 +28,7 @@ router.get('/niche-explorer', async (req, res) => {
 router.get('/ideas', async (req, res) => {
   try {
     const { niche } = req.query;
-    if (!niche) {
-      return res.status(400).json({ error: 'niche query parameter is required' });
-    }
+    if (!niche) return res.status(400).json({ error: 'niche query parameter is required' });
     const ideas = await generateVideoIdeas(niche);
     res.json({ ideas });
   } catch (error) {
@@ -42,9 +40,7 @@ router.get('/ideas', async (req, res) => {
 router.get('/generate-script', async (req, res) => {
   try {
     const { title } = req.query;
-    if (!title) {
-      return res.status(400).json({ error: 'title query parameter is required' });
-    }
+    if (!title) return res.status(400).json({ error: 'title query parameter is required' });
     const script = await generateScript(title);
     res.json(script);
   } catch (error) {
@@ -56,9 +52,7 @@ router.get('/generate-script', async (req, res) => {
 router.get('/seo', async (req, res) => {
   try {
     const { title, description } = req.query;
-    if (!title) {
-      return res.status(400).json({ error: 'title query parameter is required' });
-    }
+    if (!title) return res.status(400).json({ error: 'title query parameter is required' });
     const seo = await generateSEO(title, description);
     res.json(seo);
   } catch (error) {
@@ -70,9 +64,7 @@ router.get('/seo', async (req, res) => {
 router.get('/thumbnails', async (req, res) => {
   try {
     const { topic } = req.query;
-    if (!topic) {
-      return res.status(400).json({ error: 'topic query parameter is required' });
-    }
+    if (!topic) return res.status(400).json({ error: 'topic query parameter is required' });
     const concepts = await generateThumbnailConcepts(topic);
     res.json({ concepts });
   } catch (error) {
@@ -84,11 +76,35 @@ router.get('/thumbnails', async (req, res) => {
 router.get('/analyze-angle', async (req, res) => {
   try {
     const { title } = req.query;
-    if (!title) {
-      return res.status(400).json({ error: 'title query parameter is required' });
-    }
+    if (!title) return res.status(400).json({ error: 'title query parameter is required' });
     const suggestion = await generateAngleAnalysis(title);
     res.json({ suggestion });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/ai/channel-insights?channel_id=X
+// Reads real channel_stats history and generates actionable tips via LongCat AI
+router.get('/channel-insights', async (req, res) => {
+  try {
+    const { channel_id } = req.query;
+    if (!channel_id) return res.status(400).json({ error: 'channel_id is required' });
+
+    const channel = db.prepare('SELECT * FROM channels WHERE id = ?').get(channel_id);
+    if (!channel) return res.status(404).json({ error: 'Channel not found' });
+
+    // Pull last 30 real stat rows (no fake data — return empty if none)
+    const statsRows = db.prepare(
+      'SELECT date, subscribers, total_views, video_count FROM channel_stats WHERE channel_id = ? ORDER BY date DESC LIMIT 30'
+    ).all(channel_id);
+
+    if (statsRows.length === 0) {
+      return res.json({ tips: [] });
+    }
+
+    const tips = await generateChannelInsights(channel.name, statsRows);
+    res.json({ tips });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

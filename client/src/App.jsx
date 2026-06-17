@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { useToast } from './hooks/useToast';
 import { ToastContainer } from './components/Toast';
 import { Sidebar } from './components/Sidebar';
@@ -24,16 +25,14 @@ function Shell() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center gap-3 text-slate-500 text-sm">
+      <div className="min-h-screen flex items-center justify-center gap-3 text-sm" style={{ background: 'var(--bg-base)', color: 'var(--text-2)' }}>
         <span className="spinner" />
         Loading YTIq…
       </div>
     );
   }
 
-  const hasAiKey = !!settings.ai_api_key;
-
-  if (!hasAiKey) {
+  if (!settings.ai_api_key) {
     return (
       <>
         <SetupWizard toast={toast} />
@@ -44,57 +43,27 @@ function Shell() {
 
   const renderTab = () => {
     switch (activeTab) {
-      case 'dashboard':
-        return <Dashboard setActiveTab={setActiveTab} toast={toast} />;
-      case 'niche':
-        return <NicheExplorer toast={toast} />;
-      case 'ideas':
-        return (
-          <VideoIdeas
-            setActiveTab={setActiveTab}
-            setActiveIdeaForScript={setActiveIdeaForScript}
-            toast={toast}
-          />
-        );
-      case 'scripts':
-        return (
-          <ScriptWriter
-            activeIdeaForScript={activeIdeaForScript}
-            toast={toast}
-          />
-        );
-      case 'seo':
-        return <SEOOptimizer toast={toast} />;
-      case 'thumbnails':
-        return <ThumbnailGenerator toast={toast} />;
-      case 'calendar':
-        return <ContentCalendar toast={toast} />;
-      case 'competitors':
-        return <CompetitorTracker toast={toast} />;
-      default:
-        return <Dashboard setActiveTab={setActiveTab} toast={toast} />;
+      case 'dashboard':   return <Dashboard setActiveTab={setActiveTab} toast={toast} />;
+      case 'niche':       return <NicheExplorer toast={toast} />;
+      case 'ideas':       return <VideoIdeas setActiveTab={setActiveTab} setActiveIdeaForScript={setActiveIdeaForScript} toast={toast} />;
+      case 'scripts':     return <ScriptWriter activeIdeaForScript={activeIdeaForScript} toast={toast} />;
+      case 'seo':         return <SEOOptimizer toast={toast} />;
+      case 'thumbnails':  return <ThumbnailGenerator toast={toast} />;
+      case 'calendar':    return <ContentCalendar toast={toast} />;
+      case 'competitors': return <CompetitorTracker toast={toast} />;
+      default:            return <Dashboard setActiveTab={setActiveTab} toast={toast} />;
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-950">
-      <Sidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onSettingsOpen={() => setSettingsOpen(true)}
-      />
-
-      <main className="flex-1 p-6 overflow-y-auto">
-        {renderTab()}
+    <div className="flex min-h-screen" style={{ background: 'var(--bg-base)' }}>
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onSettingsOpen={() => setSettingsOpen(true)} />
+      <main className="flex-1 overflow-y-auto p-6 min-w-0">
+        <div className="max-w-6xl mx-auto">
+          {renderTab()}
+        </div>
       </main>
-
-      {settingsOpen && (
-        <SettingsModal
-          onClose={() => setSettingsOpen(false)}
-          toast={toast}
-        />
-      )}
-
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} toast={toast} />}
       <ToastContainer toasts={toasts} dismiss={dismiss} />
     </div>
   );
@@ -102,8 +71,10 @@ function Shell() {
 
 export default function App() {
   return (
-    <SettingsProvider>
-      <Shell />
-    </SettingsProvider>
+    <ThemeProvider>
+      <SettingsProvider>
+        <Shell />
+      </SettingsProvider>
+    </ThemeProvider>
   );
 }

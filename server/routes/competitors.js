@@ -1,9 +1,17 @@
 import express from 'express';
 import db from '../db/database.js';
+import { resolveChannelId } from '../utils/resolveChannel.js';
 
 const router = express.Router();
 
-// GET /api/competitors — list all competitors
+function getSetting(key, fallback = '') {
+  try {
+    const row = db.prepare('SELECT value FROM settings WHERE key = ?').get(key);
+    return row ? row.value : fallback;
+  } catch { return fallback; }
+}
+
+// GET /api/competitors
 router.get('/', (req, res) => {
   try {
     const competitors = db.prepare('SELECT * FROM competitors ORDER BY created_at DESC').all();
@@ -13,25 +21,37 @@ router.get('/', (req, res) => {
   }
 });
 
-// POST /api/competitors — add competitor
-router.post('/', (req, res) => {
+// POST /api/competitors — resolve @handle/URL then insert
+router.post('/', async (req, res) => {
   try {
     const { channel_id, competitor_channel_id, competitor_name, notes } = req.body;
-
     if (!competitor_channel_id) {
-      return res.status(400).json({ error: 'competitor_channel_id is required' });
+      return res.status(400).json({ error: 'Channel ID, @username, or YouTube URL is required' });
     }
 
-    const stmt = db.prepare(`
+    const apiKey = getSetting('youtube_api_key', '');
+    let resolvedId = competitor_channel_id.trim();
+    let resolvedName = competitor_name?.trim() || null;
+
+    if (apiKey) {
+      try {
+        const resolved = await resolveChannelId(resolvedId, apiKey);
+        resolvedId = resolved.channelId;
+        if (!resolvedName) resolvedName = resolved.channelTitle;
+      } catch (err) {
+        return res.status(400).json({ error: err.message });
+      }
+    }
+
+    const existing = db.prepare('SELECT id FROM competitors WHERE competitor_channel_id = ?').get(resolvedId);
+    if (existing) {
+      return res.status(400).json({ error: 'This competitor is already being tracked.' });
+    }
+
+    const result = db.prepare(`
       INSERT INTO competitors (channel_id, competitor_channel_id, competitor_name, notes)
       VALUES (?, ?, ?, ?)
-    `);
-    const result = stmt.run(
-      channel_id || null,
-      competitor_channel_id,
-      competitor_name || null,
-      notes || null
-    );
+    `).run(channel_id || null, resolvedId, resolvedName || resolvedId, notes || null);
 
     const competitor = db.prepare('SELECT * FROM competitors WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(competitor);
@@ -40,28 +60,81 @@ router.post('/', (req, res) => {
   }
 });
 
-// GET /api/competitors/:id/uploads — mock recent uploads
-router.get('/:id/uploads', (req, res) => {
+// DELETE /api/competitors/:id
+router.delete('/:id', (req, res) => {
+  try {
+    const result = db.prepare('DELETE FROM competitors WHERE id = ?').run(req.params.id);
+    res.json({ success: true, changes: result.changes });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/competitors/:id/uploads — real YouTube Data API
+router.get('/:id/uploads', async (req, res) => {
   try {
     const { id } = req.params;
     const competitor = db.prepare('SELECT * FROM competitors WHERE id = ?').get(id);
+    if (!competitor) return res.status(404).json({ error: 'Competitor not found' });
 
-    if (!competitor) {
-      return res.status(404).json({ error: 'Competitor not found' });
+    const apiKey = getSetting('youtube_api_key', '');
+    if (!apiKey) {
+      return res.status(400).json({
+        error: 'No YouTube API key configured. Add one in Settings to fetch real video data.'
+      });
     }
 
-    const name = competitor.competitor_name || 'Competitor';
+    const channelId = competitor.competitor_channel_id;
+    if (!channelId.startsWith('UC')) {
+      return res.status(400).json({
+        error: 'Channel not resolved to a UC ID. Try removing and re-adding this competitor.'
+      });
+    }
 
-    // Return mock recent uploads data
-    const uploads = [
-      { title: `${name} - Latest Strategy Video`, views: 125000, multiplier: 2.4 },
-      { title: `${name} - Tutorial Deep Dive`, views: 89000, multiplier: 1.7 },
-      { title: `${name} - Industry News Recap`, views: 203000, multiplier: 3.8 },
-      { title: `${name} - Behind the Scenes`, views: 45000, multiplier: 0.9 },
-      { title: `${name} - Community Q&A`, views: 67000, multiplier: 1.3 }
-    ];
+    // Uploads playlist = swap "UC" prefix with "UU"
+    const uploadsPlaylistId = 'UU' + channelId.slice(2);
+    const key = encodeURIComponent(apiKey);
 
-    res.json(uploads);
+    // Step 1: Get latest 10 uploads
+    const plRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${key}`
+    );
+    const plBody = await plRes.json();
+
+    if (!plRes.ok) {
+      const msg = plBody?.error?.message || `YouTube API error (${plRes.status})`;
+      return res.status(400).json({ error: msg });
+    }
+
+    if (!plBody.items || plBody.items.length === 0) {
+      return res.json([]);
+    }
+
+    const videoIds = plBody.items
+      .map(item => item.snippet?.resourceId?.videoId)
+      .filter(Boolean);
+
+    if (videoIds.length === 0) return res.json([]);
+
+    // Step 2: Get statistics + snippet for each video
+    const statsRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoIds.join(',')}&key=${key}`
+    );
+    const statsBody = await statsRes.json();
+
+    if (!statsRes.ok || !statsBody.items) return res.json([]);
+
+    const videos = statsBody.items.map(video => ({
+      videoId: video.id,
+      title: video.snippet?.title || 'Unknown',
+      thumbnail: video.snippet?.thumbnails?.medium?.url || null,
+      publishedAt: video.snippet?.publishedAt || null,
+      views: parseInt(video.statistics?.viewCount || '0', 10),
+      likes: parseInt(video.statistics?.likeCount || '0', 10),
+      comments: parseInt(video.statistics?.commentCount || '0', 10),
+    }));
+
+    res.json(videos);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
