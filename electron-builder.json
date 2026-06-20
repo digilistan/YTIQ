@@ -1,0 +1,63 @@
+{
+  "appId": "com.digilistan.creatorsuite",
+  "productName": "CSD Creator Suite",
+  "directories": {
+    "output": "dist-desktop"
+  },
+  "files": [
+    "client/dist/**/*",
+    "server/pov/**/*",
+    "Project-Clipper/DigiClipper/server.py",
+    "Project-Clipper/DigiClipper/app.js",
+    "Project-Clipper/DigiClipper/index.html",
+    "Project-Clipper/DigiClipper/style.css",
+    "Project-Clipper/DigiClipper/blaze_face_short_range.tflite",
+    "electron/main.js",
+    "package.json",
+    "!node_modules",
+    "!client/node_modules",
+    "!server/node_modules",
+    "!.local",
+    "!.git",
+    "!Include",
+    "!Lib",
+    "!scripts",
+    "!share",
+    "!attached_assets",
+    "!.config",
+    "!**/__pycache__",
+    "!server/pov/audio_image_video_generator_local/ai_studio_cache",
+    "!server/pov/audio_image_video_generator_local/local_output",
+    "!server/pov/audio_image_video_generator_local/preview_cache",
+    "!server/pov/audio_image_video_generator_local/runs",
+    "!server/pov/diagnostic_test.py",
+    "!server/pov/sqa_test_suite.py",
+    "!server/pov/*.ipynb"
+  ],
+  "asar": true,
+  "asarUnpack": [
+    "server/pov/**/*",
+    "Project-Clipper/DigiClipper/**/*"
+  ],
+  "electronDist": ".electron-dist",
+  "npmRebuild": false,
+  "win": {
+    "icon": "build/icon.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "requestedExecutionLevel": "requireAdministrator"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "shortcutName": "CSD Creator Suite",
+    "license": "electron/license.txt"
+  }
+}
