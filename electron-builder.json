@@ -19,10 +19,10 @@
     "!server/node_modules",
     "!.local",
     "!.git",
-    "!Include",
-    "!Lib",
-    "!scripts",
-    "!share",
+    "scripts/**/*",
+    "Lib/**/*",
+    "Include/**/*",
+    "pyvenv.cfg",
     "!attached_assets",
     "!.config",
     "!**/__pycache__",
@@ -37,7 +37,10 @@
   "asar": true,
   "asarUnpack": [
     "server/pov/**/*",
-    "Project-Clipper/DigiClipper/**/*"
+    "Project-Clipper/DigiClipper/**/*",
+    "scripts/**/*",
+    "Lib/**/*",
+    "Include/**/*"
   ],
   "electronDist": ".electron-dist",
   "npmRebuild": false,

@@ -14,7 +14,7 @@ function getSetting(key, fallback = '') {
 // GET /api/channels
 router.get('/', (req, res) => {
   try {
-    const channels = db.prepare('SELECT * FROM channels ORDER BY created_at DESC').all();
+    const channels = db.prepare('SELECT * FROM channels WHERE user_id = ? ORDER BY created_at DESC').all(req.user.id);
     res.json(channels);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -41,7 +41,11 @@ router.post('/', async (req, res) => {
         resolvedId = resolved.channelId;
         if (!resolvedName) resolvedName = resolved.channelTitle;
       } catch (err) {
-        return res.status(400).json({ error: err.message });
+        if (isUcId) {
+          console.warn(`[YouTube API] Failed to resolve channel using API key, but input is UC ID. Falling back to direct insertion. Error: ${err.message}`);
+        } else {
+          return res.status(400).json({ error: err.message });
+        }
       }
     } else if (!isUcId) {
       return res.status(400).json({
@@ -49,11 +53,11 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const existing = db.prepare('SELECT * FROM channels WHERE youtube_channel_id = ?').get(resolvedId);
+    const existing = db.prepare('SELECT * FROM channels WHERE youtube_channel_id = ? AND user_id = ?').get(resolvedId, req.user.id);
     if (existing) return res.status(400).json({ error: 'Channel already connected' });
 
     const finalName = resolvedName || `Channel ${resolvedId}`;
-    const result = db.prepare('INSERT INTO channels (youtube_channel_id, name) VALUES (?, ?)').run(resolvedId, finalName);
+    const result = db.prepare('INSERT INTO channels (youtube_channel_id, name, user_id) VALUES (?, ?, ?)').run(resolvedId, finalName, req.user.id);
     const newChannel = db.prepare('SELECT * FROM channels WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(newChannel);
   } catch (error) {
@@ -66,7 +70,7 @@ router.put('/:idOrKey', (req, res) => {
   try {
     const { idOrKey } = req.params;
     const { language, niche, name } = req.body;
-    const channel = db.prepare('SELECT * FROM channels WHERE id = ? OR youtube_channel_id = ?').get(idOrKey, idOrKey);
+    const channel = db.prepare('SELECT * FROM channels WHERE (id = ? OR youtube_channel_id = ?) AND user_id = ?').get(idOrKey, idOrKey, req.user.id);
     if (!channel) return res.status(404).json({ error: 'Channel not found' });
 
     const updates = [], params = [];
@@ -90,7 +94,7 @@ router.post('/:id/stats', (req, res) => {
   try {
     const { id } = req.params;
     const { subscribers, total_views, video_count } = req.body;
-    const channel = db.prepare('SELECT * FROM channels WHERE id = ?').get(id);
+    const channel = db.prepare('SELECT * FROM channels WHERE id = ? AND user_id = ?').get(id, req.user.id);
     if (!channel) return res.status(404).json({ error: 'Channel not found' });
 
     const today = new Date().toISOString().slice(0, 10);
@@ -113,7 +117,7 @@ router.post('/:id/stats', (req, res) => {
 router.get('/:id/stats/history', (req, res) => {
   try {
     const { id } = req.params;
-    const channel = db.prepare('SELECT * FROM channels WHERE id = ?').get(id);
+    const channel = db.prepare('SELECT * FROM channels WHERE id = ? AND user_id = ?').get(id, req.user.id);
     if (!channel) return res.status(404).json({ error: 'Channel not found' });
 
     const rows = db.prepare(
@@ -130,7 +134,10 @@ router.get('/:id/stats/history', (req, res) => {
 router.delete('/:idOrKey', (req, res) => {
   try {
     const { idOrKey } = req.params;
-    const result = db.prepare('DELETE FROM channels WHERE id = ? OR youtube_channel_id = ?').run(idOrKey, idOrKey);
+    const channel = db.prepare('SELECT * FROM channels WHERE (id = ? OR youtube_channel_id = ?) AND user_id = ?').get(idOrKey, idOrKey, req.user.id);
+    if (!channel) return res.status(404).json({ error: 'Channel not found' });
+
+    const result = db.prepare('DELETE FROM channels WHERE id = ?').run(channel.id);
     res.status(200).json({ success: true, changes: result.changes });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -138,3 +145,4 @@ router.delete('/:idOrKey', (req, res) => {
 });
 
 export default router;
+

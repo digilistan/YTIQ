@@ -48,7 +48,23 @@ export function NicheExplorer({ toast }) {
       const res  = await fetch(`/api/ai/niche-explorer?topic=${encodeURIComponent(topic.trim())}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Analysis failed');
-      setAnalysis(data);
+      
+      // Normalize AI response keys for maximum robustness (handling spelling/casing variations)
+      const normalized = { ...data };
+      const oppKey = Object.keys(data).find(k => k.toLowerCase().match(/^opp(u|o)rtunit/));
+      if (oppKey) {
+        normalized.opportunities = Array.isArray(data[oppKey]) ? data[oppKey] : [data[oppKey]];
+      } else {
+        normalized.opportunities = normalized.opportunities || [];
+      }
+      const riskKey = Object.keys(data).find(k => k.toLowerCase().match(/^risk/));
+      if (riskKey) {
+        normalized.risks = Array.isArray(data[riskKey]) ? data[riskKey] : [data[riskKey]];
+      } else {
+        normalized.risks = normalized.risks || [];
+      }
+      
+      setAnalysis(normalized);
     } catch (err) { setError(err.message); toast(err.message, 'error'); }
     finally { setLoading(false); }
   };

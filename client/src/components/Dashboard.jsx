@@ -36,7 +36,7 @@ function StatCard({ label, value, icon: Icon, accentColor, delta }) {
     <div className="stat-card">
       <div className="flex items-center justify-between">
         <span className="section-label">{label}</span>
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: accentColor + '1a' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: accentColor.replace(')', '-soft)') }}>
           <Icon size={14} style={{ color: accentColor }} />
         </div>
       </div>
@@ -228,7 +228,7 @@ export function Dashboard({ setActiveTab, toast }) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 10 }} />
                 <YAxis tickFormatter={fmt} tick={{ fontSize: 10 }} width={45} />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={CustomTooltip} />
                 <Area
                   type="monotone" dataKey="subscribers" name="Subscribers"
                   stroke="var(--accent)" fill="url(#subGrad)" strokeWidth={2} dot={false}
@@ -279,7 +279,7 @@ export function Dashboard({ setActiveTab, toast }) {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 10 }} />
               <YAxis tickFormatter={fmt} tick={{ fontSize: 10 }} width={45} />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={CustomTooltip} />
               <Bar dataKey="total_views" name="Total Views" fill="var(--violet)" opacity={0.75} radius={[3,3,0,0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -297,7 +297,7 @@ export function Dashboard({ setActiveTab, toast }) {
               className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all hover:-translate-y-0.5"
               style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}
             >
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: color + '18' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: color.replace(')', '-soft)') }}>
                 <Icon size={17} style={{ color }} />
               </div>
               <span className="text-xs font-medium text-center leading-snug" style={{ color: 'var(--text-2)' }}>{label}</span>

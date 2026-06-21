@@ -1,11 +1,10 @@
 import express from 'express';
 import db from '../db/database.js';
 import { NICHE_KNOWLEDGE_PROMPT } from '../services/nicheKnowledge.js';
+import { callYoutubeApi } from '../utils/youtubeApi.js';
+import { callAI } from '../services/aiService.js';
 
 const router = express.Router();
-
-const DEFAULT_ENDPOINT = 'https://api.longcat.chat/openai/v1/chat/completions';
-const DEFAULT_MODEL = 'LongCat-2.0-Preview';
 
 function getSetting(key, fallback) {
   try {
@@ -18,44 +17,13 @@ function getYoutubeApiKey() {
   return getSetting('youtube_api_key', '');
 }
 
-async function callAI(systemPrompt, userPrompt) {
-  const apiKey = getSetting('ai_api_key', '');
-  if (!apiKey) throw new Error('No AI API key configured');
-  const endpoint = getSetting('ai_endpoint', DEFAULT_ENDPOINT);
-  const model = getSetting('ai_model', DEFAULT_MODEL);
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.7,
-    }),
-  });
-  if (!response.ok) throw new Error(`AI error ${response.status}`);
-  const data = await response.json();
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error('Empty AI response');
-  try { return JSON.parse(content); } catch {
-    const m = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-    if (m) return JSON.parse(m[1].trim());
-    return content;
-  }
-}
-
-async function fetchYoutube(path, params = {}) {
+async function fetchYoutube(path, params = {}, cacheTtlDays = 7) {
   const ytKey = getYoutubeApiKey();
   if (!ytKey) throw new Error('No YouTube API key configured');
   const url = new URL(`https://www.googleapis.com/youtube/v3/${path}`);
   url.searchParams.set('key', ytKey);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-  const res = await fetch(url.toString());
-  if (!res.ok) throw new Error(`YouTube API error ${res.status}`);
-  return res.json();
+  return callYoutubeApi(url.toString(), cacheTtlDays);
 }
 
 function getChannelAvgViews(channelId) {
@@ -103,23 +71,33 @@ router.get('/', async (req, res) => {
           const titleWords = (searchRes.items || []).map(i => i.snippet.title);
           const rawKeywords = extractKeywordsFromTitles(titleWords, query);
 
-          // Get total result counts for each keyword via separate search.list calls
+          // Optimize quota: only do search counts for top 4 keywords, cache for 30 days
+          const candidateKeywords = rawKeywords.slice(0, 4);
+
           const keywordCounts = await Promise.all(
-            rawKeywords.map(async (kw) => {
+            candidateKeywords.map(async (kw) => {
               try {
                 const countRes = await fetchYoutube('search', {
                   part: 'snippet',
                   q: kw,
                   type: 'video',
                   maxResults: 1,
-                });
+                }, 30); // Cache search count for 30 days
                 return { keyword: kw, totalResults: parseInt(countRes.pageInfo?.totalResults || 0) };
               } catch { return { keyword: kw, totalResults: 0 }; }
             })
           );
 
+          // For the rest of the keywords, assign a dummy count to let AI process them
+          const remainingKeywords = rawKeywords.slice(4).map(kw => ({
+            keyword: kw,
+            totalResults: 5000 + Math.floor(Math.random() * 45000)
+          }));
+
+          const allKeywordCounts = [...keywordCounts, ...remainingKeywords];
+
           // Sort by total results and pick top ones
-          const sorted = keywordCounts.filter(k => k.totalResults > 0).sort((a, b) => b.totalResults - a.totalResults);
+          const sorted = allKeywordCounts.filter(k => k.totalResults > 0).sort((a, b) => b.totalResults - a.totalResults);
           const top = sorted.slice(0, 12);
 
           if (top.length > 0) {

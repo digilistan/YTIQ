@@ -108,18 +108,37 @@ function KeywordsTable({ keywords, loading }) {
 }
 
 function VideoCard({ video }) {
-  const url = video.id ? `https://youtube.com/watch?v=${video.id}` : null;
+  const [imgError, setImgError] = useState(false);
+  const [picsumError, setPicsumError] = useState(false);
+  const isMock = !video.id || video.id.startsWith('mock');
+  const fallbackThumbnail = !isMock ? `https://img.youtube.com/vi/${video.id}/mqdefault.jpg` : null;
+  const seed = encodeURIComponent(video.title || video.id || 'video');
+  const picsumThumbnail = `https://picsum.photos/320/180?random=${seed}`;
+  const mainThumbnail = video.thumbnail || fallbackThumbnail || picsumThumbnail;
+  const url = isMock 
+    ? `https://www.youtube.com/results?search_query=${encodeURIComponent(video.title + ' ' + (video.channel || ''))}`
+    : `https://youtube.com/watch?v=${video.id}`;
+
   return (
     <div className="card overflow-hidden flex flex-col" style={{ minWidth: 220, maxWidth: 280 }}>
       <div className="relative" style={{ aspectRatio: '16/9', background: 'var(--bg-elevated)' }}>
-        {video.thumbnail ? (
-          <img src={video.thumbnail} alt={video.title}
+        {!picsumError ? (
+          <img 
+            src={imgError ? picsumThumbnail : mainThumbnail} 
+            alt={video.title}
             className="w-full h-full object-cover"
-            onError={e => { e.target.style.display = 'none'; }}
+            onError={() => {
+              if (!imgError) {
+                setImgError(true);
+              } else {
+                setPicsumError(true);
+              }
+            }}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ background: 'var(--bg-elevated)' }}>
-            <Video size={28} style={{ color: 'var(--text-muted)', opacity: 0.4 }} />
+          <div className="w-full h-full flex items-center justify-center" 
+            style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #311042 100%)' }}>
+            <Video size={28} style={{ color: '#818cf8', opacity: 0.6 }} />
           </div>
         )}
         <div className="absolute top-2 right-2">
@@ -133,7 +152,9 @@ function VideoCard({ video }) {
           <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>{video.views} views</span>
           {url && (
             <a href={url} target="_blank" rel="noopener noreferrer"
-              className="btn btn-ghost btn-sm" style={{ padding: '2px 6px' }}>
+              className="btn btn-ghost btn-sm" style={{ padding: '2px 6px' }}
+              title={isMock ? "Search on YouTube" : "Watch on YouTube"}
+            >
               <ExternalLink size={11} />
             </a>
           )}
@@ -144,13 +165,29 @@ function VideoCard({ video }) {
 }
 
 function ChannelCard({ channel }) {
+  const [imgError, setImgError] = useState(false);
+  const [dicebearError, setDicebearError] = useState(false);
+  const seed = encodeURIComponent(channel.name || 'channel');
+  const dicebearThumbnail = `https://api.dicebear.com/7.x/identicon/svg?seed=${seed}`;
+  const mainThumbnail = channel.thumbnail || dicebearThumbnail;
+
   return (
     <div className="card p-4 flex gap-3 items-start">
       <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 flex items-center justify-center"
         style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
-        {channel.thumbnail ? (
-          <img src={channel.thumbnail} alt={channel.name} className="w-full h-full object-cover"
-            onError={e => { e.target.style.display = 'none'; }} />
+        {!dicebearError ? (
+          <img 
+            src={imgError ? dicebearThumbnail : mainThumbnail} 
+            alt={channel.name} 
+            className="w-full h-full object-cover"
+            onError={() => {
+              if (!imgError) {
+                setImgError(true);
+              } else {
+                setDicebearError(true);
+              }
+            }} 
+          />
         ) : (
           <Users size={16} style={{ color: 'var(--text-muted)' }} />
         )}
@@ -216,7 +253,7 @@ export function Research({ toast }) {
 
   useEffect(() => {
     if (!data[cacheKey]) fetchData(activeTab, query);
-  }, [activeTab, query, cacheKey]);
+  }, [cacheKey, fetchData, data]);
 
   const handleSearch = () => {
     const q = searchInput.trim();

@@ -8,7 +8,9 @@ const __dirname = path.dirname(__filename);
 const dbName = process.env.NODE_ENV === 'test' ? 'ytiq_test.db' : 'ytiq.db';
 const dbPath = path.join(__dirname, dbName);
 
-const db = new Database(dbPath, { verbose: console.log });
+const db = new Database(dbPath, {
+  verbose: (process.env.NODE_ENV === 'development' || process.env.DEBUG_DB === 'true') ? console.log : undefined
+});
 
 // Enable Foreign Key constraints
 db.pragma('foreign_keys = ON');

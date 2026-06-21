@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const SettingsContext = createContext(null);
 
@@ -184,9 +185,6 @@ export function SettingsProvider({ children }) {
     if (!channel) return;
     try {
       let paramId = channel.youtube_channel_id;
-      if (channel.name === 'Tech Channel') paramId = 'TechChannel';
-      if (channel.name === 'Empty Channel') paramId = 'EmptyChannel';
-      
       const res = await fetch(`/api/youtube/stats?channelId=${paramId}`);
       if (!res.ok) throw new Error('Failed to load stats');
       const data = await res.json();
@@ -207,7 +205,20 @@ export function SettingsProvider({ children }) {
     }
   };
 
+  const { isAuthenticated } = useAuth();
+
   useEffect(() => {
+    if (!isAuthenticated) {
+      setSettings({});
+      setChannels([]);
+      setActiveChannel(null);
+      setStats({ subscribers: 0, total_views: 0, video_count: 0, watch_time: 0 });
+      setTopVideos([]);
+      localStorage.removeItem('active_channel_id');
+      setLoading(false);
+      return;
+    }
+
     const init = async () => {
       setLoading(true);
       try {
@@ -219,7 +230,7 @@ export function SettingsProvider({ children }) {
       }
     };
     init();
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (activeChannel) {

@@ -37,7 +37,8 @@ function makeRequest(url) {
 }
 
 async function runConcurrencyTest() {
-  const url = 'http://localhost:5000/api/health';
+  const port = process.env.PORT || 3001;
+  const url = `http://localhost:${port}/api/health`;
   const concurrencyCount = 50;
   console.log(`Starting concurrency test on ${url} with ${concurrencyCount} parallel requests using http.get...`);
 

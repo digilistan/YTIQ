@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, Eye, EyeOff, Plus, Trash2, Save, ToggleLeft, ToggleRight, CheckCircle } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
+import { useAuth } from '../context/AuthContext';
 
 function Field({ label, children }) {
   return (
@@ -28,6 +29,7 @@ function PasswordInput({ value, onChange, placeholder, testId, autoComplete }) {
 
 export function SettingsModal({ onClose, toast }) {
   const { settings, channels, activeChannel, updateSettings, addChannel, deleteChannel, setActiveChannel } = useSettings();
+  const { isAdmin } = useAuth();
 
   const [ytKey, setYtKey]         = useState(settings.youtube_api_key || '');
   const [aiKey, setAiKey]         = useState(settings.ai_api_key || '');
@@ -89,50 +91,52 @@ export function SettingsModal({ onClose, toast }) {
         </div>
 
         <div className="p-6 space-y-8">
-          {/* AI Configuration */}
-          <section className="space-y-4">
-            <h3 className="section-label" style={{ color: 'var(--accent-2)' }}>AI Configuration</h3>
-            <Field label="AI API Key">
-              <PasswordInput testId="ai-api-key-input" value={aiKey} onChange={e => setAiKey(e.target.value)}
-                placeholder="Your LongCat / OpenAI-compatible API key…" autoComplete="off" />
-            </Field>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label="API Endpoint">
-                <input name="ai_endpoint" className="app-input" value={aiEndpoint} onChange={e => setAiEp(e.target.value)}
-                  placeholder="https://api.longcat.chat/openai/v1/chat/completions" />
-              </Field>
-              <Field label="Model">
-                <input name="ai_model" className="app-input" value={aiModel} onChange={e => setAiModel(e.target.value)}
-                  placeholder="LongCat-2.0-Preview" />
-              </Field>
-            </div>
-            <div className="flex items-center justify-between p-3.5 rounded-xl"
-              style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
-              <div>
-                <p className="text-sm font-medium" style={{ color: 'var(--text-base)' }}>Mock API Mode</p>
-                <p className="text-xs mt-0.5" style={{ color: 'var(--text-2)' }}>Use canned responses for testing without consuming API credits</p>
-              </div>
-              <button data-testid="api-mock-toggle" aria-checked={useMock} onClick={() => setUseMock(v => !v)}
-                className="transition" style={{ color: useMock ? 'var(--accent)' : 'var(--text-muted)' }}>
-                {useMock ? <ToggleRight size={28} /> : <ToggleLeft size={28} />}
-              </button>
-            </div>
-          </section>
+          {/* AI & Data Sync Configuration (Admin only) */}
+          {isAdmin && (
+            <>
+              {/* AI Configuration */}
+              <section className="space-y-4">
+                <h3 className="section-label" style={{ color: 'var(--accent-2)' }}>AI Engine Configuration</h3>
+                <Field label="AI Activation Key">
+                  <PasswordInput testId="ai-api-key-input" value={aiKey} onChange={e => setAiKey(e.target.value)}
+                    placeholder="Enter AI engine credentials…" autoComplete="off" />
+                </Field>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Gateway URL">
+                    <input name="ai_endpoint" className="app-input" value={aiEndpoint} onChange={e => setAiEp(e.target.value)}
+                      placeholder="Enter custom API gateway URL…" />
+                  </Field>
+                  <Field label="Processing Model">
+                    <input name="ai_model" className="app-input" value={aiModel} onChange={e => setAiModel(e.target.value)}
+                      placeholder="Enter model descriptor…" />
+                  </Field>
+                </div>
+                <div className="flex items-center justify-between p-3.5 rounded-xl"
+                  style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: 'var(--text-base)' }}>Mock Testing Mode</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--text-2)' }}>Use canned responses for offline testing without consuming API credits</p>
+                  </div>
+                  <button data-testid="api-mock-toggle" aria-checked={useMock} onClick={() => setUseMock(v => !v)}
+                    className="transition" style={{ color: useMock ? 'var(--accent)' : 'var(--text-muted)' }}>
+                    {useMock ? <ToggleRight size={28} /> : <ToggleLeft size={28} />}
+                  </button>
+                </div>
+              </section>
 
-          {/* YouTube Configuration */}
-          <section className="space-y-4">
-            <h3 className="section-label" style={{ color: 'var(--accent-2)' }}>YouTube Configuration</h3>
-            <Field label="YouTube Data API v3 Key">
-              <PasswordInput testId="youtube-api-key-input" value={ytKey} onChange={e => setYtKey(e.target.value)}
-                placeholder="AIzaSy…" autoComplete="off" />
-            </Field>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              Get a key at{' '}
-              <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer"
-                style={{ color: 'var(--accent)' }}>Google Cloud Console</a>{' '}
-              — enable the YouTube Data API v3. Also unlocks @handle resolution when adding channels.
-            </p>
-          </section>
+              {/* YouTube Configuration */}
+              <section className="space-y-4">
+                <h3 className="section-label" style={{ color: 'var(--accent-2)' }}>Data Sync Configuration</h3>
+                <Field label="Data Sync Engine Key">
+                  <PasswordInput testId="youtube-api-key-input" value={ytKey} onChange={e => setYtKey(e.target.value)}
+                    placeholder="Enter data sync credentials…" autoComplete="off" />
+                </Field>
+                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                  Configure your data sync credentials to enable handle resolution, auto-completing display names, and automatic statistics tracking.
+                </p>
+              </section>
+            </>
+          )}
 
           {/* Channel Management */}
           <section className="space-y-4">
@@ -174,6 +178,26 @@ export function SettingsModal({ onClose, toast }) {
             <form onSubmit={handleAddChannel} className="rounded-xl p-4 space-y-3"
               style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
               <p className="section-label">Connect New Channel</p>
+              
+              {!isAdmin && (
+                <div className="text-xs p-3.5 rounded-xl space-y-1.5"
+                  style={{
+                    background: 'rgba(99, 102, 241, 0.08)',
+                    border: '1px solid rgba(99, 102, 241, 0.25)',
+                    color: 'var(--text-base)'
+                  }}>
+                  <p className="font-semibold text-indigo-400">💡 Channel Connection Guide</p>
+                  <p style={{ color: 'var(--text-muted)' }}>The system uses the central administrator credentials to sync data, so you do not need to provide any API keys.</p>
+                  <p className="font-medium mt-1">To find your YouTube Channel ID:</p>
+                  <ul className="list-disc pl-4 space-y-1" style={{ color: 'var(--text-2)' }}>
+                    <li>Open your YouTube Channel homepage in a web browser.</li>
+                    <li>If the URL contains <code>/channel/UC...</code>, copy the <code>UC...</code> part.</li>
+                    <li>If the URL uses a handle (e.g. <code>youtube.com/@handle</code>), click on "More about this channel" (or the description arrow) and select "Share ➔ Copy Channel ID".</li>
+                    <li>Alternatively, go to YouTube Settings ➔ Advanced settings to retrieve your Channel ID.</li>
+                  </ul>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input data-testid="add-channel-input" className="app-input"
                   placeholder="@handle, UC… ID, or YouTube URL"
@@ -192,12 +216,18 @@ export function SettingsModal({ onClose, toast }) {
 
         {/* Footer */}
         <div className="flex items-center justify-between px-6 py-4" style={{ borderTop: '1px solid var(--border)' }}>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Digilistan · YTIq v1.0</p>
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Digilistan · CSD v1.0</p>
           <div className="flex gap-2">
-            <button onClick={onClose} className="btn btn-secondary">Cancel</button>
-            <button onClick={handleSave} disabled={saving} className="btn btn-primary">
-              <Save size={13} />{saving ? 'Saving…' : 'Save Settings'}
-            </button>
+            {isAdmin ? (
+              <>
+                <button onClick={onClose} className="btn btn-secondary">Cancel</button>
+                <button onClick={handleSave} disabled={saving} className="btn btn-primary">
+                  <Save size={13} />{saving ? 'Saving…' : 'Save Settings'}
+                </button>
+              </>
+            ) : (
+              <button onClick={onClose} className="btn btn-primary">Close</button>
+            )}
           </div>
         </div>
       </div>

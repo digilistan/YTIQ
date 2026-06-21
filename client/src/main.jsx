@@ -8,7 +8,7 @@ const originalFetch = window.fetch;
 window.fetch = async function (input, init = {}) {
   // In production builds (packaged app), always direct database API calls to the secure remote VPS.
   // In development mode (Vite dev server), use relative pathing to allow Vite proxying.
-  const API_BASE = import.meta.env.PROD ? 'https://tools.digilistan.com' : '';
+  const API_BASE = '';
   const NANOBANANA_BASE = 'http://127.0.0.1:5055';
   
   let finalInput = input;

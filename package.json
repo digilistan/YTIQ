@@ -1,9 +1,13 @@
 {
   "name": "csd",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "description": "CSD - Content Suite Dashboard",
   "author": "Muzammil Ali",
   "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\" \"cd Project-Clipper/DigiClipper && ..\\..\\scripts\\python.exe server.py\" \"scripts\\python.exe server/pov/app.py\"",
@@ -21,5 +25,8 @@
     "electron": "^42.4.1",
     "electron-builder": "^26.15.3",
     "javascript-obfuscator": "^5.4.3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1"
   }
 }

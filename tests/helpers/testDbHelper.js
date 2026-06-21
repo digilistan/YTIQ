@@ -1,4 +1,4 @@
-const Database = require('better-sqlite3');
+const Database = require('../../server/node_modules/better-sqlite3');
 const path = require('path');
 
 if (process.env.NODE_ENV !== 'test') {

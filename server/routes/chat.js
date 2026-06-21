@@ -1,6 +1,8 @@
 import express from 'express';
 import db from '../db/database.js';
 import { NICHE_KNOWLEDGE_PROMPT } from '../services/nicheKnowledge.js';
+import { callYoutubeApi } from '../utils/youtubeApi.js';
+import { queueAICall } from '../services/aiService.js';
 
 const router = express.Router();
 
@@ -14,10 +16,159 @@ function getSetting(key, fallback) {
   } catch { return fallback; }
 }
 
-// POST /api/chat
+/**
+ * Helper to analyze the user's message in the background
+ * and automatically extract permanent facts about their niche, goals, style, etc.
+ */
+async function autoExtractMemory(userMessage, apiKey, endpoint, model, userId) {
+  try {
+    const systemPrompt = `You are a memory processor for a YouTube advisor AI. 
+Analyze the user's message and extract any new permanent facts, preferences, goals, or settings about the user, their channel, or their content strategy.
+Write each fact as a short, concise, single-sentence statement (e.g., "User's channel name is Muzammil", "User targets budget-conscious students", "User prefers faceless videos").
+Only extract facts that are stated as truth by the user. Do not extract temporary questions.
+Respond ONLY with a valid JSON array of strings, e.g., ["fact 1", "fact 2"]. If no new permanent facts are found, return [].`;
+
+    const content = await queueAICall(async () => {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMessage },
+          ],
+          temperature: 0.1,
+        }),
+        signal: AbortSignal.timeout(30000)
+      });
+
+      if (!response.ok) throw new Error(`Memory extraction failed with status: ${response.status}`);
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content;
+    });
+
+    if (content) {
+      let facts = [];
+      try {
+        facts = JSON.parse(content);
+      } catch {
+        const m = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+        if (m) facts = JSON.parse(m[1].trim());
+      }
+        if (Array.isArray(facts)) {
+          for (const fact of facts) {
+            if (typeof fact === 'string' && fact.trim()) {
+              const cleanedFact = fact.trim();
+              // Prevent duplicates per user
+              const exists = db.prepare('SELECT 1 FROM chat_memory WHERE fact = ? AND user_id = ?').get(cleanedFact, userId);
+              if (!exists) {
+                db.prepare('INSERT INTO chat_memory (fact, user_id) VALUES (?, ?)').run(cleanedFact, userId);
+                console.log(`[AI Chat Memory] Automatically saved fact: "${cleanedFact}" for user ${userId}`);
+              }
+            }
+          }
+        }
+      }
+  } catch (err) {
+    console.error('[AI Chat Memory] Auto extraction failed:', err);
+  }
+}
+
+// GET /api/chat/sessions - Get list of sessions
+router.get('/sessions', (req, res) => {
+  try {
+    const rows = db.prepare('SELECT * FROM chat_sessions WHERE user_id = ? ORDER BY updated_at DESC').all(req.user.id);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/chat/sessions/:id - Get session messages
+router.get('/sessions/:id', (req, res) => {
+  try {
+    const session = db.prepare('SELECT * FROM chat_sessions WHERE id = ? AND user_id = ?').get(req.params.id, req.user.id);
+    if (!session) return res.status(404).json({ error: 'Session not found or access denied' });
+
+    const messages = db.prepare('SELECT role, content, created_at FROM chat_messages WHERE session_id = ? ORDER BY created_at ASC').all(req.params.id);
+    res.json({ session, messages });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE /api/chat/sessions/:id - Delete a session
+router.delete('/sessions/:id', (req, res) => {
+  try {
+    const result = db.prepare('DELETE FROM chat_sessions WHERE id = ? AND user_id = ?').run(req.params.id, req.user.id);
+    if (result.changes === 0) return res.status(404).json({ error: 'Session not found or access denied' });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PUT /api/chat/sessions/:id - Update session title
+router.put('/sessions/:id', (req, res) => {
+  try {
+    const { title } = req.body;
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: 'Title is required' });
+    }
+    const result = db.prepare('UPDATE chat_sessions SET title = ? WHERE id = ? AND user_id = ?').run(title.trim(), req.params.id, req.user.id);
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Session not found or access denied' });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/chat/memory - Get all long term memory facts
+router.get('/memory', (req, res) => {
+  try {
+    const rows = db.prepare('SELECT * FROM chat_memory WHERE user_id = ? ORDER BY created_at DESC').all(req.user.id);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/chat/memory - Manually add a memory fact
+router.post('/memory', (req, res) => {
+  try {
+    const { fact } = req.body;
+    if (!fact || !fact.trim()) {
+      return res.status(400).json({ error: 'Fact is required' });
+    }
+    const result = db.prepare('INSERT INTO chat_memory (fact, user_id) VALUES (?, ?)').run(fact.trim(), req.user.id);
+    const newMemory = db.prepare('SELECT * FROM chat_memory WHERE id = ?').get(result.lastInsertRowid);
+    res.status(201).json(newMemory);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE /api/chat/memory/:id - Delete a memory fact
+router.delete('/memory/:id', (req, res) => {
+  try {
+    const result = db.prepare('DELETE FROM chat_memory WHERE id = ? AND user_id = ?').run(req.params.id, req.user.id);
+    if (result.changes === 0) return res.status(404).json({ error: 'Memory fact not found or access denied' });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/chat - Main endpoint (supports implicitly saving/starting sessions)
 router.post('/', async (req, res) => {
   try {
-    const { messages = [], channel_id } = req.body;
+    const { messages = [], channel_id, session_id, scrape_youtube } = req.body;
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: 'messages array is required' });
@@ -31,10 +182,52 @@ router.post('/', async (req, res) => {
     const endpoint = getSetting('ai_endpoint', DEFAULT_ENDPOINT);
     const model = getSetting('ai_model', DEFAULT_MODEL);
 
+    let activeSessionId = session_id;
+    const lastMsg = messages[messages.length - 1];
+    if (!lastMsg || typeof lastMsg.content !== 'string') {
+      return res.status(400).json({ error: 'Last message must have content string' });
+    }
+    const latestUserMessage = lastMsg.content;
+
+    // 1. Manage session/message persistence
+    try {
+      if (!activeSessionId) {
+        // Create new session implicitly
+        const title = latestUserMessage.slice(0, 35) + (latestUserMessage.length > 35 ? '...' : '');
+        const sessResult = db.prepare('INSERT INTO chat_sessions (title, user_id) VALUES (?, ?)').run(title, req.user.id);
+        activeSessionId = sessResult.lastInsertRowid;
+      } else {
+        // Verify session belongs to user
+        const session = db.prepare('SELECT 1 FROM chat_sessions WHERE id = ? AND user_id = ?').get(activeSessionId, req.user.id);
+        if (!session) {
+          return res.status(403).json({ error: 'Access denied to this chat session' });
+        }
+      }
+
+      // Save user message to DB
+      db.prepare('INSERT INTO chat_messages (session_id, role, content) VALUES (?, ?, ?)')
+        .run(activeSessionId, 'user', latestUserMessage);
+    } catch (dbErr) {
+      console.error('[AI Chat] DB message save error:', dbErr);
+    }
+
+    // 2. Fetch context (Memory + Channel data)
+    let memoryContext = '';
+    try {
+      const memoryRows = db.prepare('SELECT fact FROM chat_memory WHERE user_id = ?').all(req.user.id);
+      if (memoryRows.length > 0) {
+        memoryContext = `
+## LONG-TERM USER PREFERENCES & MEMORY
+(Use these facts/preferences to personalize your advice. Always respect them):
+${memoryRows.map(r => `- ${r.fact}`).join('\n')}
+`;
+      }
+    } catch (_) {}
+
     let channelContext = '';
     if (channel_id) {
       try {
-        const channel = db.prepare('SELECT * FROM channels WHERE id = ?').get(channel_id);
+        const channel = db.prepare('SELECT * FROM channels WHERE id = ? AND user_id = ?').get(channel_id, req.user.id);
         if (channel) {
           const stats = db.prepare(
             'SELECT * FROM channel_stats WHERE channel_id = ? ORDER BY date DESC LIMIT 5'
@@ -57,36 +250,154 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
       } catch (_) {}
     }
 
-    const systemPrompt = NICHE_KNOWLEDGE_PROMPT + channelContext;
+    let ytContext = '';
+    if (scrape_youtube) {
+      const ytKey = getSetting('youtube_api_key', '');
+      if (ytKey) {
+        try {
+          console.log('[YouTube Scraper] Extracting search query from message...');
+          let searchQueries = [];
+          
+          // Fast LLM query to extract exactly one query phrase
+          const content = await queueAICall(async () => {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+              },
+              body: JSON.stringify({
+                model,
+                messages: [
+                  { 
+                    role: 'system', 
+                    content: 'You are a search query extractor. Analyze the user\'s message and extract exactly ONE search query to search YouTube for relevant videos or channels. Respond ONLY with a valid JSON array containing a single string, e.g., ["best coding tips"]. If no YouTube search is appropriate, return [].' 
+                  },
+                  { role: 'user', content: latestUserMessage }
+                ],
+                temperature: 0.1,
+                max_tokens: 60
+              }),
+              signal: AbortSignal.timeout(30000)
+            });
+            if (!response.ok) throw new Error(`Query extraction failed with status: ${response.status}`);
+            const data = await response.json();
+            return data.choices?.[0]?.message?.content || '';
+          });
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages,
-        ],
-        temperature: 0.7,
-      }),
+          if (content) {
+            const match = content.match(/\[([\s\S]*?)\]/);
+            if (match) {
+              try {
+                searchQueries = JSON.parse(match[0]);
+              } catch (_) {}
+            }
+          }
+
+          // Fallback if extraction failed
+          if (!Array.isArray(searchQueries) || searchQueries.length === 0) {
+            const quoteMatch = latestUserMessage.match(/"([^"]+)"/);
+            if (quoteMatch) {
+              searchQueries = [quoteMatch[1]];
+            } else {
+              const cleanQuery = latestUserMessage.replace(/[^\w\s\u0600-\u06FF]/g, '').slice(0, 60).trim();
+              if (cleanQuery) searchQueries = [cleanQuery];
+            }
+          }
+
+          if (searchQueries.length > 0 && searchQueries[0]) {
+            const targetQuery = searchQueries[0];
+            console.log(`[YouTube Scraper] Executing YouTube search for: "${targetQuery}"`);
+
+            const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(targetQuery)}&type=video&maxResults=5&key=${encodeURIComponent(ytKey)}`;
+            const searchData = await callYoutubeApi(searchUrl, 7); // Cache search list for 7 days
+            
+            const items = searchData.items || [];
+            const videoIds = items.map(item => item.id?.videoId).filter(Boolean);
+
+            let videoDetails = [];
+            if (videoIds.length > 0) {
+              const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${encodeURIComponent(videoIds.join(','))}&key=${encodeURIComponent(ytKey)}`;
+              const detailsData = await callYoutubeApi(detailsUrl, 7); // Cache video details for 7 days
+              videoDetails = (detailsData.items || []).map(v => ({
+                title: v.snippet?.title || 'N/A',
+                channel: v.snippet?.channelTitle || 'N/A',
+                views: parseInt(v.statistics?.viewCount || '0', 10),
+                publishedAt: v.snippet?.publishedAt || '',
+                id: v.id
+              }));
+            }
+
+            if (videoDetails.length > 0) {
+              ytContext = `
+## LIVE YOUTUBE SEARCH DATA FOR QUERY: "${targetQuery}"
+(Here are the actual live search results fetched from YouTube. Use these findings to enrich your advice and provide factual statistics to the user):
+`;
+              videoDetails.forEach((v, index) => {
+                ytContext += `${index + 1}. **"${v.title}"** by channel *${v.channel}*
+   - Views: ${v.views.toLocaleString()} views
+   - Published: ${v.publishedAt ? new Date(v.publishedAt).toLocaleDateString() : 'N/A'}
+   - Link: https://youtube.com/watch?v=${v.id}
+`;
+              });
+              ytContext += `\n`;
+            }
+          }
+        } catch (scrapErr) {
+          console.error('[YouTube Scraper] Error during scraping:', scrapErr);
+        }
+      }
+    }
+
+    const systemPrompt = NICHE_KNOWLEDGE_PROMPT + memoryContext + channelContext + ytContext;
+
+    // 3. Request LLM response
+    const content = await queueAICall(async () => {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            ...messages,
+          ],
+          temperature: 0.7,
+        }),
+        signal: AbortSignal.timeout(60000)
+      });
+
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(`AI API error (${response.status}): ${body}`);
+      }
+
+      const data = await response.json();
+      const c = data.choices?.[0]?.message?.content;
+      if (!c) {
+        throw new Error('AI returned an empty response');
+      }
+      return c;
     });
 
-    if (!response.ok) {
-      const body = await response.text();
-      return res.status(500).json({ error: `AI API error (${response.status}): ${body}` });
+    // 4. Save AI reply to DB
+    try {
+      db.prepare('INSERT INTO chat_messages (session_id, role, content) VALUES (?, ?, ?)')
+        .run(activeSessionId, 'assistant', content);
+      
+      db.prepare('UPDATE chat_sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+        .run(activeSessionId);
+    } catch (dbErr) {
+      console.error('[AI Chat] DB reply save error:', dbErr);
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) {
-      return res.status(500).json({ error: 'AI returned an empty response' });
-    }
+    // 5. Fire off asynchronous memory extraction (no await so it doesn't block the client)
+    autoExtractMemory(latestUserMessage, apiKey, endpoint, model, req.user.id);
 
-    res.json({ reply: content });
+    res.json({ reply: content, session_id: activeSessionId });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

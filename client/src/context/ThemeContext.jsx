@@ -4,7 +4,7 @@ const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    try { return localStorage.getItem('ytiq_theme') || 'dark'; } catch { return 'dark'; }
+    try { return localStorage.getItem('csd_theme') || 'dark'; } catch { return 'dark'; }
   });
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.remove('light');
     }
-    try { localStorage.setItem('ytiq_theme', theme); } catch {}
+    try { localStorage.setItem('csd_theme', theme); } catch {}
   }, [theme]);
 
   const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark');

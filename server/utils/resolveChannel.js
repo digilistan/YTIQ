@@ -11,6 +11,8 @@
  *   https://youtube.com/user/username  (legacy)
  *   https://youtube.com/c/customname   (legacy)
  */
+import { callYoutubeApi } from './youtubeApi.js';
+
 export async function resolveChannelId(input, apiKey) {
   if (!input || typeof input !== 'string') throw new Error('Channel input is required');
 
@@ -49,20 +51,13 @@ export async function resolveChannelId(input, apiKey) {
   const BASE = 'https://www.googleapis.com/youtube/v3/channels';
   const key = encodeURIComponent(apiKey);
 
-  const tryFetch = async (url) => {
-    const res = await fetch(url);
-    const body = await res.json();
-    if (!res.ok) throw new Error(body?.error?.message || `YouTube API error (${res.status})`);
-    return body;
-  };
-
   let body;
   if (channelId) {
-    body = await tryFetch(`${BASE}?part=snippet&id=${encodeURIComponent(channelId)}&key=${key}`);
+    body = await callYoutubeApi(`${BASE}?part=snippet&id=${encodeURIComponent(channelId)}&key=${key}`, 30);
   } else {
-    body = await tryFetch(`${BASE}?part=snippet&forHandle=${encodeURIComponent(handle)}&key=${key}`);
+    body = await callYoutubeApi(`${BASE}?part=snippet&forHandle=${encodeURIComponent(handle)}&key=${key}`, 30);
     if (!body.items || body.items.length === 0) {
-      body = await tryFetch(`${BASE}?part=snippet&forUsername=${encodeURIComponent(handle)}&key=${key}`);
+      body = await callYoutubeApi(`${BASE}?part=snippet&forUsername=${encodeURIComponent(handle)}&key=${key}`, 30);
     }
   }
 

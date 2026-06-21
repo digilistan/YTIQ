@@ -20,7 +20,9 @@ export function ContentCalendar({ toast }) {
   const [selected, setSelected]       = useState(null);
   const [eventStatus, setEventStatus] = useState('planned');
   const [eventNotes, setEventNotes]   = useState('');
+  const [eventTitle, setEventTitle]   = useState('');
   const [saving, setSaving]           = useState(false);
+  const [deleting, setDeleting]       = useState(false);
   const [viewMode, setViewMode]       = useState('monthly');
 
   const now = new Date();
@@ -84,13 +86,27 @@ export function ContentCalendar({ toast }) {
     try {
       await fetch(`/api/calendar/events/${selected.id}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: eventStatus, notes: eventNotes }),
+        body: JSON.stringify({ title: eventTitle, status: eventStatus, notes: eventNotes }),
       });
-      setEvents(prev => prev.map(ev => ev.id === selected.id ? { ...ev, status: eventStatus, notes: eventNotes } : ev));
+      setEvents(prev => prev.map(ev => ev.id === selected.id ? { ...ev, title: eventTitle, status: eventStatus, notes: eventNotes } : ev));
       toast('Event updated.', 'success');
       setSelected(null);
     } catch { toast('Failed to update event.', 'error'); }
     finally { setSaving(false); }
+  };
+
+  const handleDeleteEvent = async () => {
+    if (!selected) return;
+    if (!window.confirm(`Are you sure you want to unschedule "${selected.title || 'this event'}"?`)) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/calendar/events/${selected.id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+      setEvents(prev => prev.filter(ev => ev.id !== selected.id));
+      toast('Event unscheduled.', 'success');
+      setSelected(null);
+    } catch { toast('Failed to delete event.', 'error'); }
+    finally { setDeleting(false); }
   };
 
   const DayCell = ({ ds, dayNum, label, compact = false }) => {
@@ -119,7 +135,7 @@ export function ContentCalendar({ toast }) {
             const s = STATUS_STYLES[ev.status] || STATUS_STYLES.planned;
             return (
               <div key={ev.id} data-testid="calendar-event-card"
-                onDoubleClick={() => { setSelected(ev); setEventStatus(ev.status || 'planned'); setEventNotes(ev.notes || ''); }}
+                onDoubleClick={() => { setSelected(ev); setEventStatus(ev.status || 'planned'); setEventNotes(ev.notes || ''); setEventTitle(ev.title || ''); }}
                 className="text-xs text-white px-1.5 py-0.5 rounded truncate cursor-pointer"
                 style={{ background: s.bg }} title={ev.title}>
                 {ev.title || 'Untitled'}
@@ -229,11 +245,22 @@ export function ContentCalendar({ toast }) {
           <div className="modal-box w-full max-w-sm p-6 space-y-4">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="font-semibold text-sm" style={{ color: 'var(--text-base)' }}>{selected.title || 'Untitled Event'}</h3>
-                <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{selected.scheduled_date}</p>
+                <span className="section-label">Event Details</span>
+                <p className="text-xs font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>{selected.scheduled_date}</p>
               </div>
               <button onClick={() => setSelected(null)} className="btn btn-ghost btn-sm"><X size={15} /></button>
             </div>
+            
+            <div className="space-y-1.5">
+              <label className="section-label">Title</label>
+              <input 
+                className="app-input" 
+                value={eventTitle} 
+                onChange={e => setEventTitle(e.target.value)} 
+                placeholder="Event title…" 
+              />
+            </div>
+
             <div className="space-y-1.5">
               <label className="section-label">Status</label>
               <select data-testid="event-status-select" className="app-input"
@@ -244,16 +271,23 @@ export function ContentCalendar({ toast }) {
                 <option value="done">Done</option>
               </select>
             </div>
+
             <div className="space-y-1.5">
               <label className="section-label">Notes</label>
               <textarea id="event-notes-input" className="app-input h-24 resize-none"
                 value={eventNotes} onChange={e => setEventNotes(e.target.value)} placeholder="Add notes…" />
             </div>
-            <div className="flex gap-2">
-              <button onClick={handleSaveEvent} disabled={saving} className="btn btn-primary flex-1 justify-center">
+
+            <div className="flex flex-col gap-2 pt-1">
+              <button onClick={handleSaveEvent} disabled={saving} className="btn btn-primary w-full justify-center">
                 {saving ? <span className="spinner" /> : null}{saving ? 'Saving…' : 'Save Event'}
               </button>
-              <button onClick={() => setSelected(null)} className="btn btn-secondary">Cancel</button>
+              <div className="flex gap-2">
+                <button onClick={handleDeleteEvent} disabled={deleting} className="btn btn-danger flex-1 justify-center">
+                  {deleting ? <span className="spinner" /> : null}Delete
+                </button>
+                <button onClick={() => setSelected(null)} className="btn btn-secondary flex-1 justify-center">Cancel</button>
+              </div>
             </div>
           </div>
         </div>

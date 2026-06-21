@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db/database.js';
 import { resolveChannelId } from '../utils/resolveChannel.js';
+import { callYoutubeApi } from '../utils/youtubeApi.js';
 
 const router = express.Router();
 
@@ -18,8 +19,8 @@ router.get('/stats', (req, res) => {
     if (!channelId) return res.status(400).json({ error: 'channelId is required' });
 
     const channel = db.prepare(
-      'SELECT * FROM channels WHERE id = ? OR youtube_channel_id = ?'
-    ).get(channelId, channelId);
+      'SELECT * FROM channels WHERE (id = ? OR youtube_channel_id = ?) AND user_id = ?'
+    ).get(channelId, channelId, req.user.id);
 
     if (!channel) return res.json({ subscribers: 0, total_views: 0, video_count: 0, watch_time: 0 });
 
@@ -53,7 +54,8 @@ router.get('/sync', async (req, res) => {
 
     // Resolve any format (UC ID, @handle, URL) to a real UC channel ID
     let resolvedId = channelId;
-    if (!channelId.startsWith('UC')) {
+    const isUcId = /^UC[A-Za-z0-9_-]{22}$/.test(channelId);
+    if (!isUcId) {
       try {
         const resolved = await resolveChannelId(channelId, apiKey);
         resolvedId = resolved.channelId;
@@ -63,12 +65,8 @@ router.get('/sync', async (req, res) => {
     }
 
     const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${encodeURIComponent(resolvedId)}&key=${encodeURIComponent(apiKey)}`;
-    const ytRes = await fetch(url);
-    const ytBody = await ytRes.json();
+    const ytBody = await callYoutubeApi(url, 1);
 
-    if (!ytRes.ok) {
-      return res.status(400).json({ error: ytBody?.error?.message || `YouTube API error (${ytRes.status})` });
-    }
     if (!ytBody.items || ytBody.items.length === 0) {
       return res.status(404).json({ error: `Channel not found. Verify the channel ID or @handle.` });
     }
@@ -82,11 +80,32 @@ router.get('/sync', async (req, res) => {
       source: 'youtube',
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 });
 
 // GET /api/youtube/top-videos
 router.get('/top-videos', (req, res) => res.json([]));
+
+// GET /api/youtube/api-usage
+router.get('/api-usage', (req, res) => {
+  try {
+    const startOfToday = new Date();
+    startOfToday.setUTCHours(0, 0, 0, 0);
+    const startOfTodayIso = startOfToday.toISOString();
+
+    const logSum = db.prepare(
+      'SELECT SUM(quota_cost) as total FROM youtube_api_calls_log WHERE called_at >= ?'
+    ).get(startOfTodayIso);
+    const todayTotal = logSum?.total || 0;
+
+    res.json({
+      used: todayTotal,
+      limit: 2000
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

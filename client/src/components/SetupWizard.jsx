@@ -9,7 +9,7 @@ function PasswordInput({ value, onChange, placeholder, testId, autoComplete }) {
       <input
         data-testid={testId}
         type={show ? 'text' : 'password'}
-        className="glass-input text-sm pr-10"
+        className="app-input text-sm pr-10"
         value={value}
         onChange={onChange}
         placeholder={placeholder}
@@ -62,11 +62,9 @@ export function SetupWizard({ toast }) {
       <div className="w-full max-w-md space-y-6">
         {/* Branding */}
         <div className="text-center space-y-1">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-600 mb-2">
-            <span className="text-white font-black text-xl">Y</span>
-          </div>
-          <h1 className="text-2xl font-bold text-slate-100">Welcome to YTIq</h1>
-          <p className="text-sm text-slate-500">Connect your accounts to get started.</p>
+          <img src="./logo.png" alt="CSD Logo" className="w-12 h-12 mx-auto rounded-xl object-cover mb-2" />
+          <h1 className="text-2xl font-bold text-slate-100">Welcome to CSD Creator Suite</h1>
+          <p className="text-sm text-slate-500">Connect your engines to get started.</p>
         </div>
 
         {/* Wizard card */}
@@ -77,7 +75,7 @@ export function SetupWizard({ toast }) {
                 <ShieldCheck size={22} className="text-emerald-400" />
               </div>
               <p className="text-base font-semibold text-slate-100">You're all set!</p>
-              <p className="text-sm text-slate-500">Reload the page to start using YTIq.</p>
+              <p className="text-sm text-slate-500">Reload the page to start using CSD.</p>
               <button
                 onClick={() => window.location.reload()}
                 className="mt-2 bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition"
@@ -89,26 +87,26 @@ export function SetupWizard({ toast }) {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-500 uppercase tracking-wide block">
-                  LongCat AI API Key <span className="text-indigo-400">*</span>
+                  AI Engine Activation Key <span className="text-indigo-400">*</span>
                 </label>
                 <PasswordInput
                   testId="ai-api-key-input"
                   value={aiKey}
                   onChange={e => setAiKey(e.target.value)}
-                  placeholder="Your LongCat API key…"
+                  placeholder="Enter AI activation credentials…"
                   autoComplete="off"
                 />
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-500 uppercase tracking-wide block">
-                  YouTube Data API Key <span className="text-slate-600">(optional)</span>
+                  Data Sync Key <span className="text-slate-600">(optional)</span>
                 </label>
                 <PasswordInput
                   testId="youtube-api-key-input"
                   value={ytKey}
                   onChange={e => setYtKey(e.target.value)}
-                  placeholder="AIzaSy… (for channel stats sync)"
+                  placeholder="Enter data sync credentials…"
                   autoComplete="off"
                 />
                 <p className="text-xs text-slate-600">You can add this later in Settings.</p>
@@ -134,8 +132,9 @@ export function SetupWizard({ toast }) {
         </div>
 
         <p className="text-center text-xs text-slate-600">
-          All keys are stored locally in your database. We never transmit them.
+          All keys are stored securely in your database.
         </p>
+
       </div>
     </div>
   );

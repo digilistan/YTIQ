@@ -3,9 +3,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 import db from './db/database.js';
 import { runMigrations } from './db/migrations.js';
+import authRouter from './routes/auth.js';
+import adminRouter from './routes/admin.js';
+import { requireAuth, checkFeatureAccess } from './middleware/auth.js';
+import { hashPassword } from './utils/auth.js';
 import errorHandler from './middleware/errorHandler.js';
 import settingsRouter from './routes/settings.js';
 import channelsRouter from './routes/channels.js';
@@ -20,12 +25,22 @@ import nichesRouter from './routes/niches.js';
 import thumbnailsRouter from './routes/thumbnails.js';
 import chatRouter from './routes/chat.js';
 import researchRouter from './routes/research.js';
+import seoRouter from './routes/seo.js';
+import nanobananaRouter from './routes/nanobanana.js';
+import povCoordinatorRouter from './routes/pov_coordinator.js';
+import extensionRouter from './routes/extension.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load env variables from monorepo root .env
-dotenv.config({ path: path.join(__dirname, '../.env') });
+// Load env variables: first check local directory, then fallback to monorepo root
+const localEnv = path.join(__dirname, '.env');
+const parentEnv = path.join(__dirname, '../.env');
+if (fs.existsSync(localEnv)) {
+  dotenv.config({ path: localEnv });
+} else {
+  dotenv.config({ path: parentEnv });
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -53,12 +68,48 @@ function seedDefaults() {
     ai_model: process.env.AI_MODEL || 'LongCat-2.0-Preview',
     use_mock_api: 'false'
   };
-  const stmt = db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)');
   for (const [key, value] of Object.entries(defaults)) {
-    stmt.run(key, value);
+    const existing = db.prepare('SELECT value FROM settings WHERE key = ?').get(key);
+    if (!existing || (value && value !== '' && existing.value !== value)) {
+      db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)').run(key, value);
+      console.log(`[SETTINGS] Updated key "${key}" from environment/defaults.`);
+    }
   }
 }
 seedDefaults();
+
+function seedDefaultAdmin() {
+  try {
+    const username = 'admin';
+    const password = 'Admin@CSD12..?#';
+    const hash = hashPassword(password);
+    
+    // Check if a user with username 'admin' exists
+    const existing = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+    if (!existing) {
+      db.prepare('INSERT INTO users (username, password_hash, role, status) VALUES (?, ?, ?, ?)').run(
+        username,
+        hash,
+        'admin',
+        'active'
+      );
+      console.log(`[AUTH] Seeded default admin user: ${username}`);
+    } else {
+      // Forcefully update the existing admin user's hash and role on startup
+      db.prepare('UPDATE users SET password_hash = ?, role = ?, status = ? WHERE username = ?').run(
+        hash,
+        'admin',
+        'active',
+        username
+      );
+      console.log(`[AUTH] Forcefully updated existing admin credentials and role.`);
+    }
+  } catch (error) {
+    console.error('Failed to seed default admin user:', error);
+  }
+}
+seedDefaultAdmin();
+
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -151,20 +202,31 @@ if (process.env.NODE_ENV === 'test') {
   });
 }
 
+// Register public auth routers
+app.use('/api/auth', authRouter);
+
+// Apply authentication middleware to all other endpoints
+app.use('/api', requireAuth);
+
 // Register API routers
+app.use('/api/admin', adminRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/channels', channelsRouter);
 app.use('/api/youtube', youtubeRouter);
 app.use('/api/suggestions', suggestionsRouter);
 app.use('/api/ai', aiRouter);
-app.use('/api/scripts', scriptsRouter);
-app.use('/api/ideas', ideasRouter);
-app.use('/api/calendar', calendarRouter);
-app.use('/api/competitors', competitorsRouter);
-app.use('/api/niches', nichesRouter);
-app.use('/api/thumbnails', thumbnailsRouter);
-app.use('/api/chat', chatRouter);
-app.use('/api/research', researchRouter);
+app.use('/api/scripts', checkFeatureAccess('scripts'), scriptsRouter);
+app.use('/api/ideas', checkFeatureAccess('ideas'), ideasRouter);
+app.use('/api/calendar', checkFeatureAccess('calendar'), calendarRouter);
+app.use('/api/competitors', checkFeatureAccess('competitors'), competitorsRouter);
+app.use('/api/niches', checkFeatureAccess('niche'), nichesRouter);
+app.use('/api/thumbnails', checkFeatureAccess('thumbnails'), thumbnailsRouter);
+app.use('/api/chat', checkFeatureAccess('chat'), chatRouter);
+app.use('/api/research', checkFeatureAccess('research'), researchRouter);
+app.use('/api/seo', checkFeatureAccess('seo'), seoRouter);
+app.use('/api/nanobanana', checkFeatureAccess('clipping'), nanobananaRouter);
+app.use('/api/pov-coordinator', checkFeatureAccess('pov'), povCoordinatorRouter);
+app.use('/api/extension', extensionRouter);
 
 // Basic routing placeholder for other modules
 app.get('/api', (req, res) => {
