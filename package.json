@@ -1,27 +1,25 @@
 {
-  "name": "ytiq",
-  "version": "1.0.0",
-  "description": "YTIq - YouTube Analytics & Content Creator Dashboard",
+  "name": "csd",
+  "version": "1.2.1",
+  "description": "CSD - Content Suite Dashboard",
+  "author": "Muzammil Ali",
   "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
+  "main": "electron/main.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
-    "start": "npm run start --workspace=server",
-    "db:migrate": "npm run db:migrate --workspace=server",
+    "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\" \"cd Project-Clipper/DigiClipper && ..\\..\\scripts\\python.exe server.py\" \"scripts\\python.exe server/pov/app.py\"",
+    "start": "cd server && npm run start",
+    "db:migrate": "cd server && npm run db:migrate",
     "test:e2e": "node tests/setup/cleanDb.js && cross-env NODE_ENV=test playwright test tests/e2e",
     "test:e2e:ui": "node tests/setup/cleanDb.js && cross-env NODE_ENV=test playwright test tests/e2e --ui",
     "test:e2e:debug": "node tests/setup/cleanDb.js && cross-env NODE_ENV=test playwright test tests/e2e --debug"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
+    "adm-zip": "^0.5.17",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "express": "^4.19.2"
-  },
-  "dependencies": {
-    "better-sqlite3": "^12.11.1"
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
+    "javascript-obfuscator": "^5.4.3"
   }
 }

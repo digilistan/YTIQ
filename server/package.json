@@ -1,7 +1,7 @@
 {
   "name": "server",
-  "version": "1.0.0",
-  "description": "YTIq Backend Server",
+  "version": "1.2.1",
+  "description": "CSD Backend Server",
   "type": "module",
   "main": "server.js",
   "scripts": {
