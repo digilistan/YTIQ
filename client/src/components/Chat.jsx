@@ -381,7 +381,9 @@ export function Chat({ toast }) {
     const nextMessages = [...messages, userMsg];
     setMessages(nextMessages);
     setInput('');
-    setLoading(true);
+    // Add placeholder assistant message
+    const assistantIndex = nextMessages.length;
+    setMessages(prev => [...prev, { role: 'assistant', content: '⏳ Initializing...' }]);
 
     try {
       const res = await fetch('/api/chat', {
@@ -396,25 +398,66 @@ export function Chat({ toast }) {
       });
 
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || 'Failed to get response');
+        throw new Error(`HTTP error ${res.status}`);
       }
 
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
-      
-      // Implicitly load active session if it was just created
-      if (!activeSessionId && data.session_id) {
-        setActiveSessionId(data.session_id);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop(); // keep last incomplete line in buffer
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+          let parsed = null;
+          try {
+            parsed = JSON.parse(trimmed);
+          } catch (e) {
+            console.error('Error parsing NDJSON line:', e);
+            continue;
+          }
+
+          if (parsed.status === 'info') {
+            setMessages(prev => {
+              const copy = [...prev];
+              if (copy[assistantIndex]) {
+                copy[assistantIndex] = { role: 'assistant', content: parsed.message };
+              }
+              return copy;
+            });
+          } else if (parsed.status === 'reply') {
+            setMessages(prev => {
+              const copy = [...prev];
+              if (copy[assistantIndex]) {
+                copy[assistantIndex] = { role: 'assistant', content: parsed.reply };
+              }
+              return copy;
+            });
+
+            // Implicitly load active session if it was just created
+            if (!activeSessionId && parsed.session_id) {
+              setActiveSessionId(parsed.session_id);
+            }
+          } else if (parsed.status === 'error') {
+            throw new Error(parsed.error || 'Failed to get response');
+          }
+        }
       }
-      
+
       // Refresh ancillary indicators & panel items
       fetchSessions();
       fetchMemory();
       fetchApiUsage();
     } catch (err) {
       toast(err.message, 'error');
-      setMessages(prev => prev.slice(0, -1));
+      setMessages(prev => prev.slice(0, assistantIndex)); // remove placeholder message
     } finally {
       setLoading(false);
     }

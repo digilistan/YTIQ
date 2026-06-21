@@ -165,18 +165,31 @@ router.delete('/memory/:id', (req, res) => {
   }
 });
 
-// POST /api/chat - Main endpoint (supports implicitly saving/starting sessions)
+// POST /api/chat - Main endpoint (supports implicitly saving/starting sessions with NDJSON streaming)
 router.post('/', async (req, res) => {
+  // Set headers for NDJSON streaming to prevent proxy/antivirus timeouts
+  res.setHeader('Content-Type', 'application/x-ndjson');
+  res.setHeader('Transfer-Encoding', 'chunked');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+
+  const sendStatus = (status, extra = {}) => {
+    res.write(JSON.stringify({ status, ...extra }) + '\n');
+  };
+
   try {
     const { messages = [], channel_id, session_id, scrape_youtube } = req.body;
 
     if (!Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({ error: 'messages array is required' });
+      sendStatus('error', { error: 'messages array is required' });
+      return res.end();
     }
 
     const apiKey = getSetting('ai_api_key', '');
     if (!apiKey) {
-      return res.status(400).json({ error: 'No AI API key configured. Add it in Settings.' });
+      sendStatus('error', { error: 'No AI API key configured. Add it in Settings.' });
+      return res.end();
     }
 
     const endpoint = getSetting('ai_endpoint', DEFAULT_ENDPOINT);
@@ -185,9 +198,12 @@ router.post('/', async (req, res) => {
     let activeSessionId = session_id;
     const lastMsg = messages[messages.length - 1];
     if (!lastMsg || typeof lastMsg.content !== 'string') {
-      return res.status(400).json({ error: 'Last message must have content string' });
+      sendStatus('error', { error: 'Last message must have content string' });
+      return res.end();
     }
     const latestUserMessage = lastMsg.content;
+
+    sendStatus('info', { message: '⏳ Analyzing request and loading context...' });
 
     // 1. Manage session/message persistence
     try {
@@ -200,7 +216,8 @@ router.post('/', async (req, res) => {
         // Verify session belongs to user
         const session = db.prepare('SELECT 1 FROM chat_sessions WHERE id = ? AND user_id = ?').get(activeSessionId, req.user.id);
         if (!session) {
-          return res.status(403).json({ error: 'Access denied to this chat session' });
+          sendStatus('error', { error: 'Access denied to this chat session' });
+          return res.end();
         }
       }
 
@@ -274,7 +291,7 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
 
           if (searchQueries.length > 0 && searchQueries[0]) {
             const targetQuery = searchQueries[0];
-            console.log(`[YouTube Scraper] Executing YouTube search for: "${targetQuery}"`);
+            sendStatus('info', { message: `🔍 Searching YouTube for "${targetQuery}"...` });
 
             const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(targetQuery)}&type=video&maxResults=5&key=${encodeURIComponent(ytKey)}`;
             const searchData = await callYoutubeApi(searchUrl, 7); // Cache search list for 7 days
@@ -284,6 +301,7 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
 
             let videoDetails = [];
             if (videoIds.length > 0) {
+              sendStatus('info', { message: `📊 Found ${videoIds.length} videos. Retrieving stats...` });
               const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${encodeURIComponent(videoIds.join(','))}&key=${encodeURIComponent(ytKey)}`;
               const detailsData = await callYoutubeApi(detailsUrl, 7); // Cache video details for 7 days
               videoDetails = (detailsData.items || []).map(v => ({
@@ -316,9 +334,11 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
       }
     }
 
+    sendStatus('info', { message: '🤖 Consulting S-tier advisor...' });
+
     const systemPrompt = NICHE_KNOWLEDGE_PROMPT + memoryContext + channelContext + ytContext;
 
-    // 3. Request LLM response
+    // 3. Request LLM response (generous 3 minute timeout)
     const content = await queueAICall(async () => {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -334,7 +354,7 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
           ],
           temperature: 0.7,
         }),
-        signal: AbortSignal.timeout(60000)
+        signal: AbortSignal.timeout(180000)
       });
 
       if (!response.ok) {
@@ -364,9 +384,11 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
     // 5. Fire off asynchronous memory extraction (no await so it doesn't block the client)
     autoExtractMemory(latestUserMessage, apiKey, endpoint, model, req.user.id);
 
-    res.json({ reply: content, session_id: activeSessionId });
+    sendStatus('reply', { reply: content, session_id: activeSessionId });
+    res.end();
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    sendStatus('error', { error: error.message });
+    res.end();
   }
 });
 
