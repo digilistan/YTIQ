@@ -152,7 +152,7 @@ export async function callAI(systemPrompt, userPrompt) {
         temperature: 0.7,
         max_tokens: 4096, // Guarantee large token capacity for scripts
       }),
-      signal: AbortSignal.timeout(60000)
+      signal: AbortSignal.timeout(300000)
     });
 
     if (!response.ok) {

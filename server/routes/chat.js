@@ -43,7 +43,7 @@ Respond ONLY with a valid JSON array of strings, e.g., ["fact 1", "fact 2"]. If 
           ],
           temperature: 0.1,
         }),
-        signal: AbortSignal.timeout(30000)
+        signal: AbortSignal.timeout(60000)
       });
 
       if (!response.ok) throw new Error(`Memory extraction failed with status: ${response.status}`);
@@ -278,7 +278,7 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
                 temperature: 0.1,
                 max_tokens: 60
               }),
-              signal: AbortSignal.timeout(30000)
+              signal: AbortSignal.timeout(60000)
             });
             if (!response.ok) throw new Error(`Query extraction failed with status: ${response.status}`);
             const data = await response.json();
