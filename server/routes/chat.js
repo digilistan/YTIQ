@@ -255,54 +255,21 @@ ${latestStats ? `- Current Subscribers: ${latestStats.subscribers?.toLocaleStrin
       const ytKey = getSetting('youtube_api_key', '');
       if (ytKey) {
         try {
-          console.log('[YouTube Scraper] Extracting search query from message...');
           let searchQueries = [];
-          
-          // Fast LLM query to extract exactly one query phrase
-          const content = await queueAICall(async () => {
-            const response = await fetch(endpoint, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-              },
-              body: JSON.stringify({
-                model,
-                messages: [
-                  { 
-                    role: 'system', 
-                    content: 'You are a search query extractor. Analyze the user\'s message and extract exactly ONE search query to search YouTube for relevant videos or channels. Respond ONLY with a valid JSON array containing a single string, e.g., ["best coding tips"]. If no YouTube search is appropriate, return [].' 
-                  },
-                  { role: 'user', content: latestUserMessage }
-                ],
-                temperature: 0.1,
-                max_tokens: 60
-              }),
-              signal: AbortSignal.timeout(60000)
-            });
-            if (!response.ok) throw new Error(`Query extraction failed with status: ${response.status}`);
-            const data = await response.json();
-            return data.choices?.[0]?.message?.content || '';
-          });
-
-          if (content) {
-            const match = content.match(/\[([\s\S]*?)\]/);
-            if (match) {
-              try {
-                searchQueries = JSON.parse(match[0]);
-              } catch (_) {}
+          // Extract search query locally (runs in 0ms, saving an LLM call)
+          const localQuery = (() => {
+            let cleaned = latestUserMessage.trim();
+            const quoteMatch = cleaned.match(/"([^"]+)"/) || cleaned.match(/'([^']+)'/);
+            if (quoteMatch && quoteMatch[1] && quoteMatch[1].trim()) {
+              return quoteMatch[1].trim();
             }
-          }
+            cleaned = cleaned.replace(/^(please\s+)?(search\s+for|find\s+videos\s+about|look\s+up\s+on\s+youtube|look\s+up|youtube\s+search\s+for|show\s+me\s+videos\s+about|videos\s+about|videos\s+of|search\s+youtube\s+for|search\s+)\s*/i, '');
+            cleaned = cleaned.replace(/[?.!]+$/, '');
+            return cleaned.slice(0, 80).trim();
+          })();
 
-          // Fallback if extraction failed
-          if (!Array.isArray(searchQueries) || searchQueries.length === 0) {
-            const quoteMatch = latestUserMessage.match(/"([^"]+)"/);
-            if (quoteMatch) {
-              searchQueries = [quoteMatch[1]];
-            } else {
-              const cleanQuery = latestUserMessage.replace(/[^\w\s\u0600-\u06FF]/g, '').slice(0, 60).trim();
-              if (cleanQuery) searchQueries = [cleanQuery];
-            }
+          if (localQuery) {
+            searchQueries = [localQuery];
           }
 
           if (searchQueries.length > 0 && searchQueries[0]) {
